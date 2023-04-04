@@ -39,7 +39,7 @@
                     android:layout_margin="5dp"
                     app:cardCornerRadius="5dp">
                     <ImageView
-                        android:id="@+id/baner"
+                        android:id="@+id/banner"
                         android:layout_width="210dp"
                         android:layout_height="140dp"
                         android:scaleType="center"
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintEnabled="true"
-                app:startIconDrawable="@drawable/icon_account_box_24">
+                app:startIconDrawable="@drawable/ic_account_24">
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintEnabled="true"
-                app:startIconDrawable="@drawable/icon_account_box_24">
+                app:startIconDrawable="@drawable/ic_calendar_month_24">
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintEnabled="true"
-                app:startIconDrawable="@drawable/icon_account_box_24">
+                app:startIconDrawable="@drawable/round_person_pin_24">
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintEnabled="true"
-                app:startIconDrawable="@drawable/icon_account_box_24">
+                app:startIconDrawable="@drawable/round_person_pin_24">
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -99,8 +99,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintEnabled="true"
-                app:startIconDrawable="@drawable/icon_account_box_24">
+                app:hintEnabled="true">
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -111,8 +110,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintEnabled="true"
-                app:startIconDrawable="@drawable/icon_account_box_24">
+                app:hintEnabled="true">
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -123,8 +121,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintEnabled="true"
-                app:startIconDrawable="@drawable/icon_account_box_24">
+                app:hintEnabled="true">
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -140,11 +137,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:checked="@{addnewfilm.films.isOn ? false : true}"
+                    android:onClick="@{() -> addnewfilm.onclickOffline()}"
                     android:text="Phim chiếu rạp"/>
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:checked="@{addnewfilm.films.isOn ? true : false}"
+                    android:onClick="@{() -> addnewfilm.onclickOnline()}"
                     android:text="Phim online"/>
             </RadioGroup>
             <RadioGroup
@@ -155,16 +156,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:checked="@{addnewfilm.films.isNew ? true : false}"
+                    android:onClick="@{() -> addnewfilm.onclickNew()}"
                     android:text="Phim Mới"/>
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:checked="@{addnewfilm.films.isHot ? true : false}"
                     android:layout_weight="1"
+                    android:onClick="@{() -> addnewfilm.onclickHot()}"
                     android:text="Phim nổi bật"/>
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:onClick="@{() -> addnewfilm.onclickOrther()}"
                     android:text="Khác"/>
             </RadioGroup>
 
@@ -181,7 +187,7 @@
                     android:id="@+id/video"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/custom_btn_y"
+                    android:background="@drawable/custom_button_yes"
                     android:text="Tải lên"
                     android:textAllCaps="false"/>
                 <LinearLayout
@@ -193,14 +199,12 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:text="Link:"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"/>
+                        android:textStyle="bold"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        android:text="@={addnewfilm.films.video}"
-                        android:textColor="@color/black"/>
+                        android:text="@={addnewfilm.filmsVideo}"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -218,7 +222,7 @@
                     android:id="@+id/trailer"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/custom_btn_y"
+                    android:background="@drawable/custom_button_yes"
                     android:text="Tải lên"
                     android:textAllCaps="false"/>
                 <LinearLayout
@@ -230,14 +234,12 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:text="Link:"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"/>
+                        android:textStyle="bold"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        android:text="@={addnewfilm.films.videoTrailer}"
-                        android:textColor="@color/black"/>
+                        android:text="@={addnewfilm.filmsTrailer}"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -248,8 +250,9 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_btn_z"
+                    android:background="@drawable/custom_button_yes"
                     android:text="Lưu"
+                    android:onClick="@{(view) -> addnewfilm.onclickAddFilms(view)}"
                     android:textAllCaps="false"/>
             </LinearLayout>
 

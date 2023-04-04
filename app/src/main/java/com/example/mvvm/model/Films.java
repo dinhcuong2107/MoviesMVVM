@@ -6,8 +6,6 @@ public class Films {
     public String banner;
     public String videoTrailer;
     public String video;
-    public String series;
-    public int episode;
     public String director;
     public String main_actors;
     public String country;
@@ -22,14 +20,12 @@ public class Films {
     public Films() {
     }
 
-    public Films(String name, String poster, String banner, String videoTrailer, String video, String series, int episode, String director, String main_actors, String country, String genre, String year, String inf_short, boolean isHot, boolean isNew, boolean isOn, boolean status) {
+    public Films(String name, String poster, String banner, String videoTrailer, String video, String director, String main_actors, String country, String genre, String year, String inf_short, boolean isHot, boolean isNew, boolean isOn, boolean status) {
         this.name = name;
         this.poster = poster;
         this.banner = banner;
         this.videoTrailer = videoTrailer;
         this.video = video;
-        this.series = series;
-        this.episode = episode;
         this.director = director;
         this.main_actors = main_actors;
         this.country = country;
@@ -80,22 +76,6 @@ public class Films {
 
     public void setVideo(String video) {
         this.video = video;
-    }
-
-    public String getSeries() {
-        return series;
-    }
-
-    public void setSeries(String series) {
-        this.series = series;
-    }
-
-    public int getEpisode() {
-        return episode;
-    }
-
-    public void setEpisode(int episode) {
-        this.episode = episode;
     }
 
     public String getDirector() {

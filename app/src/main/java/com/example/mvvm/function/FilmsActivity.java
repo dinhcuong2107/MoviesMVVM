@@ -13,6 +13,8 @@ import android.os.Bundle;
 import com.example.mvvm.R;
 import com.example.mvvm.adapter.FilmsAdapter;
 import com.example.mvvm.databinding.ActivityFilmsBinding;
+import com.example.mvvm.livedata.FilmsOfflineVM;
+import com.example.mvvm.livedata.FilmsOnlineVM;
 import com.example.mvvm.model.Films;
 
 import java.util.List;

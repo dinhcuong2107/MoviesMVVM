@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -93,6 +94,14 @@ public class AddFilmsVM extends BaseObservable {
         films.setVideo(video);
         notifyPropertyChanged(BR.filmsVideo);
     }
+
+    public void onclickOnline(){films.isOn = true;}
+    public void onclickOffline(){films.isOn = false;}
+    public void onclickHot(){films.isHot = true;films.isNew=false;}
+    public void onclickNew(){films.isNew = true;films.isHot=false;}
+    public void onclickOrther(){films.isNew = false;films.isHot=false;}
+    public void onclickAddFilms(View view){
+            }
 
     @BindingAdapter({"android:src"})
     public static void setImageView(ImageView imageView, String imgUrl){

@@ -64,7 +64,7 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:drawableStart="@drawable/ic_person_pin_24"
+                    android:drawableStart="@drawable/round_person_pin_24"
                     android:text="Thông tin cá nhân"
                     android:onClick="@{(view) -> settingfragment.onNextIntentUsersInf(view)}"
                     android:textAllCaps="false"/>
@@ -78,7 +78,7 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:drawableStart="@drawable/icon_date_range_24"
+                    android:drawableStart="@drawable/ic_calendar_month_24"
                     android:text="Lịch chiếu phim"
                     android:onClick="@{(view) -> settingfragment.onNextIntentShowTimes(view)}"
                     android:textAllCaps="false"/>
@@ -92,7 +92,7 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:drawableStart="@drawable/ic_person_search_24"
+                    android:drawableStart="@drawable/ic_contact_users_24"
                     android:text="Danh sách khách hàng"
                     android:textAllCaps="false"
                     android:onClick="@{(view) -> settingfragment.onNextIntentUsersStatus(view)}" />

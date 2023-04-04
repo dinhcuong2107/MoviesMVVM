@@ -35,11 +35,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DetailUsersVM extends BaseObservable {
+    public boolean enablechange;
     public Users users;
     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
     public DetailUsersVM() {
         users = new Users();
+        enablechange = false;
         if (firebaseUser != null) {
             users.email = firebaseUser.getEmail();
         }
@@ -59,7 +61,7 @@ public class DetailUsersVM extends BaseObservable {
                     setUsers(m_users);
                     setUsersAvatar(m_users.avatar);
                     setUsersBirthday(m_users.birthday);
-                }
+                }else {setEnablechange(true);}
             }
 
             @Override
@@ -67,6 +69,7 @@ public class DetailUsersVM extends BaseObservable {
             }
         });
     }
+
 
     @Bindable
     public Users getUsers() {
@@ -76,6 +79,15 @@ public class DetailUsersVM extends BaseObservable {
     public void setUsers(Users users) {
         this.users = users;
         notifyPropertyChanged(BR.users);
+    }
+    @Bindable
+    public boolean isEnablechange() {
+        return enablechange;
+    }
+
+    public void setEnablechange(boolean enablechange) {
+        this.enablechange = enablechange;
+        notifyPropertyChanged(BR.enablechange);
     }
 
     @Bindable
@@ -122,6 +134,7 @@ public class DetailUsersVM extends BaseObservable {
         pickerDialog.show();
     }
 
+    public void onclickFix(){setEnablechange(true);}
     public void onclickRegister(View view) {
         String error = "";
 

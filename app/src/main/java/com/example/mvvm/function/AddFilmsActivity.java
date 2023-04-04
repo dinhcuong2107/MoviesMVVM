@@ -15,6 +15,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
@@ -39,32 +40,112 @@ import java.util.UUID;
 
 public class AddFilmsActivity extends AppCompatActivity {
     int RESULT_LOAD_IMG = 0;
+    int type;
+    AddFilmsVM addFilmsVM;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityAddFilmsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_add_films);
-        binding.setAddnewfilm(new AddFilmsVM());
+        addFilmsVM = new AddFilmsVM();
+        binding.setAddnewfilm(addFilmsVM);
         binding.executePendingBindings();
 
-        PermissionListener permissionlistener = new PermissionListener() {
+        binding.banner.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPermissionGranted() {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, RESULT_LOAD_IMG);
-            }
+            public void onClick(View v) {
+                PermissionListener permissionlistener = new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        type = 1;
+                        Intent intent = new Intent(Intent.ACTION_PICK);
+                        intent.setType("image/*");
+                        startActivityForResult(intent, RESULT_LOAD_IMG);
+                    }
 
+                    @Override
+                    public void onPermissionDenied(List<String> deniedPermissions) {
+                        Toast.makeText(AddFilmsActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                };
+                TedPermission.create()
+                        .setPermissionListener(permissionlistener)
+                        .setDeniedMessage("Nếu bạn từ chối quyền, bạn không thể sử dụng dịch vụ này\nVui lòng cấp quyền tại [Setting] > [Permission]")
+                        .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA)
+                        .check();
+            }
+        });
+        binding.poster.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPermissionDenied(List<String> deniedPermissions) {
-                Toast.makeText(AddFilmsActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
-            }
-        };
-        TedPermission.create()
-                .setPermissionListener(permissionlistener)
-                .setDeniedMessage("Nếu bạn từ chối quyền, bạn không thể sử dụng dịch vụ này\nVui lòng cấp quyền tại [Setting] > [Permission]")
-                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)
-                .check();
+            public void onClick(View v) {
+                PermissionListener permissionlistener = new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        type = 0;
+                        Intent intent = new Intent(Intent.ACTION_PICK);
+                        intent.setType("image/*");
+                        startActivityForResult(intent, RESULT_LOAD_IMG);
+                    }
 
+                    @Override
+                    public void onPermissionDenied(List<String> deniedPermissions) {
+                        Toast.makeText(AddFilmsActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                };
+                TedPermission.create()
+                        .setPermissionListener(permissionlistener)
+                        .setDeniedMessage("Nếu bạn từ chối quyền, bạn không thể sử dụng dịch vụ này\nVui lòng cấp quyền tại [Setting] > [Permission]")
+                        .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA)
+                        .check();
+            }
+        });
+        binding.video.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PermissionListener permissionlistener = new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        type = 2;
+                        Intent intent = new Intent(Intent.ACTION_PICK);
+                        intent.setType("video/*");
+                        startActivityForResult(intent, RESULT_LOAD_IMG);
+                    }
+
+                    @Override
+                    public void onPermissionDenied(List<String> deniedPermissions) {
+                        Toast.makeText(AddFilmsActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                };
+                TedPermission.create()
+                        .setPermissionListener(permissionlistener)
+                        .setDeniedMessage("Nếu bạn từ chối quyền, bạn không thể sử dụng dịch vụ này\nVui lòng cấp quyền tại [Setting] > [Permission]")
+                        .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA)
+                        .check();
+            }
+        });
+        binding.trailer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PermissionListener permissionlistener = new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        type = 3;
+                        Intent intent = new Intent(Intent.ACTION_PICK);
+                        intent.setType("video/*");
+                        startActivityForResult(intent, RESULT_LOAD_IMG);
+                    }
+
+                    @Override
+                    public void onPermissionDenied(List<String> deniedPermissions) {
+                        Toast.makeText(AddFilmsActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                };
+                TedPermission.create()
+                        .setPermissionListener(permissionlistener)
+                        .setDeniedMessage("Nếu bạn từ chối quyền, bạn không thể sử dụng dịch vụ này\nVui lòng cấp quyền tại [Setting] > [Permission]")
+                        .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA)
+                        .check();
+            }
+        });
     }
 
     @Override
@@ -104,7 +185,12 @@ public class AddFilmsActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     Uri downloadUrl = uri;
-//                                    userInformationVM.setUsersAvatar(downloadUrl.toString());
+                                    switch (type){
+                                        case 0: addFilmsVM.setFilmsPoster(downloadUrl.toString());break;
+                                        case 1: addFilmsVM.setFilmsBanner(downloadUrl.toString());break;
+                                        case 2: addFilmsVM.setFilmsVideo(downloadUrl.toString());break;
+                                        case 3: addFilmsVM.setFilmsTrailer(downloadUrl.toString());break;
+                                    }
                                 }
                             });
 

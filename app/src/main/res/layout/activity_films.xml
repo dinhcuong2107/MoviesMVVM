@@ -33,12 +33,12 @@
                     android:layout_weight="1"
                     app:queryHint="Tên phim"
                     app:iconifiedByDefault="false"
-                    android:background="@drawable/custom_edt_round_50"/>
+                    android:background="@drawable/custom_background_opacity40"/>
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:onClick="@{(view) -> listfilms.onNextIntentNew(view)}"
-                    android:background="@drawable/custom_background_round_color_x"
+                    android:background="@drawable/ic_add_circle_outline_24"
                     android:layout_marginTop="5dp"
                     android:text="+"
                     android:textAllCaps="false"/>
@@ -51,14 +51,14 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:orientation="horizontal"
-                android:background="@drawable/custom_background_round">
+                android:background="@drawable/custom_background_opacity40">
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:animateLayoutChanges="true"
                     android:onClick="@{(view) -> listfilms.onclickfilmsoff(view)}"
-                    android:background="@{listfilms.on ? @drawable/background_transparent :  @drawable/custom_background_round_color_y}"
+                    android:background="@{listfilms.on ? @drawable/custom_background_transparent :  @drawable/custom_button_yes}"
                     android:textColor="@{listfilms.on ? @color/black : @color/white}"
                     android:text="Phim chiếu rap"
                     android:textAllCaps="false"/>
@@ -67,7 +67,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:animateLayoutChanges="true"
-                    android:background="@{listfilms.on ? @drawable/custom_background_round_color_y : @drawable/background_transparent}"
+                    android:background="@{listfilms.on ? @drawable/custom_button_yes : @drawable/custom_background_transparent}"
                     android:onClick="@{(view) -> listfilms.onclickfilmson(view)}"
                     android:text="Phim online"
                     android:textAllCaps="false"

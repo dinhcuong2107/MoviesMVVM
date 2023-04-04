@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+import androidx.databinding.library.baseAdapters.BR;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -42,4 +43,4 @@ public class FilmsVM extends BaseObservable {
         Intent intent = new Intent(view.getContext(), AddFilmsActivity.class);
         view.getContext().startActivity(intent);
     }
-}}
+}
