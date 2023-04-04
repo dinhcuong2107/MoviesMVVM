@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="listfilms"
+            type="com.example.mvvm.function.FilmsVM" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/color_y">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/searchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:queryHint="Tên phim"
+                    app:iconifiedByDefault="false"
+                    android:background="@drawable/custom_edt_round_50"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:onClick="@{(view) -> listfilms.onNextIntentNew(view)}"
+                    android:background="@drawable/custom_background_round_color_x"
+                    android:layout_marginTop="5dp"
+                    android:text="+"
+                    android:textAllCaps="false"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal"
+                android:background="@drawable/custom_background_round">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:animateLayoutChanges="true"
+                    android:onClick="@{(view) -> listfilms.onclickfilmsoff(view)}"
+                    android:background="@{listfilms.on ? @drawable/background_transparent :  @drawable/custom_background_round_color_y}"
+                    android:textColor="@{listfilms.on ? @color/black : @color/white}"
+                    android:text="Phim chiếu rap"
+                    android:textAllCaps="false"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:animateLayoutChanges="true"
+                    android:background="@{listfilms.on ? @drawable/custom_background_round_color_y : @drawable/background_transparent}"
+                    android:onClick="@{(view) -> listfilms.onclickfilmson(view)}"
+                    android:text="Phim online"
+                    android:textAllCaps="false"
+                    android:textColor="@{listfilms.on ? @color/white : @color/black}" />
+            </LinearLayout>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerFilmOn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:visibility="@{listfilms.on ? View.VISIBLE : View.GONE}" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerFilmOff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:visibility="@{listfilms.on ? View.GONE : View.VISIBLE}" />
+    </LinearLayout>
+</layout>

@@ -1,0 +1,180 @@
+package com.example.mvvm.model;
+
+public class Films {
+    public String name;
+    public String poster;
+    public String banner;
+    public String videoTrailer;
+    public String video;
+    public String series;
+    public int episode;
+    public String director;
+    public String main_actors;
+    public String country;
+    public String genre;
+    public String year;
+    public String inf_short;
+    public boolean isHot;
+    public boolean isNew;
+    public boolean isOn;
+    public boolean status;
+
+    public Films() {
+    }
+
+    public Films(String name, String poster, String banner, String videoTrailer, String video, String series, int episode, String director, String main_actors, String country, String genre, String year, String inf_short, boolean isHot, boolean isNew, boolean isOn, boolean status) {
+        this.name = name;
+        this.poster = poster;
+        this.banner = banner;
+        this.videoTrailer = videoTrailer;
+        this.video = video;
+        this.series = series;
+        this.episode = episode;
+        this.director = director;
+        this.main_actors = main_actors;
+        this.country = country;
+        this.genre = genre;
+        this.year = year;
+        this.inf_short = inf_short;
+        this.isHot = isHot;
+        this.isNew = isNew;
+        this.isOn = isOn;
+        this.status = status;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
+
+    public String getBanner() {
+        return banner;
+    }
+
+    public void setBanner(String banner) {
+        this.banner = banner;
+    }
+
+    public String getVideoTrailer() {
+        return videoTrailer;
+    }
+
+    public void setVideoTrailer(String videoTrailer) {
+        this.videoTrailer = videoTrailer;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
+    }
+
+    public String getSeries() {
+        return series;
+    }
+
+    public void setSeries(String series) {
+        this.series = series;
+    }
+
+    public int getEpisode() {
+        return episode;
+    }
+
+    public void setEpisode(int episode) {
+        this.episode = episode;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public String getMain_actors() {
+        return main_actors;
+    }
+
+    public void setMain_actors(String main_actors) {
+        this.main_actors = main_actors;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getInf_short() {
+        return inf_short;
+    }
+
+    public void setInf_short(String inf_short) {
+        this.inf_short = inf_short;
+    }
+
+    public boolean isHot() {
+        return isHot;
+    }
+
+    public void setHot(boolean hot) {
+        isHot = hot;
+    }
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean aNew) {
+        isNew = aNew;
+    }
+
+    public boolean isOn() {
+        return isOn;
+    }
+
+    public void setOn(boolean on) {
+        isOn = on;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+}
