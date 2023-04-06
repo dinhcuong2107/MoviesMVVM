@@ -33,7 +33,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             },2107);
             DataLocalManager.setFirstInstalled(true);
         }else {
-            Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+            Intent intent = new Intent(SplashScreenActivity.this, AddFilmsActivity.class);
             startActivity(intent);
             finish();
         }

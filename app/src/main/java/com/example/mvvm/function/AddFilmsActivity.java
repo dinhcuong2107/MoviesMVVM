@@ -32,6 +32,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
+import com.hbb20.CountryCodePicker;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -47,9 +48,15 @@ public class AddFilmsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityAddFilmsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_add_films);
         addFilmsVM = new AddFilmsVM();
+        addFilmsVM.setFilmsCountry(binding.country.getSelectedCountryName());
         binding.setAddnewfilm(addFilmsVM);
         binding.executePendingBindings();
-
+        binding.country.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                addFilmsVM.setFilmsCountry(binding.country.getSelectedCountryName());
+            }
+        });
         binding.banner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

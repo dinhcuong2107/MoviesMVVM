@@ -126,28 +126,28 @@ public class Films {
         this.inf_short = inf_short;
     }
 
-    public boolean isHot() {
+    public boolean getHot() {
         return isHot;
     }
 
-    public void setHot(boolean hot) {
-        isHot = hot;
+    public void setHot(boolean isHot) {
+        this.isHot = isHot;
     }
 
-    public boolean isNew() {
+    public boolean getNew() {
         return isNew;
     }
 
-    public void setNew(boolean aNew) {
-        isNew = aNew;
+    public void setNew(boolean isNew) {
+        this.isNew = isNew;
     }
 
-    public boolean isOn() {
+    public boolean getOn() {
         return isOn;
     }
 
-    public void setOn(boolean on) {
-        isOn = on;
+    public void setOn(boolean isOn) {
+        this.isOn = isOn;
     }
 
     public boolean isStatus() {

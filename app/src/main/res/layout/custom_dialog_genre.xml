@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="20dp"
+    app:cardCornerRadius="15dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="#33535353">
+        <TextView
+            android:id="@+id/textPercentage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textColor="@color/color_y"
+            android:textSize="50dp"
+            android:textStyle="bold"
+            android:text="Thể loại"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="20dp">
+            <CheckBox
+                android:id="@+id/checkbox_genre_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Anime"/>
+            <CheckBox
+                android:id="@+id/checkbox_genre_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phim hành động"/>
+            <CheckBox
+                android:id="@+id/checkbox_genre_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phim võ thuật"/>
+            <CheckBox
+                android:id="@+id/checkbox_genre_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phim hài"/>
+            <CheckBox
+                android:id="@+id/checkbox_genre_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phim cổ trang"/>
+            <CheckBox
+                android:id="@+id/checkbox_genre_6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phim thần thoại"/>
+            <CheckBox
+                android:id="@+id/checkbox_genre_7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phim khoa học viễn trưởng"/>
+            <CheckBox
+                android:id="@+id/checkbox_genre_8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phim tình cảm"/>
+            <CheckBox
+                android:id="@+id/checkbox_genre_9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phim kinh dị"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custom_button_yes"
+                android:text="Chọn"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
