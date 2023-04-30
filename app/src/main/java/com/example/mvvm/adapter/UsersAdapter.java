@@ -20,6 +20,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
     public UsersAdapter(List<Users> list) {
         this.list = list;
         this.list_search = list;
+        notifyDataSetChanged();
     }
 
     @NonNull

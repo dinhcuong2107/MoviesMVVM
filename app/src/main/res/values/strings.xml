@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">MVVM</string>
+    <string-array name="category_films">
+        <item>Phim hoạt hình</item>
+        <item>Phim hành động</item>
+        <item>Phim võ thuật</item>
+        <item>Phim hài</item>
+        <item>Phim cổ trang</item>
+        <item>Phim thần thoại</item>
+        <item>Phim khoa học - viễn tưởng</item>
+        <item>Phim tình cảm</item>
+        <item>Phim kinh dị</item>
+    </string-array>
+    <string-array name="timemovies">
+        <item>7:00</item>
+        <item>10:00</item>
+        <item>14:00</item>
+        <item>17:00</item>
+        <item>20:00</item>
+        <item>23:00</item>
+    </string-array>
 </resources>

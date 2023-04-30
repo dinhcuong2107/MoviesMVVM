@@ -26,25 +26,19 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     app:cardCornerRadius="5dp">
+
                     <ImageView
                         android:id="@+id/poster"
-                        android:layout_width="100dp"
-                        android:layout_height="140dp"
+                        android:layout_width="210dp"
+                        android:layout_height="300dp"
                         android:scaleType="centerCrop"
-                        android:src="@{addnewfilm.filmsPoster}"/>
+                        android:src="@{addnewfilm.filmsPoster}" />
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    app:cardCornerRadius="5dp">
-                    <ImageView
-                        android:id="@+id/banner"
-                        android:layout_width="210dp"
-                        android:layout_height="140dp"
-                        android:scaleType="centerCrop"
-                        android:src="@{addnewfilm.filmsBanner}"/>
-                </androidx.cardview.widget.CardView>
+                    app:cardCornerRadius="5dp"/>
             </LinearLayout>
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -99,7 +93,7 @@
                     android:hint="Diễn viên chính"
                     android:text="@={addnewfilm.films.main_actors}"/>
             </com.google.android.material.textfield.TextInputLayout>
-            <com.hbb20.CountryCodePicker
+             <com.hbb20.CountryCodePicker
                 android:id="@+id/country"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -146,14 +140,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:checked="@{addnewfilm.films.isOn ? false : true}"
+                    android:checked="@{addnewfilm.films.filmsOn ? false : true}"
                     android:onClick="@{() -> addnewfilm.onclickOffline()}"
                     android:text="Phim chiếu rạp"/>
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:checked="@{addnewfilm.films.isOn ? true : false}"
+                    android:checked="@{addnewfilm.films.filmsOn ? true : false}"
                     android:onClick="@{() -> addnewfilm.onclickOnline()}"
                     android:text="Phim online"/>
             </RadioGroup>
@@ -165,13 +159,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:checked="@{addnewfilm.films.isNew ? true : false}"
+                    android:checked="@{addnewfilm.films.filmsNew ? true : false}"
                     android:onClick="@{() -> addnewfilm.onclickNew()}"
                     android:text="Phim Mới"/>
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:checked="@{addnewfilm.films.isHot ? true : false}"
+                    android:checked="@{addnewfilm.films.filmsHot ? true : false}"
                     android:layout_weight="1"
                     android:onClick="@{() -> addnewfilm.onclickHot()}"
                     android:text="Phim nổi bật"/>
@@ -261,6 +255,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/custom_button_yes"
                     android:text="Lưu"
+                    android:layout_marginBottom="20dp"
                     android:onClick="@{(view) -> addnewfilm.onclickAddFilms(view)}"
                     android:textAllCaps="false"/>
             </LinearLayout>

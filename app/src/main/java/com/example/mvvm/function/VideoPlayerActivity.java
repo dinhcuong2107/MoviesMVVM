@@ -1,9 +1,11 @@
 package com.example.mvvm.function;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,12 +16,19 @@ import android.widget.TextView;
 
 import com.example.mvvm.R;
 import com.example.mvvm.databinding.ActivityVideoPlayerBinding;
+import com.example.mvvm.model.Films;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.Tracks;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class VideoPlayerActivity extends AppCompatActivity {
     ExoPlayer player;
@@ -29,8 +38,12 @@ public class VideoPlayerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         ActivityVideoPlayerBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_video_player);
+
+        Intent intent = getIntent();
+        String video = intent.getStringExtra("video");
+        String name = intent.getStringExtra("name");
+
         binding.setVideoplayer( new VideoPlayerVM());
         binding.executePendingBindings();
         binding.setLifecycleOwner(this);
@@ -39,8 +52,10 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
         init_UI();
 
-        Uri uri1 = Uri.parse("https://ex1.o7planning.com/_testdatas_/mov_bbb.mp4");
-        Uri uri = Uri.parse("https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8");
+        textViewName.setText(name);
+
+        Uri uri = Uri.parse(""+video);
+//        Uri uri = Uri.parse("https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8");
         player = new ExoPlayer.Builder(this).build();
         binding.videoview.setPlayer(player);
         MediaItem item = MediaItem.fromUri(uri);
@@ -61,7 +76,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
                     if (getSupportActionBar() != null)
                     {getSupportActionBar().show();}
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                    params.height = (int) (200*getApplicationContext().getResources().getDisplayMetrics().density);
+                    params.height = params.WRAP_CONTENT;
                     params.width = params.MATCH_PARENT;
                     flag=false;
                 } else {

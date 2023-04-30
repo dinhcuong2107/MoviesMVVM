@@ -78,9 +78,9 @@ public class AddFilmsVM extends BaseObservable {
 
     public AddFilmsVM() {
         films = new Films();
-        films.isNew = true;
-        films.isHot = false;
-        films.isOn = false;
+        films.filmsNew = true;
+        films.filmsHot = false;
+        films.filmsOn = false;
     }
     @Bindable
     public String getFilmsYear(){return films.year;}
@@ -114,15 +114,6 @@ public class AddFilmsVM extends BaseObservable {
         films.setPoster(poster);
         notifyPropertyChanged(BR.filmsPoster);
     }
-
-    @Bindable
-    public String getFilmsBanner () {
-        return films.banner;
-    }
-    public void setFilmsBanner (String banner){
-        films.setBanner(banner);
-        notifyPropertyChanged(BR.filmsBanner);
-    }
     @Bindable
     public String getFilmsTrailer () {
         return films.videoTrailer;
@@ -140,11 +131,11 @@ public class AddFilmsVM extends BaseObservable {
         notifyPropertyChanged(BR.filmsVideo);
     }
 
-    public void onclickOnline(){films.isOn = true;}
-    public void onclickOffline(){films.isOn = false;}
-    public void onclickHot(){films.isHot = true;films.isNew=false;}
-    public void onclickNew(){films.isNew = true;films.isHot=false;}
-    public void onclickOrther(){films.isNew = false;films.isHot=false;}
+    public void onclickOnline(){films.filmsOn = true;}
+    public void onclickOffline(){films.filmsOn = false;}
+    public void onclickHot(){films.filmsHot = true;films.filmsNew=false;}
+    public void onclickNew(){films.filmsNew = true;films.filmsHot=false;}
+    public void onclickOrther(){films.filmsNew = false;films.filmsHot=false;}
 
     public void onclickGenre(View view){
         final ArrayList<String> temp = new ArrayList<>();
@@ -163,7 +154,7 @@ public class AddFilmsVM extends BaseObservable {
         WindowManager.LayoutParams win = window.getAttributes();
         win.gravity = Gravity.CENTER;
         window.setAttributes(win);
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
 
         binding.buttonSelect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,7 +187,7 @@ public class AddFilmsVM extends BaseObservable {
                     temp.add(binding.checkboxGenre9.getText().toString());
                 }
 
-                if (temp == null){
+                if (temp.size()==0){
                     Toast.makeText(view.getContext(),"Phim chưa định dạng thể loại.",Toast.LENGTH_LONG).show();
                 }else {
                     setFilmsGenre(temp.toString());
@@ -225,7 +216,7 @@ public class AddFilmsVM extends BaseObservable {
         WindowManager.LayoutParams win = window.getAttributes();
         win.gravity = Gravity.CENTER;
         window.setAttributes(win);
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
 
         binding.yearpicker.setMinValue(1880);
         binding.yearpicker.setMaxValue(year);
@@ -260,7 +251,6 @@ public class AddFilmsVM extends BaseObservable {
         if (films.director == null){error = "Bổ sung đạo diễn phim";}
         if (films.year == null){error = "Bổ sung năm sản xuất phim";}
         if (films.name == null){error = "Bổ sung tên phim";}
-        if (films.banner == null){error = "Bổ sung banner phim";}
         if (films.poster == null){error = "Bổ sung poster phim";}
 
         if (error.length() >1 ){
@@ -280,7 +270,6 @@ public class AddFilmsVM extends BaseObservable {
                     }
                 }
             });
-            Toast.makeText(view.getContext(),"Thành công",Toast.LENGTH_LONG).show();
         }
     }
 

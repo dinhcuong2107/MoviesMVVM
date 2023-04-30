@@ -16,75 +16,65 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/color_y">
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
+                android:gravity="center"
                 android:orientation="horizontal">
-                <androidx.appcompat.widget.SearchView
-                    android:id="@+id/searchView"
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:onClick="@{(view) -> listfilms.onBack(view)}"
+                    android:background="@drawable/round_arrow_back_ios_24"
+                    android:textAllCaps="false"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button_select_filter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:queryHint="Tên phim"
-                    app:iconifiedByDefault="false"
-                    android:background="@drawable/custom_background_opacity40"/>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:onClick="@{(view) -> listfilms.onNextIntentNew(view)}"
-                    android:background="@drawable/ic_add_circle_outline_24"
-                    android:layout_marginTop="5dp"
-                    android:text="+"
-                    android:textAllCaps="false"/>
+                    android:onClick="@{(view) -> listfilms.onSelectFilter(view)}"
+                    android:text="@={listfilms.filmsCategory}"
+                    android:textSize="21dp"
+                    android:textAllCaps="false"
+                    android:background="@drawable/custom_background_transparent"
+                    android:drawableEnd="@drawable/round_filter_alt_24"/>
             </LinearLayout>
-
-            <LinearLayout
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:orientation="horizontal"
-                android:background="@drawable/custom_background_opacity40">
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:animateLayoutChanges="true"
-                    android:onClick="@{(view) -> listfilms.onclickfilmsoff(view)}"
-                    android:background="@{listfilms.on ? @drawable/custom_background_transparent :  @drawable/custom_button_yes}"
-                    android:textColor="@{listfilms.on ? @color/black : @color/white}"
-                    android:text="Phim chiếu rap"
-                    android:textAllCaps="false"/>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:animateLayoutChanges="true"
-                    android:background="@{listfilms.on ? @drawable/custom_button_yes : @drawable/custom_background_transparent}"
-                    android:onClick="@{(view) -> listfilms.onclickfilmson(view)}"
-                    android:text="Phim online"
-                    android:textAllCaps="false"
-                    android:textColor="@{listfilms.on ? @color/white : @color/black}" />
-            </LinearLayout>
+                android:layout_weight="1"
+                app:queryHint="Tên phim"
+                app:iconifiedByDefault="false"
+                android:background="@drawable/custom_background_opacity40"/>
         </LinearLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerFilmOn"
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:visibility="@{listfilms.on ? View.VISIBLE : View.GONE}" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerFilmOff"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:visibility="@{listfilms.on ? View.GONE : View.VISIBLE}" />
+            android:layout_weight="1">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerFilm"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floadingactionbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:onClick="@{(view) -> listfilms.onNextIntentAddFilms(view)}"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/round_add_24" />
+        </RelativeLayout>
+
     </LinearLayout>
 </layout>

@@ -57,30 +57,6 @@ public class AddFilmsActivity extends AppCompatActivity {
                 addFilmsVM.setFilmsCountry(binding.country.getSelectedCountryName());
             }
         });
-        binding.banner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PermissionListener permissionlistener = new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted() {
-                        type = 1;
-                        Intent intent = new Intent(Intent.ACTION_PICK);
-                        intent.setType("image/*");
-                        startActivityForResult(intent, RESULT_LOAD_IMG);
-                    }
-
-                    @Override
-                    public void onPermissionDenied(List<String> deniedPermissions) {
-                        Toast.makeText(AddFilmsActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                };
-                TedPermission.create()
-                        .setPermissionListener(permissionlistener)
-                        .setDeniedMessage("Nếu bạn từ chối quyền, bạn không thể sử dụng dịch vụ này\nVui lòng cấp quyền tại [Setting] > [Permission]")
-                        .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA)
-                        .check();
-            }
-        });
         binding.poster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +87,7 @@ public class AddFilmsActivity extends AppCompatActivity {
                 PermissionListener permissionlistener = new PermissionListener() {
                     @Override
                     public void onPermissionGranted() {
-                        type = 2;
+                        type = 1;
                         Intent intent = new Intent(Intent.ACTION_PICK);
                         intent.setType("video/*");
                         startActivityForResult(intent, RESULT_LOAD_IMG);
@@ -135,7 +111,7 @@ public class AddFilmsActivity extends AppCompatActivity {
                 PermissionListener permissionlistener = new PermissionListener() {
                     @Override
                     public void onPermissionGranted() {
-                        type = 3;
+                        type = 2;
                         Intent intent = new Intent(Intent.ACTION_PICK);
                         intent.setType("video/*");
                         startActivityForResult(intent, RESULT_LOAD_IMG);
@@ -178,7 +154,7 @@ public class AddFilmsActivity extends AppCompatActivity {
                     WindowManager.LayoutParams win = window.getAttributes();
                     win.gravity = Gravity.CENTER;
                     window.setAttributes(win);
-                    dialog.setCancelable(true);
+                    dialog.setCancelable(false);
 
                     TextView percentage = dialog.findViewById(R.id.textPercentage);
                     ProgressBar progressBar = dialog.findViewById(R.id.progessPercentage);
@@ -194,9 +170,8 @@ public class AddFilmsActivity extends AppCompatActivity {
                                     Uri downloadUrl = uri;
                                     switch (type){
                                         case 0: addFilmsVM.setFilmsPoster(downloadUrl.toString());break;
-                                        case 1: addFilmsVM.setFilmsBanner(downloadUrl.toString());break;
-                                        case 2: addFilmsVM.setFilmsVideo(downloadUrl.toString());break;
-                                        case 3: addFilmsVM.setFilmsTrailer(downloadUrl.toString());break;
+                                        case 1: addFilmsVM.setFilmsVideo(downloadUrl.toString());break;
+                                        case 2: addFilmsVM.setFilmsTrailer(downloadUrl.toString());break;
                                     }
                                 }
                             });

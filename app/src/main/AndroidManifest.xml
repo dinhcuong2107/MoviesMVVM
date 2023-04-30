@@ -20,10 +20,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MVVM"
         tools:targetApi="31">
-
+        <activity
+            android:name=".weekdaysfragment.WeekdaysFragment0"
+            android:exported="false" />
+        <activity
+            android:name=".weekdaysfragment.WeekdaysFragment1"
+            android:exported="false" />
+        <activity
+            android:name=".function.DetailTicketActivity"
+            android:exported="false" />
         <activity
             android:name=".function.VideoPlayerActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".function.UsersStatusActivity"
             android:exported="false" />

@@ -15,6 +15,189 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center"/>
+            android:gravity="center">
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                app:cardCornerRadius="5dp">
+                <ImageView
+                    android:id="@+id/poster"
+                    android:layout_width="210dp"
+                    android:layout_height="297dp"
+                    android:scaleType="centerCrop"
+                    android:src="@{detailFilms.films.poster}" />
+            </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="5dp"
+                    android:visibility="@{detailFilms.films.filmsHot ? View.VISIBLE : View.GONE}"
+                    android:src="@drawable/ic_hot"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="@={detailFilms.films.name}"
+                    android:textSize="21dp"
+                    android:textColor="@color/color_x"/>
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:visibility="@{detailFilms.films.filmsNew ? View.VISIBLE : View.GONE}"
+                    android:src="@drawable/ic_new"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@={detailFilms.films.year}"
+                android:textSize="21dp"
+                android:textColor="@color/color_x"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@={detailFilms.films.genre}"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="Trailer"
+                    android:onClick="@{(view) -> detailFilms.onclicktrailer(view)}"
+                    android:textAllCaps="false"
+                    android:background="@drawable/custom_button_yes"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:visibility="@{detailFilms.films.filmsOn ? View.VISIBLE : View.GONE}"
+                    android:text="Xem phim"
+                    android:onClick="@{(view) -> detailFilms.onclickvideo(view)}"
+                    android:textAllCaps="false"
+                    android:background="@drawable/custom_button_yes"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:visibility="@{detailFilms.films.filmsOn ? View.GONE : View.VISIBLE}"
+                    android:text="Mua vé"
+                    android:onClick="@{(view) -> detailFilms.onclickbuy(view)}"
+                    android:textAllCaps="false"
+                    android:background="@drawable/custom_button_yes"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:text="Đạo diễn:"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@={detailFilms.films.director}"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:text="Diễn viên chính:"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@={detailFilms.films.main_actors}"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:text="Quốc gia:"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@={detailFilms.films.country}"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Tóm tắt nội dung:"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="@={detailFilms.films.inf_short}"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={detailFilms.like}"
+                    android:layout_weight="1"
+                    android:visibility="@{detailFilms.feeling ? View.VISIBLE : View.GONE}"
+                    android:onClick="@{(view) -> detailFilms.onclickdislike(view)}"
+                    android:drawableStart="@drawable/round_favorite_24"
+                    android:textAllCaps="false"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={detailFilms.like}"
+                    android:layout_weight="1"
+                    android:visibility="@{detailFilms.feeling ? View.GONE : View.VISIBLE}"
+                    android:onClick="@{(view) -> detailFilms.onclicklike(view)}"
+                    android:drawableStart="@drawable/round_favorite_border_24"
+                    android:textAllCaps="false"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={detailFilms.comment}"
+                    android:onClick="@{(view) -> detailFilms.onclickfeedback(view)}"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/round_comment_24"
+                    android:textAllCaps="false"/>
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
+
 </layout>

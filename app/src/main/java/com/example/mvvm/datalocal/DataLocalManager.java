@@ -4,6 +4,7 @@ import android.content.Context;
 
 public class DataLocalManager {
     private static final String FIRST_INSTALL = "FIRST_INSTALL";
+    private static final String NIGHT_MODE = "NIGHT_MODE";
     private static final String UID = "UID";
     private static DataLocalManager instance;
     private DataLocalPreferences dataLocalPreferences;
@@ -26,6 +27,14 @@ public class DataLocalManager {
 
     public static boolean getFirstInstalled(){
         return DataLocalManager.getInstance().dataLocalPreferences.getBooleanValue(FIRST_INSTALL);
+    }
+
+    public static void setNightMode(boolean nightMode){
+        DataLocalManager.getInstance().dataLocalPreferences.putBooleanValue(NIGHT_MODE,nightMode);
+    }
+
+    public static boolean getNightMode(){
+        return DataLocalManager.getInstance().dataLocalPreferences.getBooleanValue(NIGHT_MODE);
     }
 
     public static void setUid(String idUser){

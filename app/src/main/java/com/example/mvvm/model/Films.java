@@ -3,7 +3,6 @@ package com.example.mvvm.model;
 public class Films {
     public String name;
     public String poster;
-    public String banner;
     public String videoTrailer;
     public String video;
     public String director;
@@ -12,18 +11,17 @@ public class Films {
     public String genre;
     public String year;
     public String inf_short;
-    public boolean isHot;
-    public boolean isNew;
-    public boolean isOn;
+    public boolean filmsHot;
+    public boolean filmsNew;
+    public boolean filmsOn;
     public boolean status;
 
     public Films() {
     }
 
-    public Films(String name, String poster, String banner, String videoTrailer, String video, String director, String main_actors, String country, String genre, String year, String inf_short, boolean isHot, boolean isNew, boolean isOn, boolean status) {
+    public Films(String name, String poster, String videoTrailer, String video, String director, String main_actors, String country, String genre, String year, String inf_short, boolean filmsHot, boolean filmsNew, boolean filmsOn, boolean status) {
         this.name = name;
         this.poster = poster;
-        this.banner = banner;
         this.videoTrailer = videoTrailer;
         this.video = video;
         this.director = director;
@@ -32,9 +30,9 @@ public class Films {
         this.genre = genre;
         this.year = year;
         this.inf_short = inf_short;
-        this.isHot = isHot;
-        this.isNew = isNew;
-        this.isOn = isOn;
+        this.filmsHot = filmsHot;
+        this.filmsNew = filmsNew;
+        this.filmsOn = filmsOn;
         this.status = status;
     }
 
@@ -52,14 +50,6 @@ public class Films {
 
     public void setPoster(String poster) {
         this.poster = poster;
-    }
-
-    public String getBanner() {
-        return banner;
-    }
-
-    public void setBanner(String banner) {
-        this.banner = banner;
     }
 
     public String getVideoTrailer() {
@@ -126,28 +116,28 @@ public class Films {
         this.inf_short = inf_short;
     }
 
-    public boolean getHot() {
-        return isHot;
+    public boolean isFilmsHot() {
+        return filmsHot;
     }
 
-    public void setHot(boolean isHot) {
-        this.isHot = isHot;
+    public void setFilmsHot(boolean filmsHot) {
+        this.filmsHot = filmsHot;
     }
 
-    public boolean getNew() {
-        return isNew;
+    public boolean isFilmsNew() {
+        return filmsNew;
     }
 
-    public void setNew(boolean isNew) {
-        this.isNew = isNew;
+    public void setFilmsNew(boolean filmsNew) {
+        this.filmsNew = filmsNew;
     }
 
-    public boolean getOn() {
-        return isOn;
+    public boolean isFilmsOn() {
+        return filmsOn;
     }
 
-    public void setOn(boolean isOn) {
-        this.isOn = isOn;
+    public void setFilmsOn(boolean filmsOn) {
+        this.filmsOn = filmsOn;
     }
 
     public boolean isStatus() {
