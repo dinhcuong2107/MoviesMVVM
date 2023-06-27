@@ -32,7 +32,7 @@
                         android:layout_width="210dp"
                         android:layout_height="300dp"
                         android:scaleType="centerCrop"
-                        android:src="@{addnewfilm.filmsPoster}" />
+                        android:src="@{addnewfilm.poster}" />
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
                     android:clickable="true"
                     android:focusable="false"
                     android:inputType="number"
-                    android:text="@={addnewfilm.filmsYear}" />
+                    android:text="@={addnewfilm.films.year}" />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -93,7 +93,7 @@
                     android:hint="Diễn viên chính"
                     android:text="@={addnewfilm.films.main_actors}"/>
             </com.google.android.material.textfield.TextInputLayout>
-             <com.hbb20.CountryCodePicker
+            <com.hbb20.CountryCodePicker
                 android:id="@+id/country"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
                     android:onClick="@{(view) -> addnewfilm.onclickGenre(view)}"
                     android:clickable="true"
                     android:focusable="false"
-                    android:text="@={addnewfilm.filmsGenre}"/>
+                    android:text="@={addnewfilm.genre}"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -132,51 +132,6 @@
                     android:hint="Tóm tắt"
                     android:text="@={addnewfilm.films.inf_short}"/>
             </com.google.android.material.textfield.TextInputLayout>
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:orientation="horizontal">
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="@{addnewfilm.films.filmsOn ? false : true}"
-                    android:onClick="@{() -> addnewfilm.onclickOffline()}"
-                    android:text="Phim chiếu rạp"/>
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="@{addnewfilm.films.filmsOn ? true : false}"
-                    android:onClick="@{() -> addnewfilm.onclickOnline()}"
-                    android:text="Phim online"/>
-            </RadioGroup>
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:orientation="horizontal">
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="@{addnewfilm.films.filmsNew ? true : false}"
-                    android:onClick="@{() -> addnewfilm.onclickNew()}"
-                    android:text="Phim Mới"/>
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:checked="@{addnewfilm.films.filmsHot ? true : false}"
-                    android:layout_weight="1"
-                    android:onClick="@{() -> addnewfilm.onclickHot()}"
-                    android:text="Phim nổi bật"/>
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="@{() -> addnewfilm.onclickOrther()}"
-                    android:text="Khác"/>
-            </RadioGroup>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -207,7 +162,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        android:text="@={addnewfilm.filmsVideo}"/>
+                        android:text="@={addnewfilm.video}"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -242,7 +197,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        android:text="@={addnewfilm.filmsTrailer}"/>
+                        android:text="@={addnewfilm.trailer}"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout

@@ -19,161 +19,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="@{detailusers.enablechange ? View.GONE : View.VISIBLE}"
                 android:gravity="center">
-                <RelativeLayout
-                    android:layout_width="210dp"
-                    android:layout_height="210dp">
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
-                        app:cardCornerRadius="100dp"
-                        tools:ignore="MissingConstraints"
-                        android:layout_margin="10dp">
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@{detailusers.usersAvatar}"/>
-                    </androidx.cardview.widget.CardView>
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp">
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:hintEnabled="true"
-                        app:startIconDrawable="@drawable/ic_account_24">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:clickable="true"
-                            android:focusable="false"
-                            android:hint="Họ và Tên"
-                            android:text="@={detailusers.users.fullname}"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-                    <RadioGroup
+                <androidx.cardview.widget.CardView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    app:cardCornerRadius="100dp"
+                    tools:ignore="MissingConstraints"
+                    android:layout_margin="10dp">
+                    <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:weightSum="2"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginRight="30dp"
-                        android:orientation="horizontal">
-                        <RadioButton
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:visibility="@{detailusers.users.male ? View.VISIBLE : View.GONE}"
-                            android:checked="@{detailusers.users.male ? true : false}"
-                            android:text="Nam"/>
-                        <RadioButton
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:visibility="@{detailusers.users.male ? View.GONE : View.VISIBLE}"
-                            android:checked="@{detailusers.users.male ? false : true}"
-                            android:text="Nữ"/>
-                    </RadioGroup>
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:hintEnabled="true"
-                        app:startIconDrawable="@drawable/ic_calendar_month_24">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:clickable="true"
-                            android:focusable="false"
-                            android:hint="Ngày sinh"
-                            android:text="@={detailusers.usersBirthday}" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
-                        app:hintEnabled="true"
-                        app:startIconDrawable="@drawable/ic_email_24">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Email"
-                            android:focusable="false"
-                            android:clickable="true"
-                            android:text="@={detailusers.users.email}"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:hintEnabled="true"
-                        app:startIconDrawable="@drawable/ic_phone_24">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Số điện thoại"
-                            android:clickable="true"
-                            android:focusable="false"
-                            android:inputType="number"
-                            android:text="@={detailusers.users.phonenumber}"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="180dp"
-                    android:layout_height="wrap_content"
-                    android:text="Chỉnh sửa"
-                    android:onClick="@{() -> detailusers.onclickFix()}"
-                    android:layout_margin="20dp"
-                    android:textAllCaps="false"
-                    android:background="@drawable/custom_button_yes"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:visibility="@{detailusers.enablechange ? View.VISIBLE : View.GONE}"
-                android:gravity="center">
-                <RelativeLayout
-                    android:layout_width="210dp"
-                    android:layout_height="210dp">
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
-                        app:cardCornerRadius="100dp"
-                        tools:ignore="MissingConstraints"
-                        android:layout_margin="10dp">
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@{detailusers.usersAvatar}"/>
-                    </androidx.cardview.widget.CardView>
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/avatarUser"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"
-                        app:cardCornerRadius="100dp"
-                        tools:ignore="MissingConstraints">
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ic_add_circle_outline_24"/>
-                    </androidx.cardview.widget.CardView>
-                </RelativeLayout>
-
+                        android:scaleType="centerCrop"
+                        android:onClick="@{(view) -> detailusers.launchImagePicker(view)}"
+                        android:src="@{detailusers.avatar}"/>
+                </androidx.cardview.widget.CardView>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -191,7 +50,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Họ và Tên"
-                            android:text="@={detailusers.users.fullname}"/>
+                            android:text="@={detailusers.fullname}"/>
                     </com.google.android.material.textfield.TextInputLayout>
                     <RadioGroup
                         android:layout_width="match_parent"
@@ -205,14 +64,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:checked="@{detailusers.users.male ? true : false}"
+                            android:checked="@{detailusers.male ? true : false}"
                             android:onClick="@{() -> detailusers.onclickMale()}"
                             android:text="Nam"/>
                         <RadioButton
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:checked="@{detailusers.users.male ? false : true}"
+                            android:checked="@{detailusers.male == false ? true : false}"
                             android:onClick="@{() -> detailusers.onclickFemale()}"
                             android:text="Nữ"/>
                     </RadioGroup>
@@ -230,7 +89,7 @@
                             android:focusable="false"
                             android:hint="Ngày sinh"
                             android:onClick="@{(view) -> detailusers.onclickBirthday(view)}"
-                            android:text="@={detailusers.usersBirthday}" />
+                            android:text="@={detailusers.birthday}" />
                     </com.google.android.material.textfield.TextInputLayout>
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -244,7 +103,7 @@
                             android:hint="Email"
                             android:focusable="false"
                             android:clickable="true"
-                            android:text="@={detailusers.users.email}"/>
+                            android:text="@{detailusers.email}"/>
                     </com.google.android.material.textfield.TextInputLayout>
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -257,7 +116,8 @@
                             android:layout_height="wrap_content"
                             android:hint="Số điện thoại"
                             android:inputType="number"
-                            android:text="@={detailusers.users.phonenumber}"/>
+                            android:maxLength="10"
+                            android:text="@={detailusers.phonenumber}"/>
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
                 <androidx.appcompat.widget.AppCompatButton

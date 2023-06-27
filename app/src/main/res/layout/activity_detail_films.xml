@@ -36,7 +36,6 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginRight="5dp"
-                    android:visibility="@{detailFilms.films.filmsHot ? View.VISIBLE : View.GONE}"
                     android:src="@drawable/ic_hot"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -50,7 +49,6 @@
                     android:layout_width="60dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
-                    android:visibility="@{detailFilms.films.filmsNew ? View.VISIBLE : View.GONE}"
                     android:src="@drawable/ic_new"/>
             </LinearLayout>
             <TextView
@@ -85,7 +83,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:visibility="@{detailFilms.films.filmsOn ? View.VISIBLE : View.GONE}"
                     android:text="Xem phim"
                     android:onClick="@{(view) -> detailFilms.onclickvideo(view)}"
                     android:textAllCaps="false"
@@ -95,7 +92,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:visibility="@{detailFilms.films.filmsOn ? View.GONE : View.VISIBLE}"
                     android:text="Mua vé"
                     android:onClick="@{(view) -> detailFilms.onclickbuy(view)}"
                     android:textAllCaps="false"

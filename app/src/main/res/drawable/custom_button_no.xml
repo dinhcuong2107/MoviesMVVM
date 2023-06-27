@@ -2,20 +2,23 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <!-- Set màu nền-->
-    <solid
-        android:color="@color/color_y" >
-    </solid>
+    <gradient
+        android:startColor="#FF3737"
+        android:endColor="#B3315F"
+        android:angle="0"/>
 
     <!-- đặt thuộc tính màu và độ rộng của đường viền -->
     <stroke
-        android:width="3dp"
-        android:color="#FF0057" >
+        android:width="2dp"
+        android:color="#FF0000" >
     </stroke>
 
     <!-- các thuộc tính căn chỉnh-->
     <padding
-        android:left="10dp"
-        android:right="5dp" >
+        android:top="0dp"
+        android:bottom="0dp"
+        android:left="0dp"
+        android:right="0dp" >
     </padding>
 
     <!-- và đây là bán kính đường tròn ở 4 góc -->

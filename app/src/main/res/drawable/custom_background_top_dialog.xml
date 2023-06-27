@@ -11,6 +11,7 @@
         android:color="@color/black" >
     </stroke>
 
+
     <!-- các thuộc tính căn chỉnh-->
     <padding
         android:top="0dp"

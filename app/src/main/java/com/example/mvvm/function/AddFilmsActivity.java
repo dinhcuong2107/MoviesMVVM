@@ -48,13 +48,14 @@ public class AddFilmsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityAddFilmsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_add_films);
         addFilmsVM = new AddFilmsVM();
-        addFilmsVM.setFilmsCountry(binding.country.getSelectedCountryName());
+
+        addFilmsVM.setCountry(binding.country.getSelectedCountryName());
         binding.setAddnewfilm(addFilmsVM);
         binding.executePendingBindings();
         binding.country.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
             public void onCountrySelected() {
-                addFilmsVM.setFilmsCountry(binding.country.getSelectedCountryName());
+                addFilmsVM.setCountry(binding.country.getSelectedCountryName());
             }
         });
         binding.poster.setOnClickListener(new View.OnClickListener() {
@@ -169,9 +170,9 @@ public class AddFilmsActivity extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
                                     Uri downloadUrl = uri;
                                     switch (type){
-                                        case 0: addFilmsVM.setFilmsPoster(downloadUrl.toString());break;
-                                        case 1: addFilmsVM.setFilmsVideo(downloadUrl.toString());break;
-                                        case 2: addFilmsVM.setFilmsTrailer(downloadUrl.toString());break;
+                                        case 0: addFilmsVM.setPoster(downloadUrl.toString());break;
+                                        case 1: addFilmsVM.setVideo(downloadUrl.toString());break;
+                                        case 2: addFilmsVM.setTrailer(downloadUrl.toString());break;
                                     }
                                 }
                             });

@@ -31,9 +31,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
+import androidx.databinding.ObservableField;
 import androidx.databinding.library.baseAdapters.BR;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModel;
 
 import com.example.mvvm.MainActivity;
 import com.example.mvvm.R;
@@ -64,85 +66,31 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
-public class AddFilmsVM extends BaseObservable {
-    private Films films;
-    @Bindable
-    public Films getFilms() {
-        return films;
-    }
+public class AddFilmsVM extends ViewModel {
+    public ObservableField<String > year = new ObservableField<>();
+    public ObservableField<String > genre = new ObservableField<>();
+    public ObservableField<String > country = new ObservableField<>();
+    public ObservableField<String > poster = new ObservableField<>();
+    public ObservableField<String > video = new ObservableField<>();
+    public ObservableField<String > trailer = new ObservableField<>();
 
-    public void setFilms(Films films) {
-        this.films = films;
-        notifyPropertyChanged(BR.films);
-    }
+    public ObservableField<Films> films = new ObservableField<>();
 
-    public AddFilmsVM() {
-        films = new Films();
-        films.filmsNew = true;
-        films.filmsHot = false;
-        films.filmsOn = false;
+    public void setCountry(String s){
+        country.set(s);
     }
-    @Bindable
-    public String getFilmsYear(){return films.year;}
-    public void setFilmsYear(String year){
-        films.setYear(year);
-        notifyPropertyChanged(BR.filmsYear);
+    public void setPoster(String s){
+        poster.set(s);
     }
-
-    @Bindable
-    public String getFilmsGenre(){return films.genre;}
-    public void setFilmsGenre(String genre){
-        films.setGenre(genre);
-        notifyPropertyChanged(BR.filmsGenre);
+    public void setVideo(String s){
+        video.set(s);
     }
-
-    @Bindable
-    public String getFilmsCountry () {
-        return films.country;
+    public void setTrailer(String s){
+        trailer.set(s);
     }
-    public void setFilmsCountry (String country){
-        films.setCountry(country);
-        notifyPropertyChanged(BR.filmsCountry);
-    }
-
-
-    @Bindable
-    public String getFilmsPoster () {
-        return films.poster;
-    }
-    public void setFilmsPoster (String poster){
-        films.setPoster(poster);
-        notifyPropertyChanged(BR.filmsPoster);
-    }
-    @Bindable
-    public String getFilmsTrailer () {
-        return films.videoTrailer;
-    }
-    public void setFilmsTrailer (String trailer){
-        films.setVideoTrailer(trailer);
-        notifyPropertyChanged(BR.filmsTrailer);
-    }
-    @Bindable
-    public String getFilmsVideo () {
-        return films.video;
-    }
-    public void setFilmsVideo (String video){
-        films.setVideo(video);
-        notifyPropertyChanged(BR.filmsVideo);
-    }
-
-    public void onclickOnline(){films.filmsOn = true;}
-    public void onclickOffline(){films.filmsOn = false;}
-    public void onclickHot(){films.filmsHot = true;films.filmsNew=false;}
-    public void onclickNew(){films.filmsNew = true;films.filmsHot=false;}
-    public void onclickOrther(){films.filmsNew = false;films.filmsHot=false;}
 
     public void onclickGenre(View view){
         final ArrayList<String> temp = new ArrayList<>();
-        if (films.genre != null)
-            {
-
-            }
         Dialog dialog = new Dialog(view.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         CustomDialogGenreBinding binding = CustomDialogGenreBinding.inflate(LayoutInflater.from(view.getContext()));
@@ -190,7 +138,7 @@ public class AddFilmsVM extends BaseObservable {
                 if (temp.size()==0){
                     Toast.makeText(view.getContext(),"Phim chưa định dạng thể loại.",Toast.LENGTH_LONG).show();
                 }else {
-                    setFilmsGenre(temp.toString());
+                    genre.set(temp.toString());
                 }
                 dialog.dismiss();
 
@@ -232,31 +180,29 @@ public class AddFilmsVM extends BaseObservable {
         binding.yearpicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                setFilmsYear(""+newVal);
+//                setFilmsYear(""+newVal);
                 binding.btnSeclect.setVisibility(View.VISIBLE);
             }
         });
         dialog.show();
     }
-
-    public void onclickCountry(View view){}
     public void onclickAddFilms(View view){
         String error="";
-        if (films.videoTrailer == null){error = "Bổ sung trailer phim";}
-        if (films.video == null){error = "Bổ sung video phim";}
-        if (films.inf_short == null){error = "Bổ sung tóm tắt phim";}
-        if (films.genre == null){error = "Bổ sung thể loại phim";}
-        if (films.country == null){error = "Bổ sung Quốc gia";}
-        if (films.main_actors == null){error = "Bổ sung diễn viên chính";}
-        if (films.director == null){error = "Bổ sung đạo diễn phim";}
-        if (films.year == null){error = "Bổ sung năm sản xuất phim";}
-        if (films.name == null){error = "Bổ sung tên phim";}
-        if (films.poster == null){error = "Bổ sung poster phim";}
+        if (trailer.get().length() == 0){error = "Bổ sung trailer phim";}else {films.get().videoTrailer = trailer.get();}
+        if (video.get().length() == 0){error = "Bổ sung video phim";}else {films.get().video = video.get();}
+        if (films.get().inf_short.length() == 0){error = "Bổ sung tóm tắt phim";}
+        if (genre.get().length() == 0){error = "Bổ sung thể loại phim";}else {films.get().genre = genre.get();}
+        if (country.get().length() == 0){error = "Bổ sung Quốc gia";}else {films.get().country = country.get();}
+        if (films.get().main_actors.length() == 0){error = "Bổ sung diễn viên chính";}
+        if (films.get().director.length() == 0){error = "Bổ sung đạo diễn phim";}
+        if (year.get().length() == 0){error = "Bổ sung năm sản xuất phim";}else {films.get().year = year.get();}
+        if (films.get().name.length() == 0){error = "Bổ sung tên phim";}
+        if (poster.get().length() == 0){error = "Bổ sung poster phim";}else {films.get().poster = poster.get();}
 
         if (error.length() >1 ){
             Toast.makeText(view.getContext(),""+error,Toast.LENGTH_LONG).show();
         }else {
-            films.status = true;
+            films.get().status = true;
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
             databaseReference.child("Films").push().setValue(films, new DatabaseReference.CompletionListener() {
                 @Override

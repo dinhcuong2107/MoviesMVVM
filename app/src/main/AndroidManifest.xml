@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".datalocal.MyApplication"
@@ -21,10 +22,10 @@
         android:theme="@style/Theme.MVVM"
         tools:targetApi="31">
         <activity
-            android:name=".weekdaysfragment.WeekdaysFragment0"
+            android:name=".fragment.MovieStoreFragment"
             android:exported="false" />
         <activity
-            android:name=".weekdaysfragment.WeekdaysFragment1"
+            android:name=".function.FastfoodActivity"
             android:exported="false" />
         <activity
             android:name=".function.DetailTicketActivity"
@@ -53,16 +54,13 @@
             android:name=".function.DetailFilmsActivity"
             android:exported="false" />
         <activity
-            android:name=".function.AddMoviesActivity"
-            android:exported="false" />
-        <activity
             android:name=".function.AddFilmsActivity"
             android:exported="false" />
         <activity
             android:name=".fragment.SettingFragment"
             android:exported="false" />
         <activity
-            android:name=".fragment.OrderFragment"
+            android:name=".fragment.TicketStoreFragment"
             android:exported="false" />
         <activity
             android:name=".fragment.HomeFragment"
@@ -85,6 +83,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Theme.AppCompat"/>
     </application>
 
 </manifest>

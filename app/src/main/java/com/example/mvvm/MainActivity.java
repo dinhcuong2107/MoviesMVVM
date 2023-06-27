@@ -17,24 +17,31 @@ import com.example.mvvm.databinding.ActivitySplashScreenBinding;
 import com.example.mvvm.datalocal.DataLocalManager;
 import com.example.mvvm.effect.DepthPageTransformer;
 import com.example.mvvm.function.AddFilmsActivity;
+import com.example.mvvm.model.Users;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         ActivityMainBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
         binding.setMain(new MainVM());
         binding.executePendingBindings();
+
         //click
         binding.navigationMain.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.item_home: binding.viewpager.setCurrentItem(0);break;
-                    case R.id.item_ord: binding.viewpager.setCurrentItem(1);break;
-                    case R.id.item_setting: binding.viewpager.setCurrentItem(2);break;
+                    case R.id.item_ticketstore: binding.viewpager.setCurrentItem(1);break;
+                    case R.id.item_moviestore: binding.viewpager.setCurrentItem(2);break;
+                    case R.id.item_setting: binding.viewpager.setCurrentItem(3);break;
                 }
                 return true;
             }
@@ -50,12 +57,14 @@ public class MainActivity extends AppCompatActivity {
                 super.onPageSelected(position);
                 switch (position){
                     case 0: binding.navigationMain.getMenu().findItem(R.id.item_home).setChecked(true);break;
-                    case 1: binding.navigationMain.getMenu().findItem(R.id.item_ord).setChecked(true);break;
-                    case 2: binding.navigationMain.getMenu().findItem(R.id.item_setting).setChecked(true);break;
+                    case 1: binding.navigationMain.getMenu().findItem(R.id.item_ticketstore).setChecked(true);break;
+                    case 2: binding.navigationMain.getMenu().findItem(R.id.item_moviestore).setChecked(true);break;
+                    case 3: binding.navigationMain.getMenu().findItem(R.id.item_setting).setChecked(true);break;
                 }
             }
         });
     }
+
     @Override
     public void onBackPressed() {
     }

@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.mvvm.adapter.PosterAdapter;
 import com.example.mvvm.model.Films;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,32 +14,30 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilmsAnimeVM extends ViewModel {
+public class FilmsAnimeLiveData extends ViewModel {
+    private MutableLiveData<List<String>> liveData;
 
-    private MutableLiveData<List<Films>> liveData;
-    private List<Films> list;
-
-    public FilmsAnimeVM() {
-        liveData = new MutableLiveData<>();
-        initData();
+    public MutableLiveData<List<String>> getLiveData() {
+        if (liveData == null) {
+            liveData = new MutableLiveData<List<String>>();
+            loadData();
+        }
+        return liveData;
     }
 
-    private void initData() {
-        list = new ArrayList<>();
+    private void loadData() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
+                List<String> list = new ArrayList<>();
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     Films films = dataSnapshot.getValue(Films.class);
                     if (films.status){
-                        if (films.genre.contains("Phim hoạt hình"))
-                        {
-                            list.add(films);
-                        }
+                        list.add(dataSnapshot.getKey());
                     }
                 }
+                liveData.setValue(list);
             }
 
             @Override
@@ -48,11 +45,9 @@ public class FilmsAnimeVM extends ViewModel {
 
             }
         });
-        liveData.setValue(list);
-
     }
 
-    public MutableLiveData<List<Films>> getLiveData() {
-        return liveData;
+    public void setLiveData(MutableLiveData<List<String>> liveData) {
+        this.liveData = liveData;
     }
 }

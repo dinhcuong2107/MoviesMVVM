@@ -8,16 +8,29 @@ import android.widget.Filterable;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mvvm.Functions;
 import com.example.mvvm.databinding.ItemUsersBinding;
 import com.example.mvvm.model.Users;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder> implements Filterable {
-    List<Users> list,list_search;
+    List<String> list,list_search;
 
-    public UsersAdapter(List<Users> list) {
+    public UsersAdapter(List<String> list) {
+        this.list = list;
+        this.list_search = list;
+        notifyDataSetChanged();
+    }
+
+    public void setUsersAdapter(List<String> list) {
         this.list = list;
         this.list_search = list;
         notifyDataSetChanged();
@@ -32,13 +45,25 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
 
     @Override
     public void onBindViewHolder(@NonNull UsersViewHolder holder, int position) {
-        Users users = list.get(position);
-        if (users == null){return;}
-//        Picasso.get().load(films.poster).into(holder.binding.imageViewFilm);
-//        holder.binding.textViewnameFilm.setText(""+films.name);
-//        holder.binding.nameDirector.setText(films.director);
-//        holder.binding.textViewCMT.setText("217");
-        holder.binding.emailUser.setText(users.email);
+        String  key = list.get(position);
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(key);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Users users = snapshot.getValue(Users.class);
+
+                Picasso.get().load(users.avatar).into(holder.binding.avatarUser);
+                holder.binding.nameUser.setText(""+users.fullname);
+                holder.binding.phoneUser.setText(""+users.phonenumber);
+                holder.binding.emailUser.setText(users.email);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
@@ -56,13 +81,31 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                 if (keySearch.isEmpty()){
                     list = list_search;
                 }else {
-                    List<Users> temp = new ArrayList<>();
-                    for (Users usersSearch : list_search){
-//                        if (usersSearch.getName().toLowerCase().contains(keySearch.toLowerCase())){
-//                            temp.add(usersSearch);
-//                        }
+                    List<String> usersList = new ArrayList<>();
+                    for (String str : list_search){
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(str);
+                        databaseReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                Users users = snapshot.getValue(Users.class);
+                                if (Functions.isNumber(keySearch))
+                                {
+                                    if (users.phonenumber.toLowerCase().contains(keySearch.toLowerCase())){
+                                        usersList.add(str);}
+                                }else {
+                                    if (users.fullname.toLowerCase().contains(keySearch.toLowerCase())){
+                                        usersList.add(str);}
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                     }
-                    list = temp;
+                    list = usersList;
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = list;
@@ -71,7 +114,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                list = (List<Users>) results.values;
+                list = (List<String>) results.values;
                 notifyDataSetChanged();
             }
         };

@@ -3,15 +3,19 @@ package com.example.mvvm;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.view.animation.LinearInterpolator;
 
 import com.example.mvvm.databinding.ActivitySplashScreenBinding;
 import com.example.mvvm.datalocal.DataLocalManager;
-import com.example.mvvm.function.AddFilmsActivity;
-import com.example.mvvm.function.AddMoviesActivity;
+import com.example.mvvm.datalocal.MyApplication;
+import com.example.mvvm.function.AddFilmsVM;
+import com.example.mvvm.function.DetailTicketActivity;
+import com.example.mvvm.function.FastfoodActivity;
 import com.example.mvvm.function.FilmsActivity;
 import com.example.mvvm.function.ShowTimesActivity;
 
@@ -21,6 +25,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivitySplashScreenBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_splash_screen);
+
         if (!DataLocalManager.getNightMode()){
             DataLocalManager.setNightMode(false);
         }
@@ -38,7 +43,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             },2107);
             DataLocalManager.setFirstInstalled(true);
         }else {
-            Intent intent = new Intent(SplashScreenActivity.this, ShowTimesActivity.class);
+            Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }

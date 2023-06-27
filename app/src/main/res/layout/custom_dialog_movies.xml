@@ -34,10 +34,45 @@
             android:text="Time"
             android:textSize="21dp"
             android:gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số vé: 86"
+            android:textSize="21dp"
+            android:textStyle="bold"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Giá (VND)"
+                app:startIconDrawable="@drawable/round_account_balance_wallet_24"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/updateprice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textAllCaps="false"
+                android:text="Cập nhật giá"/>
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:orientation="vertical">
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -61,11 +96,12 @@
                     android:layout_width="50dp"
                     android:layout_height="70dp"
                     app:cardCornerRadius="5dp">
+
                     <ImageView
                         android:id="@+id/filmsPoster"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="centerCrop"/>
+                        android:scaleType="centerCrop" />
                 </androidx.cardview.widget.CardView>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -123,21 +159,20 @@
             android:layout_margin="10dp"
             android:orientation="vertical">
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintEnabled="true"
-                android:inputType="none"
-                app:startIconDrawable="@drawable/round_local_movies_24">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/filmsNameNew"
+                android:hint="Tên phim"
+                app:startIconDrawable="@drawable/round_local_movies_24"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+                <AutoCompleteTextView
+                    android:id="@+id/autocompleteFilms"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Phim"/>
+                    android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:orientation="horizontal">
                 <androidx.cardview.widget.CardView
                     android:layout_width="50dp"
@@ -204,7 +239,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:layout_marginRight="5dp"
-                android:text="Đổi lịch"
+                android:text="Hủy"
                 android:textAllCaps="false"/>
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/push"

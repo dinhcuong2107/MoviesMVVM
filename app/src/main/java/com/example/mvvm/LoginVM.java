@@ -14,10 +14,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+import androidx.databinding.ObservableField;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.lifecycle.ViewModel;
 
 import com.example.mvvm.datalocal.DataLocalManager;
 import com.example.mvvm.function.DetailUsersActivity;
+import com.example.mvvm.model.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -28,44 +31,27 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class LoginVM extends BaseObservable{
-    String email,password;
+public class LoginVM extends ViewModel {
+    public ObservableField<String> email = new ObservableField<>();
+    public ObservableField<String> password = new ObservableField<>();
 
     public LoginVM() {
     }
 
-    @Bindable
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-        notifyPropertyChanged(BR.email);
-    }
-    @Bindable
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-        notifyPropertyChanged(BR.password);
-    }
 
     public void onClickLogin(View view){
         if (email != null)
         {
-            if (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches())
+            if (!TextUtils.isEmpty(email.get()) && Patterns.EMAIL_ADDRESS.matcher(email.get()).matches())
             {
-                if (password!=null && password.length()>=8){
+                if (password!=null && password.get().length()>=8){
                     Dialog dialog = new Dialog(view.getContext());
                     dialog.setContentView(R.layout.custom_dialog_loading);
                     dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                     dialog.show();
 
                     FirebaseAuth auth = FirebaseAuth.getInstance();
-                    auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    auth.signInWithEmailAndPassword(email.get(),password.get()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             dialog.dismiss();
@@ -92,20 +78,20 @@ public class LoginVM extends BaseObservable{
     }
 
     private void checkInfUsers(View view) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(DataLocalManager.getUid());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                boolean s_inf = false;
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    String Uid = dataSnapshot.getKey();
-                    if (Uid.equals(DataLocalManager.getUid())) {
-                        s_inf=  true;
+                Users users = snapshot.getValue(Users.class);
+                if (users != null){
+                    if (users.status){
+                        DataLocalManager.setAdmin(users.admin);
+                        Intent intent = new Intent(view.getContext(), MainActivity.class);
+                        view.getContext().startActivity(intent);
+                    }else {
+                        Toast.makeText(view.getContext(), "Tài khoản đã bị khóa", Toast.LENGTH_SHORT).show();
                     }
-                }
-                if (s_inf){
-                    Intent intent = new Intent(view.getContext(), MainActivity.class);
-                    view.getContext().startActivity(intent);
+                    
                 }else {
                     Intent intent = new Intent(view.getContext(), DetailUsersActivity.class);
                     view.getContext().startActivity(intent);

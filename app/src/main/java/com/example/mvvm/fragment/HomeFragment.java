@@ -6,9 +6,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
@@ -26,9 +26,10 @@ import com.example.mvvm.adapter.FilmsTopAdapter;
 import com.example.mvvm.adapter.PosterAdapter;
 import com.example.mvvm.databinding.ActivityHomeFragmentBinding;
 import com.example.mvvm.datalocal.DataLocalManager;
-import com.example.mvvm.livedata.FilmsAnimeVM;
-import com.example.mvvm.livedata.FilmsHotVM;
-import com.example.mvvm.livedata.FilmsNewVM;
+import com.example.mvvm.livedata.FilmsAnimeLiveData;
+import com.example.mvvm.livedata.FilmsHotLiveData;
+import com.example.mvvm.livedata.FilmsNewLiveData;
+import com.example.mvvm.livedata.FilmsTop10LiveData;
 import com.example.mvvm.model.Films;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,7 +42,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
     private ActivityHomeFragmentBinding binding;
-    List<Films> listTop = new ArrayList<>();
+    List<String> listTop = new ArrayList<>();
     private Handler handler = new Handler();
 
     @Override
@@ -50,6 +51,7 @@ public class HomeFragment extends Fragment {
         binding.setHomefragment(new HomeVM());
         binding.setLifecycleOwner(this);
         binding.executePendingBindings();
+
         if (!DataLocalManager.getNightMode()){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }else {
@@ -80,67 +82,60 @@ public class HomeFragment extends Fragment {
     }
 
     private void setAnimeFilms() {
+        // setup RecycleView
         LinearLayoutManager layoutManagerAnime = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL,false);
         binding.recyclerAnimeFilm.setLayoutManager(layoutManagerAnime);
-        FilmsAnimeVM filmsAnimeVM = new ViewModelProvider(this).get(FilmsAnimeVM.class);
-        filmsAnimeVM.getLiveData().observe(getViewLifecycleOwner(), new Observer<List<Films>>() {
-            @Override
-            public void onChanged(List<Films> films) {
-                PosterAdapter adapter = new PosterAdapter(films);
-                binding.recyclerAnimeFilm.setAdapter(adapter);
-            }
+        binding.recyclerAnimeFilm.setHasFixedSize(false);
 
+        PosterAdapter adapter = new PosterAdapter(new ArrayList<String>());
+        binding.recyclerAnimeFilm.setAdapter(adapter);
+
+        FilmsAnimeLiveData liveData = ViewModelProviders.of(this).get(FilmsAnimeLiveData.class);
+
+        liveData.getLiveData().observe(this.getViewLifecycleOwner(), new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> key) {
+                adapter.setPosterAdapter(key);
+            }
         });
     }
 
     private void setHotFilms() {
+        // setup RecycleView
         LinearLayoutManager layoutManagerHot = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL,false);
         binding.recyclerHotFilm.setLayoutManager(layoutManagerHot);
-        FilmsHotVM filmsHotVM = new ViewModelProvider(this).get(FilmsHotVM.class);
-        filmsHotVM.getLiveData().observe(getViewLifecycleOwner(), new Observer<List<Films>>() {
+        binding.recyclerHotFilm.setHasFixedSize(false);
+
+        PosterAdapter adapter = new PosterAdapter(new ArrayList<String>());
+        binding.recyclerHotFilm.setAdapter(adapter);
+
+        FilmsHotLiveData liveData = ViewModelProviders.of(this).get(FilmsHotLiveData.class);
+
+        liveData.getLiveData().observe(this.getViewLifecycleOwner(), new Observer<List<String>>() {
             @Override
-            public void onChanged(List<Films> films) {
-                PosterAdapter adapter = new PosterAdapter(films);
-                binding.recyclerHotFilm.setAdapter(adapter);
+            public void onChanged(List<String> key) {
+                adapter.setPosterAdapter(key);
             }
         });
     }
 
     private void setNewFilms() {
-        ArrayList<Films> newfilms = new ArrayList<>();
+        // setup RecycleView
         LinearLayoutManager layoutManagerNew = new LinearLayoutManager(binding.recyclerNewFilm.getContext(), RecyclerView.HORIZONTAL,false);
         binding.recyclerNewFilm.setLayoutManager(layoutManagerNew);
+        binding.recyclerNewFilm.setHasFixedSize(false);
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        PosterAdapter adapter = new PosterAdapter(new ArrayList<String>());
+        binding.recyclerNewFilm.setAdapter(adapter);
+
+        FilmsNewLiveData liveData = ViewModelProviders.of(this).get(FilmsNewLiveData.class);
+
+        liveData.getLiveData().observe(this.getViewLifecycleOwner(), new Observer<List<String>>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                newfilms.clear();
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    Films films = dataSnapshot.getValue(Films.class);
-                    if (films.status){
-                        newfilms.add(films);
-                    }
-                }
-                PosterAdapter adapter = new PosterAdapter(newfilms);
-                adapter.notifyDataSetChanged();
-                binding.recyclerNewFilm.setAdapter(adapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onChanged(List<String> key) {
+                adapter.setPosterAdapter(key);
             }
         });
-
-//        FilmsNewVM filmsNewVM = new ViewModelProvider(this).get(FilmsNewVM.class);
-//        filmsNewVM.getLiveData().observe(getViewLifecycleOwner(), new Observer<List<Films>>() {
-//            @Override
-//            public void onChanged(List<Films> films) {
-//                PosterAdapter adapter = new PosterAdapter(films);
-//                binding.recyclerNewFilm.setAdapter(adapter);
-//            }
-//        });
     }
 
     private void setViewpager() {
@@ -158,26 +153,16 @@ public class HomeFragment extends Fragment {
             }
         });
         binding.viewpager.setPageTransformer(compositePageTransformer);
+        FilmsTopAdapter adapter = new FilmsTopAdapter(new ArrayList<String>());
+        binding.viewpager.setAdapter(adapter);
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        FilmsTop10LiveData liveData = ViewModelProviders.of(this).get(FilmsTop10LiveData.class);
+
+        liveData.getLiveData().observe(this.getViewLifecycleOwner(), new Observer<List<String>>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                listTop.clear();
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    Films films = dataSnapshot.getValue(Films.class);
-                    if (films.status){
-                        listTop.add(films);
-                    }
-                }
-                FilmsTopAdapter adapter = new FilmsTopAdapter(listTop,getContext());
-                binding.viewpager.setAdapter(adapter);
+            public void onChanged(List<String> key) {
+                adapter.setFilmsTopAdapter(key);
                 binding.circleindicator.setViewPager(binding.viewpager);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 

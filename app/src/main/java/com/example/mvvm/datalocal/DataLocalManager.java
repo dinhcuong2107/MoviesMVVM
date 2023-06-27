@@ -4,12 +4,13 @@ import android.content.Context;
 
 public class DataLocalManager {
     private static final String FIRST_INSTALL = "FIRST_INSTALL";
+    private static final String ADMIN = "ADMIN";
     private static final String NIGHT_MODE = "NIGHT_MODE";
     private static final String UID = "UID";
     private static DataLocalManager instance;
     private DataLocalPreferences dataLocalPreferences;
 
-    public static void init(Context context){
+    public static void initialize(Context context){
         instance = new DataLocalManager();
         instance.dataLocalPreferences = new DataLocalPreferences(context);
     }
@@ -23,6 +24,14 @@ public class DataLocalManager {
 
     public static void setFirstInstalled(boolean isfirst){
         DataLocalManager.getInstance().dataLocalPreferences.putBooleanValue(FIRST_INSTALL,isfirst);
+    }
+
+    public static boolean getAdmin(){
+        return DataLocalManager.getInstance().dataLocalPreferences.getBooleanValue(ADMIN);
+    }
+
+    public static void setAdmin(boolean isadmin){
+        DataLocalManager.getInstance().dataLocalPreferences.putBooleanValue(ADMIN,isadmin);
     }
 
     public static boolean getFirstInstalled(){

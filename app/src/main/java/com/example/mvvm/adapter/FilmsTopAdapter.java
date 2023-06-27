@@ -24,12 +24,15 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class FilmsTopAdapter extends RecyclerView.Adapter<FilmsTopAdapter.FilmsViewHolder>{
-    List<Films> list;
-    Context context;
+    List<String> list;
 
-    public FilmsTopAdapter(List<Films> list, Context context) {
+    public FilmsTopAdapter(List<String> list) {
         this.list = list;
-        this.context = context;
+        notifyDataSetChanged();
+    }
+
+    public void setFilmsTopAdapter(List<String> list) {
+        this.list = list;
         notifyDataSetChanged();
     }
 
@@ -42,32 +45,29 @@ public class FilmsTopAdapter extends RecyclerView.Adapter<FilmsTopAdapter.FilmsV
 
     @Override
     public void onBindViewHolder(@NonNull FilmsTopAdapter.FilmsViewHolder holder, int position) {
-        Films films = list.get(position);
-        if (films == null){return;}
-        Picasso.get().load(films.poster).into(holder.binding.imageFilms);
+        String key = list.get(position);
+        if (key == null){return;}
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films").child(key);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Films films = snapshot.getValue(Films.class);
+                Picasso.get().load(films.poster).into(holder.binding.imageFilms);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         holder.binding.imageFilms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films");
-                databaseReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                            Films data = dataSnapshot.getValue(Films.class);
-                            if (data.name.equals(films.name) && data.video.equals(films.video)){
-                                Intent intent = new Intent(context, DetailFilmsActivity.class);
-                                intent.putExtra("key_film", dataSnapshot.getKey());
-                                context.startActivity(intent);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                Intent intent = new Intent(v.getContext(), DetailFilmsActivity.class);
+                intent.putExtra("key_film", key);
+                v.getContext().startActivity(intent);
             }
         });
     }

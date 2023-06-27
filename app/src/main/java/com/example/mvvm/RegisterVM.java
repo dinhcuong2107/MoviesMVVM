@@ -12,7 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+import androidx.databinding.ObservableField;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.lifecycle.ViewModel;
 
 import com.example.mvvm.datalocal.DataLocalManager;
 import com.example.mvvm.function.DetailUsersActivity;
@@ -21,45 +23,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class RegisterVM extends BaseObservable{
-    public String email,password,passwordagain;
-    @Bindable
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-        notifyPropertyChanged(BR.email);
-    }
-    @Bindable
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-        notifyPropertyChanged(BR.password);
-    }
-    @Bindable
-    public String getPasswordagain() {
-        return passwordagain;
-    }
-
-    public void setPasswordagain(String passwordagain) {
-        this.passwordagain = passwordagain;
-        notifyPropertyChanged(BR.passwordagain);
-    }
+public class RegisterVM extends ViewModel {
+    public ObservableField<String> email = new ObservableField<>();
+    public ObservableField<String> password = new ObservableField<>();
+    public ObservableField<String> passwordagain = new ObservableField<>();
 
     public void onclickRegister(View view){
         String error ="";
         if (email == null)        {error = "Vui lòng bổ sung địa chỉ email";}
-        else  if (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()){}
+        else  if (!TextUtils.isEmpty(email.get()) && Patterns.EMAIL_ADDRESS.matcher(email.get()).matches()){}
         else {error = "Email không hợp lệ!";}
 
-        if (password == null)        {            error = "Bạn chưa thiết lập mật khẩu";
-        }else if (password.length() <8){            error = "Mật khẩu chưa đủ tính bảo mật";
-        }else if (password.equals(passwordagain)){}else {            error = "Mật khẩu không trùng khớp";}
+        if (password.get() == null)        {            error = "Bạn chưa thiết lập mật khẩu";
+        }else if (password.get().length() <8){            error = "Mật khẩu chưa đủ tính bảo mật";
+        }else if (password.get().equals(passwordagain.get())){}else {            error = "Mật khẩu không trùng khớp";}
 
         if (error.length()<1){
             regiter(view);
@@ -73,7 +50,7 @@ public class RegisterVM extends BaseObservable{
         dialog.show();
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        firebaseAuth.createUserWithEmailAndPassword(email.get(),password.get()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){

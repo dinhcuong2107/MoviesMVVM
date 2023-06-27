@@ -11,15 +11,12 @@ public class Films {
     public String genre;
     public String year;
     public String inf_short;
-    public boolean filmsHot;
-    public boolean filmsNew;
-    public boolean filmsOn;
     public boolean status;
 
     public Films() {
     }
 
-    public Films(String name, String poster, String videoTrailer, String video, String director, String main_actors, String country, String genre, String year, String inf_short, boolean filmsHot, boolean filmsNew, boolean filmsOn, boolean status) {
+    public Films(String name, String poster, String videoTrailer, String video, String director, String main_actors, String country, String genre, String year, String inf_short, boolean status) {
         this.name = name;
         this.poster = poster;
         this.videoTrailer = videoTrailer;
@@ -30,9 +27,6 @@ public class Films {
         this.genre = genre;
         this.year = year;
         this.inf_short = inf_short;
-        this.filmsHot = filmsHot;
-        this.filmsNew = filmsNew;
-        this.filmsOn = filmsOn;
         this.status = status;
     }
 
@@ -114,30 +108,6 @@ public class Films {
 
     public void setInf_short(String inf_short) {
         this.inf_short = inf_short;
-    }
-
-    public boolean isFilmsHot() {
-        return filmsHot;
-    }
-
-    public void setFilmsHot(boolean filmsHot) {
-        this.filmsHot = filmsHot;
-    }
-
-    public boolean isFilmsNew() {
-        return filmsNew;
-    }
-
-    public void setFilmsNew(boolean filmsNew) {
-        this.filmsNew = filmsNew;
-    }
-
-    public boolean isFilmsOn() {
-        return filmsOn;
-    }
-
-    public void setFilmsOn(boolean filmsOn) {
-        this.filmsOn = filmsOn;
     }
 
     public boolean isStatus() {

@@ -8,7 +8,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        DataLocalManager.init(getApplicationContext());
+        DataLocalManager.initialize(getApplicationContext());
     }
     public static MyApplication getInstance(){
         return instance;

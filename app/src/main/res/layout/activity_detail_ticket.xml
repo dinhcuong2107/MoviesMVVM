@@ -3,17 +3,863 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View"/>
         <variable
             name="detailticket"
             type="com.example.mvvm.function.DetailTicketVM" />
     </data>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:screenOrientation="landscape">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Vé xem phim"
+                android:textSize="30dp"
+                android:textStyle="bold"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="100dp">
+                    <ImageView
+                        android:id="@+id/imageViewItemFilm"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@{detailticket.usersObservableField.avatar}"
+                        android:scaleType="centerCrop"/>
+                </androidx.cardview.widget.CardView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="20dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="@{detailticket.usersObservableField.fullname}"
+                        android:textSize="21dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{detailticket.usersObservableField.email}"/>
+                </LinearLayout>
 
+            </LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:hintEnabled="true"
+                android:inputType="none"
+                app:startIconDrawable="@drawable/round_local_movies_24">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/filmsName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:text="@={detailticket.filmsObservableField.name}"
+                    android:hint="Phim"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="false"
+                    android:drawableStart="@drawable/ic_calendar_month_24"
+                    android:text="@={detailticket.moviesObservableField.date}"
+                    android:layout_weight="1"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="false"
+                    android:drawableStart="@drawable/round_access_alarms_24"
+                    android:text="@={detailticket.moviesObservableField.time}"
+                    android:layout_weight="1"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="false"
+                    android:drawableStart="@drawable/round_local_movies_24"
+                    android:text="@={detailticket.moviesObservableField.cinema}"
+                    android:layout_weight="1"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="false"
+                    android:drawableStart="@drawable/round_event_seat_24"
+                    android:onClick="@{() -> detailticket.clickseclect()}"
+                    android:text="@{detailticket.listseat.toString()}"
+                    android:layout_weight="1"/>
+                <LinearLayout
+                    android:visibility="@{detailticket.select ? View.GONE : View.VISIBLE}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="A1"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(0) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="A2"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(1) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="A3"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(2) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="A4"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(3) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="A5"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(4) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="A6"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(5) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="A7"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(6) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="A8"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(7) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="A9"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(8) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="A10"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(9) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="A11"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(10) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="A12"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(11) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="B1"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(12) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="B2"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(13) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="B3"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(14) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="B4"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(15) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="B5"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(16) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="B6"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(17) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="B7"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(18) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="B8"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(19) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="B9"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(20) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="B10"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(21) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="B11"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(22) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="B12"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(23) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="C1"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(24) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="C2"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(25) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="C3"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(26) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="C4"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(27) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="C5"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(28) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="C6"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(29) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="C7"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(30) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="C8"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(31) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="C9"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(32) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="C10"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(33) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="C11"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(34) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="C12"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(35) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="D1"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(36) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="D2"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(37) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="D3"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(38) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="D4"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(39) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="D5"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(40) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="D6"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(41) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="D7"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(42) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="D8"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(43) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="D9"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(44) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="D10"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(45) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="D11"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(46) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="D12"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(47) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="E1"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(48) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="E2"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(49) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="E3"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(50) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="E4"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(51) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="E5"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(52) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="E6"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(53) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="E7"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(54) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="E8"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(55) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="E9"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(56) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="E10"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(57) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="E11"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(58) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="E12"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(59) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="F1"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(60) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="F2"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(61) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="F3"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(62) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="F4"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(63) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="F5"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(64) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="F6"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(65) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="F7"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(66) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="F8"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(67) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="F9"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(68) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="F10"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(69) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="F11"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(70) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="F12"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(71) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="G1"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(72) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="G2"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(73) ? 0: @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="G3"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(74) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="G4"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(75) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="G5"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(76) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="G6"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(77) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="G7"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(78) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="G8"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(79) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="H1"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(80) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="H2"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(81) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="H3"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(82) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="H4"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(83) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="H5"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(84) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="H6"
+                            android:animateLayoutChanges="true"
+                            android:background="@{detailticket.listseatenable.get(85) ? 0 : @color/color_x}"
+                            android:onClick="@{(view) -> detailticket.onclickaddseat(view)}"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="false"
+                    android:drawableStart="@drawable/round_fastfood_24"
+                    android:onClick="@{(view) -> detailticket.onClickDialogFastfood(view)}"
+                    android:text="Chọn đồ ăn, đồ uống"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Mua vé"
+                android:onClick="@{(view) -> detailticket.onClickDialogVerification(view)}"
+                android:textAllCaps="false"/>
         </LinearLayout>
     </ScrollView>
 </layout>

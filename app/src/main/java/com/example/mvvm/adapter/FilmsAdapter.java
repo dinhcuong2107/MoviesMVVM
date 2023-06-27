@@ -27,11 +27,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHolder> implements Filterable {
-    List<Films> list,list_search;
+    List<String> list,list_search;
 
-    String key_film;
-
-    public FilmsAdapter(List<Films> list) {
+    public FilmsAdapter(List<String> list) {
+        this.list = list;
+        this.list_search = list;
+        notifyDataSetChanged();
+    }
+    public void setFilmsAdapter(List<String> list) {
         this.list = list;
         this.list_search = list;
         notifyDataSetChanged();
@@ -46,18 +49,28 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHol
 
     @Override
     public void onBindViewHolder(@NonNull FilmsViewHolder holder, int position) {
-        Films films = list.get(position);
+        String string = list.get(position);
 
-        if (films == null){return;}
-        Picasso.get().load(films.poster).into(holder.binding.imageViewFilm);
-        holder.binding.textViewnameFilm.setText(""+films.name);
-        holder.binding.nameDirector.setText(films.director);
+        if (string == null){return;}
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films").child(string);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Films films = snapshot.getValue(Films.class);
+                Picasso.get().load(films.poster).into(holder.binding.imageViewFilm);
+                holder.binding.textViewnameFilm.setText(""+films.name);
+                holder.binding.nameDirector.setText(films.director);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
         holder.binding.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), DetailFilmsActivity.class);
-                intent.putExtra("key_film", films.inf_short);
+                intent.putExtra("key_film", list.get(position));
                 v.getContext().startActivity(intent);
             }
         });
@@ -70,7 +83,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHol
                 int comment = 0;
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     Feedback feedback = dataSnapshot.getValue(Feedback.class);
-                    if (feedback.key_film.equals(films.inf_short) && feedback.status){
+                    if (feedback.key_film.equals(list.get(position)) && feedback.status){
                         if (feedback.comment.equals(":2107")) {
                             like++;}
                         else {comment++;}
@@ -103,11 +116,22 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHol
                 if (keySearch.isEmpty()){
                     list = list_search;
                 }else {
-                    List<Films> temp = new ArrayList<>();
-                    for (Films filmsSearch : list_search){
-                        if (filmsSearch.getName().toLowerCase().contains(keySearch.toLowerCase())){
-                            temp.add(filmsSearch);
-                        }
+                    List<String> temp = new ArrayList<>();
+                    for (String filmsSearch : list_search){
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films").child(filmsSearch);
+                        databaseReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                Films films = snapshot.getValue(Films.class);
+                                if (films.name.toLowerCase().contains(keySearch.toLowerCase())){
+                                    temp.add(filmsSearch);
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                     }
                     list = temp;
                 }
@@ -118,7 +142,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHol
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                list = (List<Films>) results.values;
+                list = (List<String>) results.values;
                 notifyDataSetChanged();
             }
         };

@@ -14,29 +14,31 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilmsHotVM extends ViewModel {
+public class FilmsAllLiveData extends ViewModel {
 
-    private MutableLiveData<List<Films>> liveData;
-    private List<Films> list;
+    private MutableLiveData<List<String>> liveData;
 
-    public FilmsHotVM() {
-        liveData = new MutableLiveData<>();
-        initData();
+    public MutableLiveData<List<String>> getLiveData() {
+        if (liveData == null) {
+            liveData = new MutableLiveData<List<String>>();
+            loadData();
+        }
+        return liveData;
     }
 
-    private void initData() {
-        list = new ArrayList<>();
+    private void loadData() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
+                List<String> list = new ArrayList<>();
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     Films films = dataSnapshot.getValue(Films.class);
-                    if (films.status && films.filmsHot){
-                        list.add(films);
+                    if (films.status){
+                        list.add(dataSnapshot.getKey());
                     }
                 }
+                liveData.setValue(list);
             }
 
             @Override
@@ -44,11 +46,9 @@ public class FilmsHotVM extends ViewModel {
 
             }
         });
-        liveData.setValue(list);
-
     }
 
-    public MutableLiveData<List<Films>> getLiveData() {
-        return liveData;
+    public void setLiveData(MutableLiveData<List<String>> liveData) {
+        this.liveData = liveData;
     }
 }
