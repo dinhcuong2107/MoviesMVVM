@@ -1,30 +1,39 @@
 package com.example.mvvm;
 
-import android.util.Log;
-import com.example.mvvm.datalocal.MyApplication;
-import com.instacart.library.truetime.TrueTimeRx;
+import com.instacart.library.truetime.TrueTime;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
-import io.reactivex.schedulers.Schedulers;
+public class Utils {
 
-public class Functions {
+    public static long getRealtime() {
+        final long[] currentTime = new long[1];
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // Khởi tạo TrueTime
+                    TrueTime.build().initialize();
 
-    public static Date getRealtime() {
-        TrueTimeRx.build()
-                .withLoggingEnabled(true)
-                .withSharedPreferencesCache(MyApplication.getInstance())
-                .initializeRx("time.google.com")
-                .subscribeOn(Schedulers.io())
-                .subscribe(date -> Log.v("TrueTime", "TrueTime initialized, time: " + date),
-                        throwable -> Log.e("TrueTime", "TrueTime exception: ", throwable)
-                );
-        return TrueTimeRx.now();
+                    // Lấy thời gian hện tại
+                    currentTime[0] = TrueTime.now().getTime();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return currentTime[0];
     }
     public static Boolean isNumber(String string){
         for (char c : string.toCharArray()){

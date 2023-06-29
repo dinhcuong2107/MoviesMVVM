@@ -18,13 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/custom_background_backandwhite"
-            app:tabBackground="@drawable/tab_selector"
             app:tabGravity="fill"
-            android:elevation="3dp"
-            app:tabIndicatorColor="@color/transparent"
-            app:tabTextColor="#818181"
-            app:tabSelectedTextColor="@color/color_z"
             app:tabMode="scrollable"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"

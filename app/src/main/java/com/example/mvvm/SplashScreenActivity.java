@@ -1,6 +1,7 @@
 package com.example.mvvm;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.databinding.DataBindingUtil;
 
 import android.content.Context;
@@ -9,7 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.view.animation.LinearInterpolator;
-
 import com.example.mvvm.databinding.ActivitySplashScreenBinding;
 import com.example.mvvm.datalocal.DataLocalManager;
 import com.example.mvvm.datalocal.MyApplication;
@@ -29,6 +29,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         if (!DataLocalManager.getNightMode()){
             DataLocalManager.setNightMode(false);
         }
+
         if (!DataLocalManager.getFirstInstalled()){
             // xoay 360^ trong 2.107s
             binding.imgsplash.animate().rotationBy(360).setDuration(2107).setInterpolator(new LinearInterpolator()).start();
@@ -43,7 +44,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             },2107);
             DataLocalManager.setFirstInstalled(true);
         }else {
-            Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+            Intent intent = new Intent(SplashScreenActivity.this, FilmsActivity.class);
             startActivity(intent);
             finish();
         }

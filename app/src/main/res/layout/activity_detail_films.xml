@@ -169,7 +169,7 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={detailFilms.like}"
+                    android:text="@={detailFilms.quantityLike}"
                     android:layout_weight="1"
                     android:visibility="@{detailFilms.feeling ? View.VISIBLE : View.GONE}"
                     android:onClick="@{(view) -> detailFilms.onclickdislike(view)}"
@@ -178,7 +178,7 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={detailFilms.like}"
+                    android:text="@={detailFilms.quantityLike}"
                     android:layout_weight="1"
                     android:visibility="@{detailFilms.feeling ? View.GONE : View.VISIBLE}"
                     android:onClick="@{(view) -> detailFilms.onclicklike(view)}"
@@ -187,7 +187,7 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={detailFilms.comment}"
+                    android:text="@={detailFilms.quantityComment}"
                     android:onClick="@{(view) -> detailFilms.onclickfeedback(view)}"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/round_comment_24"

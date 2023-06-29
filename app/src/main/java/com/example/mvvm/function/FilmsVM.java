@@ -35,11 +35,15 @@ import java.util.List;
 public class FilmsVM extends ViewModel {
     public ObservableField<String> filmsCategory = new ObservableField<>();
     private MutableLiveData<List<String>> liveData;
-    public FilmsVM() {
-        if (filmsCategory.get() == null){
-            filmsCategory.set("Tất cả");
-        }
+
+    public ObservableField<String> getFilmsCategory() {
+        return filmsCategory;
     }
+
+    public void setFilmsCategory(ObservableField<String> filmsCategory) {
+        this.filmsCategory = filmsCategory;
+    }
+
     public MutableLiveData<List<String>> getLiveData() {
         if (liveData == null) {
             liveData = new MutableLiveData<List<String>>();
@@ -51,147 +55,11 @@ public class FilmsVM extends ViewModel {
         this.liveData = liveData;
     }
 
-    public void onSelectFilter(View view){
-        Dialog dialog = new Dialog(view.getContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        CustomDialogFilterFilmsBinding dialogBinding = CustomDialogFilterFilmsBinding.inflate(LayoutInflater.from(view.getContext()));
-        dialog.setContentView(dialogBinding.getRoot());
-
-        Window window = dialog.getWindow();
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        window.getAttributes().windowAnimations = R.style.DialogAnimationDrop;
-        window.setGravity(Gravity.TOP);
-        dialog.setCancelable(false);
-
-        dialogBinding.categoryall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                filmsCategory.set(dialogBinding.categoryall.getText().toString());
-                dialog.dismiss();
-            }
-        });
-        dialogBinding.categoryoff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                filmsCategory.set(dialogBinding.categoryoff.getText().toString());
-                dialog.dismiss();
-            }
-        });
-        dialogBinding.categoryon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                filmsCategory.set(dialogBinding.categoryon.getText().toString());
-                dialog.dismiss();
-            }
-        });
-        dialogBinding.categoryhot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                filmsCategory.set(dialogBinding.categoryhot.getText().toString());
-                dialog.dismiss();
-            }
-        });
-        dialogBinding.categorynew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                filmsCategory.set(dialogBinding.categorynew.getText().toString());
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-    }
-
-
     public void onNextIntentAddFilms(View view){
         Intent intent = new Intent(view.getContext(), AddFilmsActivity.class);
         view.getContext().startActivity(intent);
     }
-    public void onBack(View view){
-        Intent intent = new Intent(view.getContext(), MainActivity.class);
-        view.getContext().startActivity(intent);
-    }
     private void loadData() {
-        if (filmsCategory.equals("Phim online")){
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films");
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    List<String> list = new ArrayList<>();
-                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                        Films films = dataSnapshot.getValue(Films.class);
-                        if (films.status){
-                            list.add(dataSnapshot.getKey());
-                        }
-                    }
-                    liveData.setValue(list);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }else if (filmsCategory.equals("Phim offline")){
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films");
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    List<String> list = new ArrayList<>();
-                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                        Films films = dataSnapshot.getValue(Films.class);
-                        if (films.status==false){
-                            list.add(dataSnapshot.getKey());
-                        }
-                    }
-                    liveData.setValue(list);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }else if (filmsCategory.equals("Phim mới")){
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films");
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    List<String> list = new ArrayList<>();
-                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                        Films films = dataSnapshot.getValue(Films.class);
-                        if (films.status){
-                            list.add(dataSnapshot.getKey());
-                        }
-                    }
-                    liveData.setValue(list);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }else if (filmsCategory.equals("Phim nổi bật")){
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films");
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    List<String> list = new ArrayList<>();
-                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                        Films films = dataSnapshot.getValue(Films.class);
-                        if (films.status){
-                            list.add(dataSnapshot.getKey());
-                        }
-                    }
-                    liveData.setValue(list);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }else {
-
-        }
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

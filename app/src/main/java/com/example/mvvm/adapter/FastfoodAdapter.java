@@ -1,6 +1,5 @@
 package com.example.mvvm.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,13 +7,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mvvm.Functions;
+import com.example.mvvm.Utils;
 import com.example.mvvm.databinding.ItemFastfoodBinding;
-import com.example.mvvm.databinding.ItemFeedbackBinding;
-import com.example.mvvm.generated.callback.OnClickListener;
 import com.example.mvvm.model.Fastfood;
-import com.example.mvvm.model.Feedback;
-import com.example.mvvm.model.Users;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +17,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FastfoodAdapter extends RecyclerView.Adapter<FastfoodAdapter.FastfooodViewHolder> {
@@ -55,7 +49,7 @@ public class FastfoodAdapter extends RecyclerView.Adapter<FastfoodAdapter.Fastfo
                 Fastfood fastfood = snapshot.getValue(Fastfood.class);
                 Picasso.get().load(fastfood.image).into(holder.binding.image);
                 holder.binding.textname.setText(fastfood.name);
-                holder.binding.textprice.setText(Functions.convertPriceToVND(fastfood.price));
+                holder.binding.textprice.setText(Utils.convertPriceToVND(fastfood.price));
             }
 
             @Override

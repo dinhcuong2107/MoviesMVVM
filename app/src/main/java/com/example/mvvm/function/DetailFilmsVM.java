@@ -17,7 +17,10 @@ import androidx.annotation.Nullable;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableField;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,18 +40,24 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Observable;
 
-public class DetailFilmsVM extends BaseObservable {
-    String key_film,key_feedback,like,comment;
-    Boolean feeling;
-    Films films;
+public class DetailFilmsVM extends ViewModel {
+    public ObservableField<String> key_film = new ObservableField<>();
+    public ObservableField<String> key_feedback = new ObservableField<>();
+    public ObservableField<String> quantityLike = new ObservableField<>();
+    public ObservableField<String> quantityComment= new ObservableField<>();
+
+    public ObservableField<Boolean> feeling = new ObservableField<>();
+
+    public ObservableField<Films> films = new ObservableField<>();
     public DetailFilmsVM(String key) {
-        key_film = key;
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films").child(key_film);
+        key_film.set(key);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films").child(key_film.get());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                setFilms(snapshot.getValue(Films.class));
+                films.set(snapshot.getValue(Films.class));
             }
 
             @Override
@@ -58,34 +67,6 @@ public class DetailFilmsVM extends BaseObservable {
         });
         countcomment();
     }
-    @Bindable
-    public String getLike() {
-        return like;
-    }
-
-    public void setLike(String like) {
-        this.like = like;
-        notifyPropertyChanged(BR.like);
-    }
-    @Bindable
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-        notifyPropertyChanged(BR.comment);
-    }
-    @Bindable
-    public Boolean getFeeling() {
-        return feeling;
-    }
-
-    public void setFeeling(Boolean feeling) {
-        this.feeling = feeling;
-        notifyPropertyChanged(BR.feeling);
-    }
-
     private void countcomment() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Feedback");
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -99,15 +80,15 @@ public class DetailFilmsVM extends BaseObservable {
                         if (feedback.comment.equals(":2107")) {
                             if (feedback.key_user.equals(DataLocalManager.getUid()))
                             {
-                                key_feedback= dataSnapshot.getKey();
-                                setFeeling(true);
-                            }else setFeeling(false);
+                                key_feedback.set(dataSnapshot.getKey());
+                                feeling.set(true);
+                            }
                             like++;}
                         else {comment++;}
                     }
                 }
-                setComment(""+comment);
-                setLike(""+like);
+                quantityComment.set(""+comment);
+                quantityLike.set(""+like);
             }
 
             @Override
@@ -117,27 +98,18 @@ public class DetailFilmsVM extends BaseObservable {
         });
     }
 
-    @Bindable
-    public Films getFilms() {
-        return films;
-    }
-
-    public void setFilms(Films films) {
-        this.films = films;
-        notifyPropertyChanged(BR.films);
-    }
 
     public void onclicktrailer(View view){
         Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
-        intent.putExtra("video", films.videoTrailer);
-        intent.putExtra("name", films.name);
+        intent.putExtra("video", films.get().videoTrailer);
+        intent.putExtra("name", films.get().name);
         view.getContext().startActivity(intent);
     }
 
     public void onclickvideo(View view){
         Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
-        intent.putExtra("video", films.video);
-        intent.putExtra("name", films.name);
+        intent.putExtra("video", films.get().video);
+        intent.putExtra("name", films.get().name);
         view.getContext().startActivity(intent);
     }
     public void onclickbuy(View view){
@@ -147,13 +119,14 @@ public class DetailFilmsVM extends BaseObservable {
     }
 
     public void onclicklike(View view){
+        feeling.set(true);
         String time = new SimpleDateFormat("HH:mm dd/MM/yyyy").format(Calendar.getInstance().getTime());
         Feedback feedback = new Feedback();
         feedback.key_user = DataLocalManager.getUid();
         feedback.time = time;
         feedback.comment = ":2107";
         feedback.status = true;
-        feedback.key_film = key_film;
+        feedback.key_film = key_film.get();
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.child("Feedback").push().setValue(feedback, new DatabaseReference.CompletionListener() {
@@ -166,9 +139,9 @@ public class DetailFilmsVM extends BaseObservable {
         });
     }
     public void onclickdislike(View view){
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Feedback").child(key_feedback);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Feedback").child(key_feedback.get());
         databaseReference.removeValue();
-        setFeeling(false);
+        feeling.set(false);
     }
     public void onclickfeedback(View view){
         ArrayList<Feedback> list = new ArrayList<>();
@@ -226,7 +199,7 @@ public class DetailFilmsVM extends BaseObservable {
                         feedback.time = time;
                         feedback.comment = binding.edittextsend.getText().toString();
                         feedback.status = true;
-                        feedback.key_film = key_film;
+                        feedback.key_film = key_film.get();
 
                         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
                         databaseReference.child("Feedback").push().setValue(feedback, new DatabaseReference.CompletionListener() {

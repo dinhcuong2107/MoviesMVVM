@@ -58,8 +58,9 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHol
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Films films = snapshot.getValue(Films.class);
                 Picasso.get().load(films.poster).into(holder.binding.imageViewFilm);
-                holder.binding.textViewnameFilm.setText(""+films.name);
-                holder.binding.nameDirector.setText(films.director);
+                holder.binding.textViewnameFilm.setText(films.name);
+                holder.binding.nameDirector.setText("Đạo diễn: "+films.director);
+                holder.binding.mainActor.setText("Diễn viên: "+films.main_actors);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

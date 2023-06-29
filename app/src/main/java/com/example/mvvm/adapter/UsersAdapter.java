@@ -8,7 +8,7 @@ import android.widget.Filterable;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mvvm.Functions;
+import com.example.mvvm.Utils;
 import com.example.mvvm.databinding.ItemUsersBinding;
 import com.example.mvvm.model.Users;
 import com.google.firebase.database.DataSnapshot;
@@ -88,7 +88,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 Users users = snapshot.getValue(Users.class);
-                                if (Functions.isNumber(keySearch))
+                                if (Utils.isNumber(keySearch))
                                 {
                                     if (users.phonenumber.toLowerCase().contains(keySearch.toLowerCase())){
                                         usersList.add(str);}

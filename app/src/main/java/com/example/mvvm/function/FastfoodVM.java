@@ -4,48 +4,33 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.ActivityResultRegistry;
-import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.BaseObservable;
 import androidx.databinding.ObservableField;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import com.example.mvvm.Functions;
 import com.example.mvvm.R;
-import com.example.mvvm.databinding.CustomDialogFastfoodBinding;
 import com.example.mvvm.databinding.CustomDialogNewFastfoodBinding;
-import com.example.mvvm.databinding.CustomDialogTicketVerificationBinding;
 import com.example.mvvm.model.Fastfood;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -64,8 +49,6 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.List;
 import java.util.UUID;
-
-import kotlin.jvm.functions.Function1;
 
 public class FastfoodVM extends ViewModel {
     CustomDialogNewFastfoodBinding bindingdialog;

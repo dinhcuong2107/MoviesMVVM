@@ -1,32 +1,24 @@
 package com.example.mvvm.adapter;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mvvm.Functions;
-import com.example.mvvm.MainActivity;
+import com.example.mvvm.Utils;
 import com.example.mvvm.R;
 import com.example.mvvm.databinding.CustomDialogTicketVerificationBinding;
-import com.example.mvvm.databinding.ItemFastfoodBinding;
 import com.example.mvvm.databinding.ItemTicketBinding;
 import com.example.mvvm.datalocal.DataLocalManager;
-import com.example.mvvm.model.Fastfood;
 import com.example.mvvm.model.Films;
 import com.example.mvvm.model.Movies;
 import com.example.mvvm.model.Products;
@@ -37,7 +29,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,9 +119,9 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
 
 
 
-                        for (int i=0; i<Functions.convertStringToList(ticket.key_fastfood).size();i++)
+                        for (int i = 0; i< Utils.convertStringToList(ticket.key_fastfood).size(); i++)
                         {
-                            list.add(new Products(Functions.convertStringToList(ticket.key_fastfood).get(i),Integer.parseInt(Functions.convertStringToList(ticket.quantity_fastfood).get(i))));
+                            list.add(new Products(Utils.convertStringToList(ticket.key_fastfood).get(i),Integer.parseInt(Utils.convertStringToList(ticket.quantity_fastfood).get(i))));
                         }
 
                         ProductsAdapter adapter = new ProductsAdapter(list);
@@ -159,15 +150,15 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
 
                         binding.seat.setText(movies.cinema + " " +ticket.seat);
                         binding.films.setText(films.name);
-                        binding.price.setText(Functions.convertPriceToVND(movies.price));
-                        binding.quantity.setText(""+Functions.convertStringToList(ticket.seat).size());
-                        binding.money.setText(Functions.convertPriceToVND(movies.price*Functions.convertStringToList(ticket.seat).size()));
+                        binding.price.setText(Utils.convertPriceToVND(movies.price));
+                        binding.quantity.setText(""+ Utils.convertStringToList(ticket.seat).size());
+                        binding.money.setText(Utils.convertPriceToVND(movies.price* Utils.convertStringToList(ticket.seat).size()));
                         binding.timeNow.setText(ticket.time);
                         binding.time.setText(movies.time + " " + movies.date);
 
                         binding.progressbar.setVisibility(View.GONE);
                         binding.pay.setVisibility(View.GONE);
-                        binding.total.setText(Functions.convertPriceToVND(ticket.price));
+                        binding.total.setText(Utils.convertPriceToVND(ticket.price));
                         binding.cancel.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

@@ -42,7 +42,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
     private ActivityHomeFragmentBinding binding;
-    List<String> listTop = new ArrayList<>();
+    int sizeImageSlider=0;
     private Handler handler = new Handler();
 
     @Override
@@ -157,10 +157,10 @@ public class HomeFragment extends Fragment {
         binding.viewpager.setAdapter(adapter);
 
         FilmsTop10LiveData liveData = ViewModelProviders.of(this).get(FilmsTop10LiveData.class);
-
         liveData.getLiveData().observe(this.getViewLifecycleOwner(), new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> key) {
+                sizeImageSlider = key.size();
                 adapter.setFilmsTopAdapter(key);
                 binding.circleindicator.setViewPager(binding.viewpager);
             }
@@ -192,7 +192,7 @@ public class HomeFragment extends Fragment {
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            if (binding.viewpager.getCurrentItem()==listTop.size()-1){
+            if (binding.viewpager.getCurrentItem()==sizeImageSlider-1){
                 binding.viewpager.setCurrentItem(0);
             }else {
                 binding.viewpager.setCurrentItem(binding.viewpager.getCurrentItem() +1);

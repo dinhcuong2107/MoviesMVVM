@@ -8,26 +8,25 @@
             name="main"
             type="com.example.mvvm.MainVM" />
     </data>
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:layout_above="@+id/navigation_main"
             android:layout_marginBottom="0dp" />
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation_main"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="0dp"
-            app:labelVisibilityMode="labeled"
+            app:labelVisibilityMode="unlabeled"
             app:itemIconTint="@drawable/custom_navigation_selector"
             app:itemTextColor="@drawable/custom_navigation_selector"
             app:menu="@menu/menu" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </layout>

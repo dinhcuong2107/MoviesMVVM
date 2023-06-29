@@ -14,8 +14,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
@@ -26,6 +28,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.mvvm.LoginActivity;
 import com.example.mvvm.R;
+import com.example.mvvm.databinding.CustomDialogDetailUsersBinding;
+import com.example.mvvm.databinding.CustomDialogNewFastfoodBinding;
 import com.example.mvvm.datalocal.DataLocalManager;
 import com.example.mvvm.function.DetailUsersActivity;
 import com.example.mvvm.function.FastfoodActivity;
@@ -33,6 +37,7 @@ import com.example.mvvm.function.FilmsActivity;
 import com.example.mvvm.function.LiveTVActivity;
 import com.example.mvvm.function.ShowTimesActivity;
 import com.example.mvvm.function.UsersStatusActivity;
+import com.example.mvvm.model.Fastfood;
 import com.example.mvvm.model.Users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -58,6 +63,23 @@ public class SettingVM extends ViewModel {
 
             }
         });
+    }
+    public void openDialogDetailUsers(View view){
+        Dialog dialog = new Dialog(view.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        CustomDialogDetailUsersBinding bindingdialog = CustomDialogDetailUsersBinding.inflate(LayoutInflater.from(view.getContext()));
+        dialog.setContentView(bindingdialog.getRoot());
+
+        Window window = dialog.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        window.getAttributes().windowAnimations = R.style.DialogAnimationDrop;
+        window.setGravity(Gravity.TOP);
+
+
+
+        dialog.show();
     }
 
     public void onNextIntentFilm(View view){

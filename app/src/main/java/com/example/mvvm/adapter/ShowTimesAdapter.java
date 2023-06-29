@@ -42,9 +42,6 @@ import java.util.List;
 public class ShowTimesAdapter extends RecyclerView.Adapter<ShowTimesAdapter.ShowTimesViewHolder> {
     List<String> time;
     String date;
-    String key_movies_default;
-    String key_films_default;
-    String key_films_new;
 
     public ShowTimesAdapter(List<String> time,String date) {
         this.time = time;

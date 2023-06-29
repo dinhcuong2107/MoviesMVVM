@@ -3,7 +3,6 @@ package com.example.mvvm.function;
 import static android.content.ContentValues.TAG;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,41 +15,28 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
-import androidx.databinding.Observable;
 import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableField;
-import androidx.databinding.library.baseAdapters.BR;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mvvm.Functions;
-import com.example.mvvm.LoginActivity;
+import com.example.mvvm.Utils;
 import com.example.mvvm.MainActivity;
 import com.example.mvvm.R;
-import com.example.mvvm.SplashScreenActivity;
 import com.example.mvvm.adapter.FastfoodAdapter;
 import com.example.mvvm.adapter.ProductsAdapter;
 import com.example.mvvm.databinding.CustomDialogFastfoodBinding;
 import com.example.mvvm.databinding.CustomDialogTicketVerificationBinding;
 import com.example.mvvm.datalocal.DataLocalManager;
-import com.example.mvvm.livedata.FastfoodLiveData;
 import com.example.mvvm.model.Fastfood;
 import com.example.mvvm.model.Films;
 import com.example.mvvm.model.Movies;
@@ -66,7 +52,6 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -142,14 +127,14 @@ public class DetailTicketVM extends ViewModel {
                     Ticket temp = dataSnapshot.getValue(Ticket.class);
                     if (temp.key_movies.equals(key_movies))
                     {
-                        list.addAll(Functions.convertStringToList(temp.seat));
+                        list.addAll(Utils.convertStringToList(temp.seat));
                     }
                 }
 
                 for (int i=0; i<list.size(); i++)
                 {
-                    listseatenable.set(Functions.convertSeat(list.get(i).replace(" ","")),false);
-                    Log.d(TAG, "onDataChange: " + Functions.convertSeat(list.get(i).replace(" ","")));
+                    listseatenable.set(Utils.convertSeat(list.get(i).replace(" ","")),false);
+                    Log.d(TAG, "onDataChange: " + Utils.convertSeat(list.get(i).replace(" ","")));
                 }
 
             }
@@ -264,7 +249,7 @@ public class DetailTicketVM extends ViewModel {
             });
 
             ticket.seat = listseat.toString();
-            ticket.time = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy").format(Functions.getRealtime());
+            ticket.time = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy").format(Utils.getRealtime());
             ticket.status = true;
 
             Dialog dialog = new Dialog(view.getContext());
@@ -300,9 +285,9 @@ public class DetailTicketVM extends ViewModel {
 
             binding.seat.setText(moviesObservableField.get().cinema + " " +ticket.seat);
             binding.films.setText(filmsObservableField.get().name);
-            binding.price.setText(Functions.convertPriceToVND(moviesObservableField.get().price));
+            binding.price.setText(Utils.convertPriceToVND(moviesObservableField.get().price));
             binding.quantity.setText(""+listseat.size());
-            binding.money.setText(Functions.convertPriceToVND(moviesObservableField.get().price*listseat.size()));
+            binding.money.setText(Utils.convertPriceToVND(moviesObservableField.get().price*listseat.size()));
             binding.timeNow.setText(ticket.time);
             binding.time.setText(moviesObservableField.get().time + " " + moviesObservableField.get().date);
 
@@ -319,12 +304,12 @@ public class DetailTicketVM extends ViewModel {
                             View itemview = binding.recyclerviewverification.getChildAt(i);
                             // lấy dữ liệu từ view
                             TextView textView = itemview.findViewById(R.id.money);
-                            int num = Functions.convertVNDToPrice(textView.getText().toString());
+                            int num = Utils.convertVNDToPrice(textView.getText().toString());
                             total = total + num;
                         }
-                        binding.total.setText(Functions.convertPriceToVND(total));
+                        binding.total.setText(Utils.convertPriceToVND(total));
                     }else {
-                        binding.total.setText(Functions.convertPriceToVND(total));
+                        binding.total.setText(Utils.convertPriceToVND(total));
                     }
                     ticket.price = total;
                 }
@@ -374,7 +359,7 @@ public class DetailTicketVM extends ViewModel {
 
     public void onclickaddseat(View view){
         Button button = (Button) view;
-        if (listseatenable.get(Functions.convertSeat(button.getText().toString())))
+        if (listseatenable.get(Utils.convertSeat(button.getText().toString())))
         {
             if (listseat.size() == 0)
             {
