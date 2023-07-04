@@ -3,14 +3,14 @@
     android:shape="rectangle">
     <!-- Set màu nền-->
     <gradient
-        android:startColor="#FF3737"
-        android:endColor="#B3315F"
+        android:startColor="#F8276E"
+        android:endColor="#FF0000"
         android:angle="0"/>
 
     <!-- đặt thuộc tính màu và độ rộng của đường viền -->
     <stroke
         android:width="2dp"
-        android:color="#FF0000" >
+        android:color="@color/color_c" >
     </stroke>
 
     <!-- các thuộc tính căn chỉnh-->

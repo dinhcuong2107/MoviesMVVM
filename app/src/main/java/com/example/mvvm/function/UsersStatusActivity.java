@@ -64,12 +64,12 @@ public class UsersStatusActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        if (!binding.searchView.isIconified()){
-            binding.searchView.setIconified(true);
-            return;
-        }
-        super.onBackPressed();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (!binding.searchView.isIconified()){
+//            binding.searchView.setIconified(true);
+//            return;
+//        }
+//        super.onBackPressed();
+//    }
 }

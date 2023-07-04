@@ -1,5 +1,13 @@
 package com.example.mvvm;
 
+import static android.content.ContentValues.TAG;
+
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.instacart.library.truetime.TrueTime;
 
 import java.io.IOException;

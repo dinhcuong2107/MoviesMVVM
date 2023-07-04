@@ -61,16 +61,19 @@
                         android:layout_marginRight="30dp"
                         android:orientation="horizontal">
                         <RadioButton
-                            android:layout_width="match_parent"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:drawableEnd="@drawable/ic_male_24"
                             android:checked="@{detailusers.male ? true : false}"
                             android:onClick="@{() -> detailusers.onclickMale()}"
                             android:text="Nam"/>
+                        <Space
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"/>
                         <RadioButton
-                            android:layout_width="match_parent"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:drawableEnd="@drawable/ic_female_24"
                             android:checked="@{detailusers.male == false ? true : false}"
                             android:onClick="@{() -> detailusers.onclickFemale()}"
                             android:text="Nữ"/>
