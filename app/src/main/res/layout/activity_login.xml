@@ -62,6 +62,7 @@
                     android:layout_height="wrap_content"
                     android:text="Quên mật khẩu "
                     android:textSize="18dp"
+                    android:onClick="@{(view) -> login.onClickResetPassword(view)}"
                     android:textColor="@color/color_y"
                     android:gravity="right"/>
 

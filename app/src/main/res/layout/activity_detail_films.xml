@@ -16,41 +16,60 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center">
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                app:cardCornerRadius="5dp">
-                <ImageView
-                    android:id="@+id/poster"
-                    android:layout_width="210dp"
-                    android:layout_height="297dp"
-                    android:scaleType="centerCrop"
-                    android:src="@{detailFilms.films.poster}" />
-            </androidx.cardview.widget.CardView>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageView
+                android:layout_margin="10dp">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_centerHorizontal="true"
+                    app:cardCornerRadius="5dp">
+                    <ImageView
+                        android:layout_width="210dp"
+                        android:layout_height="297dp"
+                        android:scaleType="centerCrop"
+                        android:src="@{detailFilms.films.poster}" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="21dp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="@color/color_a"
+                        android:layout_gravity="bottom"
+                        android:text="@{detailFilms.onlinePrice}"/>
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="left"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/ic_hot"/>
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/ic_new"/>
+                </androidx.cardview.widget.CardView>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/ic_hot"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_weight="1"
-                    android:text="@={detailFilms.films.name}"
-                    android:textSize="21dp"
-                    android:textColor="@color/color_x"/>
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
-                    android:src="@drawable/ic_new"/>
-            </LinearLayout>
+                    android:layout_alignParentEnd="true"
+                    android:onClick="@{(view) -> detailFilms.onShowPopupMenu(view)}"
+                    android:background="@drawable/round_more_horiz_24"/>
+            </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:text="@={detailFilms.films.name}"
+                android:textSize="21dp"
+                android:textColor="@color/color_x"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,6 +82,14 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@={detailFilms.films.genre}"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{detailFilms.films.status ? View.GONE : View.VISIBLE}"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="#E91E63"
+                android:text="Ngừng công chiếu"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"

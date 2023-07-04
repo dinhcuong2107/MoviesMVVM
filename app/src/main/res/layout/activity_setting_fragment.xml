@@ -26,7 +26,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:onClick="@{(view) -> settingfragment.openDialogDetailUsers(view)}"
+                    android:onClick="@{(view) -> settingfragment.showDialogDetailUsers(view)}"
                     android:orientation="horizontal">
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
@@ -50,6 +50,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
+                            android:drawableStart="@{settingfragment.users.male ? @drawable/ic_male_24 : @drawable/ic_female_24}"
                             android:text="@{settingfragment.users.fullname}"
                             android:textSize="21dp"/>
 
@@ -68,7 +69,7 @@
                 </androidx.cardview.widget.CardView>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_margin="10dp"
                     android:gravity="center">
@@ -82,7 +83,7 @@
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp"
                         android:background="@drawable/custom_background_transparent"
-                        android:textSize="21dp"
+                        android:textSize="18dp"
                         android:textAllCaps="false"
                         android:text="Tài Khoản"/>
                     <androidx.appcompat.widget.AppCompatButton
@@ -90,7 +91,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/custom_background_transparent"
-                        android:textSize="21dp"
+                        android:textSize="18dp"
                         android:textAllCaps="false"
                         android:text="@={settingfragment.users.phonenumber}" />
                 </LinearLayout>
@@ -106,8 +107,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:drawableStart="@drawable/round_person_pin_24"
-                    android:text="Thông tin cá nhân"
-                    android:onClick="@{(view) -> settingfragment.onNextIntentUsersInf(view)}"
+                    android:text="Ví cá nhân"
+                    android:onClick="@{(view) -> settingfragment.onNextIntentWallet(view)}"
                     android:textAllCaps="false"/>
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"

@@ -18,6 +18,7 @@ import com.example.mvvm.function.DetailTicketActivity;
 import com.example.mvvm.function.FastfoodActivity;
 import com.example.mvvm.function.FilmsActivity;
 import com.example.mvvm.function.ShowTimesActivity;
+import com.example.mvvm.function.UsersStatusActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -44,7 +45,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             },2107);
             DataLocalManager.setFirstInstalled(true);
         }else {
-            Intent intent = new Intent(SplashScreenActivity.this, FilmsActivity.class);
+            Intent intent = new Intent(SplashScreenActivity.this, UsersStatusActivity.class);
             startActivity(intent);
             finish();
         }

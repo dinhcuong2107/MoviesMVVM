@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_online"
+        android:title="Công chiếu online"/>
+    <item
+        android:id="@+id/item_online_delete"
+        android:title="Ngừng chiếu online"/>
+    <item
+        android:id="@+id/item_hot"
+        android:title="Phim nổi bật"/>
+    <item
+        android:id="@+id/item_hot_delete"
+        android:title="Xóa khỏi phim nổi bật"/>
+    <item
+        android:id="@+id/item_new"
+        android:title="Phim mới"/>
+    <item
+        android:id="@+id/item_new_delete"
+        android:title="Xóa khỏi phim mới"/>
+</menu>
