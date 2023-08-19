@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="detailSeriesFilms"
+            type="com.example.mvvm.function.DetailSeriesFilmsVM" />
+    </data>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_centerHorizontal="true"
+                    app:cardCornerRadius="5dp">
+                    <ImageView
+                        android:layout_width="210dp"
+                        android:layout_height="297dp"
+                        android:scaleType="centerCrop"
+                        android:src="@{detailSeriesFilms.films.poster}" />
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="left"
+                        android:layout_marginRight="5dp"
+                        android:visibility="@{detailSeriesFilms.isHot ? View.VISIBLE : View.GONE}"
+                        android:src="@drawable/ic_hot"/>
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="5dp"
+                        android:visibility="@{detailSeriesFilms.isNew ? View.VISIBLE : View.GONE}"
+                        android:src="@drawable/ic_new"/>
+                </androidx.cardview.widget.CardView>
+
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/icon_fix"
+                    android:onClick="@{(view) -> detailSeriesFilms.click_fix(view)}"
+                    android:visibility="@{detailSeriesFilms.admin ? View.VISIBLE : View.GONE}" />
+            </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:text="@={detailSeriesFilms.seriesfilms.name}"
+                android:textSize="21dp"
+                android:textColor="@color/color_x"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="@={detailSeriesFilms.films.year}"
+                android:textSize="21dp"
+                android:textColor="@color/color_x"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@={detailSeriesFilms.films.genre}"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Trạng thái:"/>
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{detailSeriesFilms.seriesfilms.status ? View.VISIBLE : View.GONE}"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="#E91E63"
+                    android:text="@{detailSeriesFilms.max_epsode.toString()}"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{detailSeriesFilms.seriesfilms.status ? View.VISIBLE : View.GONE}"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="#E91E63"
+                    android:text=" / "/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{detailSeriesFilms.seriesfilms.status ? View.VISIBLE : View.GONE}"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="#E91E63"
+                    android:text="@{detailSeriesFilms.seriesfilms.totalEpisode.toString()}"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{detailSeriesFilms.seriesfilms.status ? View.GONE : View.VISIBLE}"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="#E91E63"
+                    android:text="Ngừng công chiếu"/>
+            </LinearLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button"
+                android:layout_width="210dp"
+                android:layout_height="40dp"
+                android:paddingLeft="10dp"
+                android:layout_margin="10dp"
+                android:drawableStart="@drawable/round_play_circle_outline_24"
+                android:visibility="@{detailSeriesFilms.admin || detailSeriesFilms.seriesfilms.status ? View.VISIBLE : View.GONE}"
+                android:text="Xem tập 1"
+                android:onClick="@{(view) -> detailSeriesFilms.click_play(view)}"
+                android:textAllCaps="false"
+                android:background="@drawable/custom_button_yes"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{detailSeriesFilms.seriesfilms.status ? (detailSeriesFilms.seriesfilms.price != 0 ? View.VISIBLE : View.GONE) : View.GONE}"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="Giá chọn bộ"
+                    android:textSize="18dp"
+                    android:textStyle="bold"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="210dp"
+                    android:layout_height="40dp"
+                    app:hintEnabled="true"
+                    android:inputType="none"
+                    app:startIconDrawable="@drawable/round_monetization_on_24">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:padding="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:onClick="@{(view) -> detailSeriesFilms.click_check_store(view)}"
+                        android:text="@{detailSeriesFilms.price}"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:visibility="@{detailSeriesFilms.admin || detailSeriesFilms.seriesfilms.status ? View.VISIBLE : View.GONE}"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="Đạo diễn:"
+                        android:text="@={detailSeriesFilms.films.director}"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="Diễn viên chính:"
+                        android:text="@={detailSeriesFilms.films.main_actors}"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="true">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="Tóm tắt nội dung:"
+                        android:text="@={detailSeriesFilms.films.inf_short}"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility="@{detailSeriesFilms.feeling ? View.VISIBLE : View.GONE}"
+                    app:startIconDrawable="@drawable/round_favorite_24"
+                    app:startIconTint="#FF0000">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:padding="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:text="@{detailSeriesFilms.quantityLike}"
+                        android:onClick="@{(view) -> detailSeriesFilms.onclickdislike(view)}"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility="@{detailSeriesFilms.feeling ? View.GONE : View.VISIBLE}"
+                    app:startIconDrawable="@drawable/round_favorite_border_24">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:padding="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:text="@{detailSeriesFilms.quantityLike}"
+                        android:onClick="@{(view) -> detailSeriesFilms.onclicklike(view)}"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:startIconDrawable="@drawable/round_comment_24">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:padding="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:text="@{detailSeriesFilms.quantityComment}"
+                        android:onClick="@{(view) -> detailSeriesFilms.onclickfeedback(view)}"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</layout>

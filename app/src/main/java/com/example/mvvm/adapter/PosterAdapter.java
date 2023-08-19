@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mvvm.R;
 import com.example.mvvm.databinding.ItemPosterBinding;
 import com.example.mvvm.datalocal.MyApplication;
 import com.example.mvvm.function.DetailFilmsActivity;
@@ -44,8 +47,10 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.FilmsViewH
 
     @Override
     public void onBindViewHolder(@NonNull FilmsViewHolder holder, int position) {
+        // cho phép di chuyển nội dung hiển thị trên TextView
+        holder.binding.textnameItemFilm.setSelected(true);
+
         String key = list.get(position);
-        if (list.size() == 0){return;}
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films").child(key);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

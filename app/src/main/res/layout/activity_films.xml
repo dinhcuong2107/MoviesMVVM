@@ -13,6 +13,29 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:queryHint="Tên phim"
+                app:iconifiedByDefault="false"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:background="@drawable/round_add_24"
+                android:visibility="@{listfilms.admin ? View.VISIBLE : View.GONE}"
+                android:onClick="@{(view) -> listfilms.onNextIntentAddFilms(view)}" />
+
+        </LinearLayout>
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tablayout"
             android:layout_width="match_parent"
@@ -20,24 +43,28 @@
             android:layout_margin="10dp"
             app:tabGravity="fill"
             app:tabMode="scrollable"/>
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:queryHint="Tên phim"
-            app:iconifiedByDefault="false"
-            android:background="@drawable/custom_background_opacity40"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerFilm"
+
+        <!--  -->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="@integer/material_motion_duration_long_1"
-            android:layout_marginTop="5dp"/>
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Thêm phim"
-            android:textAllCaps="false"
-            android:onClick="@{(view) -> listfilms.onNextIntentAddFilms(view)}" />
+            android:layout_weight="1"
+            android:layout_marginTop="5dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerFilm"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+            <TextView
+                android:id="@+id/emptyView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Danh sách rỗng"
+                android:textSize="18sp"/>
+
+        </RelativeLayout>
     </LinearLayout>
 </layout>

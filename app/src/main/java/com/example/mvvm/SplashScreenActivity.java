@@ -13,12 +13,15 @@ import android.view.animation.LinearInterpolator;
 import com.example.mvvm.databinding.ActivitySplashScreenBinding;
 import com.example.mvvm.datalocal.DataLocalManager;
 import com.example.mvvm.datalocal.MyApplication;
+import com.example.mvvm.function.AddFilmsActivity;
 import com.example.mvvm.function.AddFilmsVM;
+import com.example.mvvm.function.AddSeriesFilmsActivity;
 import com.example.mvvm.function.DetailTicketActivity;
 import com.example.mvvm.function.FastfoodActivity;
 import com.example.mvvm.function.FilmsActivity;
 import com.example.mvvm.function.ShowTimesActivity;
 import com.example.mvvm.function.UsersStatusActivity;
+import com.example.mvvm.function.WalletActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -45,7 +48,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             },2107);
             DataLocalManager.setFirstInstalled(true);
         }else {
-            Intent intent = new Intent(SplashScreenActivity.this, UsersStatusActivity.class);
+            Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }

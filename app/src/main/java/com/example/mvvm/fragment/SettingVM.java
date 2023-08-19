@@ -26,7 +26,6 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.ObservableField;
-import androidx.databinding.library.baseAdapters.BR;
 import androidx.lifecycle.ViewModel;
 
 import com.example.mvvm.LoginActivity;
@@ -41,10 +40,12 @@ import com.example.mvvm.function.DetailUsersActivity;
 import com.example.mvvm.function.FastfoodActivity;
 import com.example.mvvm.function.FilmsActivity;
 import com.example.mvvm.function.LiveTVActivity;
+import com.example.mvvm.function.SeriesFilmsActivity;
 import com.example.mvvm.function.ShowTimesActivity;
 import com.example.mvvm.function.UsersStatusActivity;
 import com.example.mvvm.function.WalletActivity;
 import com.example.mvvm.model.Fastfood;
+import com.example.mvvm.model.TransactionMoney;
 import com.example.mvvm.model.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -63,12 +64,46 @@ import com.squareup.picasso.Picasso;
 public class SettingVM extends ViewModel {
     public ObservableField<Users> users = new ObservableField<>();
 
+    public ObservableField<String> balance = new ObservableField<>();
+
     public SettingVM() {
+        getDetailUsers();
+        getMyBalance();
+    }
+
+    private void getDetailUsers() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(DataLocalManager.getUid());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 users.set(snapshot.getValue(Users.class));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void getMyBalance(){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Transaction");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int amount = 0;
+
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    TransactionMoney transactionMoney = dataSnapshot.getValue(TransactionMoney.class);
+                    if (transactionMoney.wallet.equals(DataLocalManager.getUid()) && transactionMoney.status){
+                        if (transactionMoney.transaction_type.equals("deposit")){
+                            amount = amount + transactionMoney.amount;
+                        }else {
+                            amount = amount - transactionMoney.amount;
+                        }
+                    }
+                }
+                balance.set(Utils.convertPriceToVND(amount));
             }
 
             @Override
@@ -125,6 +160,12 @@ public class SettingVM extends ViewModel {
             @Override
             public void onClick(View v) {
                 onNextIntentUsersInf(view);
+            }
+        });
+        binding.depositIntoWallet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "Chức năng đang bảo trì!\nVui lòng nạp tại quầy hoặc yêu cầu hỗ trợ tại mục 'liên hệ'.",Toast.LENGTH_LONG).show();
             }
         });
         binding.changePassword.setOnClickListener(new View.OnClickListener() {
@@ -243,6 +284,10 @@ public class SettingVM extends ViewModel {
     }
     public void onNextIntentFilm(View view){
         Intent intent = new Intent(view.getContext(), FilmsActivity.class);
+        view.getContext().startActivity(intent);
+    }
+    public void onNextIntentSeriesFilm(View view){
+        Intent intent = new Intent(view.getContext(), SeriesFilmsActivity.class);
         view.getContext().startActivity(intent);
     }
     public void onNextIntentWallet(View view){

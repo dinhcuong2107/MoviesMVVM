@@ -27,14 +27,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class DetailFilmsActivity extends AppCompatActivity {
-    ActivityDetailFilmsBinding binding;
-    String key_film;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_detail_films);
+        ActivityDetailFilmsBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_detail_films);
         Intent intent = getIntent();
-        key_film = intent.getStringExtra("key_film");
+        String key_film = intent.getStringExtra("key_film");
         binding.setDetailFilms(new DetailFilmsVM(key_film));
         binding.executePendingBindings();
     }

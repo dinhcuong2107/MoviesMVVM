@@ -24,24 +24,12 @@
         android:orientation="vertical"
         android:layout_margin="5dp"
         android:layout_weight="1">
-        <LinearLayout
+        <TextView
+            android:id="@+id/nameUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left">
-            <TextView
-                android:id="@+id/nameUser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:textSize="21dp"/>
-            <TextView
-                android:id="@+id/phoneUser"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:paddingLeft="10dp"/>
-        </LinearLayout>
+            android:textStyle="bold"
+            android:textSize="21dp"/>
         <TextView
             android:id="@+id/emailUser"
             android:layout_width="match_parent"

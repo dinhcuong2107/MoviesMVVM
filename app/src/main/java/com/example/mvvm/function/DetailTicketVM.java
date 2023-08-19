@@ -35,6 +35,7 @@ import com.example.mvvm.R;
 import com.example.mvvm.adapter.FastfoodAdapter;
 import com.example.mvvm.adapter.ProductsAdapter;
 import com.example.mvvm.databinding.CustomDialogFastfoodBinding;
+import com.example.mvvm.databinding.CustomDialogSuccessBinding;
 import com.example.mvvm.databinding.CustomDialogTicketVerificationBinding;
 import com.example.mvvm.datalocal.DataLocalManager;
 import com.example.mvvm.model.Fastfood;
@@ -42,6 +43,7 @@ import com.example.mvvm.model.Films;
 import com.example.mvvm.model.Movies;
 import com.example.mvvm.model.Products;
 import com.example.mvvm.model.Ticket;
+import com.example.mvvm.model.TransactionMoney;
 import com.example.mvvm.model.Users;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -336,17 +338,76 @@ public class DetailTicketVM extends ViewModel {
                         ticket.key_fastfood = keyfastfood.toString();
                     }
 
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-                    databaseReference.child("Ticket").push().setValue(ticket, new DatabaseReference.CompletionListener() {
+                    Utils.getBalanceFromDatabase(DataLocalManager.getUid(),new Utils.BalanceListener() {
                         @Override
-                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                            if (error == null) {
-                                Toast.makeText(view.getContext(), "Mua vé thành công", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(view.getContext(), MainActivity.class);
-                                view.getContext().startActivity(intent);
-                            } else {
-                                Toast.makeText(view.getContext(), "" + error, Toast.LENGTH_SHORT).show();
+                        public void onAmountCalculated(int amount) {
+                            // Xử lý số liệu 'amount'
+                            Log.d("Total Amount", String.valueOf(amount));
+                            if (amount >= ticket.price)
+                            {
+                                Dialog dialogquestion = new Dialog(view.getContext());
+                                dialogquestion.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                CustomDialogSuccessBinding questionBinding = CustomDialogSuccessBinding.inflate(LayoutInflater.from(view.getContext()));
+                                dialogquestion.setContentView(questionBinding.getRoot());
+
+                                Window window = dialogquestion.getWindow();
+                                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                window.getAttributes().windowAnimations = R.style.DialogAnimationDrop;
+                                window.setGravity(Gravity.CENTER);
+                                dialogquestion.setCancelable(false);
+
+                                questionBinding.textview.setText("Bạn muốn thanh toán:  '"+ Utils.convertPriceToVND(ticket.price) +"'");
+                                questionBinding.cancel.setOnClickListener(v1 -> dialogquestion.dismiss());
+
+                                questionBinding.push.setText("Thanh toán");
+                                questionBinding.push.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                                        databaseReference.child("Ticket").push().setValue(ticket, new DatabaseReference.CompletionListener() {
+                                            @Override
+                                            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                                if (error == null) {
+
+                                                    // payment
+                                                    TransactionMoney transaction = new TransactionMoney();
+                                                    transaction.transaction_type = "payment";
+                                                    transaction.amount = ticket.price;
+                                                    transaction.wallet = DataLocalManager.getUid();
+                                                    transaction.supporter = DataLocalManager.getUid();
+                                                    transaction.description = "Ticket Store:" + ticket.key_movies;
+                                                    transaction.time = new SimpleDateFormat("HH:mm:ss").format(Utils.getRealtime());
+                                                    transaction.date = new SimpleDateFormat("dd/MM/yyyy").format(Utils.getRealtime());
+                                                    transaction.status = true;
+
+                                                    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+                                                    databaseRef.child("Transaction").push().setValue(transaction, new DatabaseReference.CompletionListener() {
+                                                        @Override
+                                                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                                            if (error == null) {
+                                                                Toast.makeText(view.getContext(), "thanh toán thành công", Toast.LENGTH_SHORT).show();
+                                                            } else {
+                                                                Toast.makeText(view.getContext(), "Vui lòng thử lại" + error, Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    });
+
+                                                    Intent intent = new Intent(view.getContext(), MainActivity.class);
+                                                    view.getContext().startActivity(intent);
+                                                } else {
+                                                    Toast.makeText(view.getContext(), "" + error, Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                                dialogquestion.show();
+                            }else {
+                                Utils.showError(view.getContext(), "Tài khoản của quý khách không đủ");
                             }
+
                         }
                     });
                 }

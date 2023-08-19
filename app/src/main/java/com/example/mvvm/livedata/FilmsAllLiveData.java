@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.mvvm.datalocal.DataLocalManager;
 import com.example.mvvm.model.Films;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,8 +35,14 @@ public class FilmsAllLiveData extends ViewModel {
                 List<String> list = new ArrayList<>();
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     Films films = dataSnapshot.getValue(Films.class);
-                    if (films.status){
+                    if (DataLocalManager.getAdmin())
+                    {
                         list.add(dataSnapshot.getKey());
+                    }
+                    else {
+                        if (films.status){
+                            list.add(dataSnapshot.getKey());
+                        }
                     }
                 }
                 liveData.setValue(list);

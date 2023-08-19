@@ -1,16 +1,35 @@
 package com.example.mvvm;
 
-import static android.content.ContentValues.TAG;
-
-import android.support.annotation.NonNull;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.annotation.NonNull;
+
+import com.example.mvvm.databinding.CustomDialogCodeBinding;
+import com.example.mvvm.databinding.CustomDialogErrorBinding;
+import com.example.mvvm.model.TransactionMoney;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.instacart.library.truetime.TrueTime;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -18,6 +37,122 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Utils {
+    public static void reLoadIntent(Context context){
+        Intent intent = new Intent(context, context.getClass());
+        context.startActivity(intent);
+    }
+
+    public static boolean checkForExistence(String s, List<String> list) {
+        for (String phanTu : list) {
+            if (phanTu.equals(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Bitmap convertQRCode(String text) {
+        try {
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, 512, 512);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            return bitmap;
+        } catch (WriterException e) {
+            Log.e("QR Code", "Error generating QR code: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public interface BalanceListener {
+        void onAmountCalculated(int amount);
+    }
+    public static void getBalanceFromDatabase(String Uid,BalanceListener listener) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Transaction");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int amount = 0;
+                if (snapshot.exists()) {
+                    // Tham chiếu "Transaction" tồn tại, tiếp tục với logic của bạn
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        TransactionMoney transactionMoney = dataSnapshot.getValue(TransactionMoney.class);
+                        if (transactionMoney.wallet.equals(Uid) && transactionMoney.status) {
+                            if (transactionMoney.transaction_type.equals("deposit")) {
+                                amount += transactionMoney.amount;
+                            } else {
+                                amount -= transactionMoney.amount;
+                            }
+                        }
+                    }
+                    // Gọi phương thức của interface để truyền kết quả về
+                    listener.onAmountCalculated(amount);
+                    // ...
+                } else {
+                    // Tham chiếu "Transaction" không tồn tại
+                    // Xử lý tình huống này theo ý muốn của bạn
+                    // ...
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Xử lý khi có lỗi xảy ra
+            }
+        });
+    }
+
+    public static void showQRCode(Context context, String string){
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        CustomDialogCodeBinding binding = CustomDialogCodeBinding.inflate(LayoutInflater.from(context));
+        dialog.setContentView(binding.getRoot());
+
+        Window window = dialog.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        window.getAttributes().windowAnimations = R.style.DialogAnimationDrop;
+        window.setGravity(Gravity.CENTER);
+        dialog.setCancelable(false);
+
+        binding.imageview.setImageBitmap(Utils.convertQRCode(string));
+
+        binding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    public static void showError(Context context, String error){
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        CustomDialogErrorBinding binding = CustomDialogErrorBinding.inflate(LayoutInflater.from(context));
+        dialog.setContentView(binding.getRoot());
+
+        Window window = dialog.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        window.getAttributes().windowAnimations = R.style.DialogAnimationDrop;
+        window.setGravity(Gravity.CENTER);
+        dialog.setCancelable(false);
+
+        binding.textview.setText(error);
+
+        binding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
 
     public static long getRealtime() {
         final long[] currentTime = new long[1];

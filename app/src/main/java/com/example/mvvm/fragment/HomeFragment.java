@@ -24,12 +24,14 @@ import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.mvvm.R;
 import com.example.mvvm.adapter.FilmsTopAdapter;
 import com.example.mvvm.adapter.PosterAdapter;
+import com.example.mvvm.adapter.SeriesFilmsAdapter;
 import com.example.mvvm.databinding.ActivityHomeFragmentBinding;
 import com.example.mvvm.datalocal.DataLocalManager;
 import com.example.mvvm.livedata.FilmsAnimeLiveData;
 import com.example.mvvm.livedata.FilmsHotLiveData;
 import com.example.mvvm.livedata.FilmsNewLiveData;
 import com.example.mvvm.livedata.FilmsTop10LiveData;
+import com.example.mvvm.livedata.SeriesFilmsLiveData;
 import com.example.mvvm.model.Films;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -69,7 +71,7 @@ public class HomeFragment extends Fragment {
 // setup RecycleView
         setNewFilms();
         setHotFilms();
-        setAnimeFilms();
+        setSeriesFilms();
 
 // setup RecycleView Combo khuyến mãi
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(binding.recyclerNewFilm.getContext(), RecyclerView.HORIZONTAL,false);
@@ -81,21 +83,21 @@ public class HomeFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void setAnimeFilms() {
+    private void setSeriesFilms() {
         // setup RecycleView
-        LinearLayoutManager layoutManagerAnime = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL,false);
-        binding.recyclerAnimeFilm.setLayoutManager(layoutManagerAnime);
-        binding.recyclerAnimeFilm.setHasFixedSize(false);
+        LinearLayoutManager layoutManagerSeries = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL,false);
+        binding.recyclerSerirsFilm.setLayoutManager(layoutManagerSeries);
+        binding.recyclerSerirsFilm.setHasFixedSize(false);
 
-        PosterAdapter adapter = new PosterAdapter(new ArrayList<String>());
-        binding.recyclerAnimeFilm.setAdapter(adapter);
+        SeriesFilmsAdapter adapter = new SeriesFilmsAdapter(new ArrayList<String>());
+        binding.recyclerSerirsFilm.setAdapter(adapter);
 
-        FilmsAnimeLiveData liveData = ViewModelProviders.of(this).get(FilmsAnimeLiveData.class);
+        SeriesFilmsLiveData liveData = ViewModelProviders.of(this).get(SeriesFilmsLiveData.class);
 
         liveData.getLiveData().observe(this.getViewLifecycleOwner(), new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> key) {
-                adapter.setPosterAdapter(key);
+                adapter.setAdapter(key);
             }
         });
     }

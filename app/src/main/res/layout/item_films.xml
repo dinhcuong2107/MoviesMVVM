@@ -12,9 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         app:cardCornerRadius="5dp">
+        <!-- tỷ lệ 27:40  -->
         <ImageView
             android:id="@+id/imageViewFilm"
-            android:layout_width="80dp"
+            android:layout_width="81dp"
             android:layout_height="120dp"
             android:scaleType="centerCrop"/>
     </androidx.cardview.widget.CardView>

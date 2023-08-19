@@ -40,6 +40,9 @@ public class FastfoodAdapter extends RecyclerView.Adapter<FastfoodAdapter.Fastfo
 
     @Override
     public void onBindViewHolder(@NonNull FastfooodViewHolder holder, int position) {
+        // cho phép di chuyển nội dung hiển thị trên TextView
+        holder.binding.textname.setSelected(true);
+
         String key = list.get(position);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Fastfood").child(key);

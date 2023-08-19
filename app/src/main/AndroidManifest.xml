@@ -23,6 +23,18 @@
         android:theme="@style/Theme.MVVM"
         tools:targetApi="31">
         <activity
+            android:name=".function.SeriesFilmsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".function.AddSeriesFilmsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".function.DetailSeriesFilmsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".function.ScanQRCodeActivity"
+            android:exported="false" />
+        <activity
             android:name=".function.WalletActivity"
             android:exported="false" />
         <activity

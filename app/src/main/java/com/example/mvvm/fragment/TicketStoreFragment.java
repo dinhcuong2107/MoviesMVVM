@@ -27,12 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TicketStoreFragment extends Fragment {
-    ActivityTicketStoreFragmentBinding binding;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.activity_ticket_store_fragment,container,false);
+        ActivityTicketStoreFragmentBinding binding = DataBindingUtil.inflate(inflater, R.layout.activity_ticket_store_fragment,container,false);
         TicketStoreVM viewmodel = new ViewModelProvider(this).get(TicketStoreVM.class);
         binding.setOrdfragment(viewmodel);
         binding.executePendingBindings();

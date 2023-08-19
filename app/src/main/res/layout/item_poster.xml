@@ -9,18 +9,23 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp">
+        app:cardCornerRadius="5dp">
+        <!-- tỷ lệ 27:40  -->
         <ImageView
             android:id="@+id/imageViewItemFilm"
-            android:layout_width="150dp"
-            android:layout_height="210dp"
+            android:layout_width="108dp"
+            android:layout_height="160dp"
             android:scaleType="centerCrop"/>
     </androidx.cardview.widget.CardView>
     <TextView
         android:id="@+id/textnameItemFilm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:text="name"/>
+
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"/>
 </LinearLayout>

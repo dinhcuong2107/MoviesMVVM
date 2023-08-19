@@ -39,10 +39,7 @@ public class UsersStatusVM extends ViewModel {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<String> list = new ArrayList<>();
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    Users users = dataSnapshot.getValue(Users.class);
-                    if (users.status){
-                        list.add(dataSnapshot.getKey());
-                    }
+                    list.add(dataSnapshot.getKey());
                 }
                 // Trả về dữ liệu
                 liveData.setValue(list);

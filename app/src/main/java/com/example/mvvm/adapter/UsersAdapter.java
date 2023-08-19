@@ -22,14 +22,17 @@ import androidx.annotation.Nullable;
 import androidx.databinding.ObservableField;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mvvm.MainActivity;
 import com.example.mvvm.R;
 import com.example.mvvm.Utils;
 import com.example.mvvm.databinding.CustomDialogChangePasswordBinding;
+import com.example.mvvm.databinding.CustomDialogDepositMoneyBinding;
 import com.example.mvvm.databinding.CustomDialogDetailUsersBinding;
 import com.example.mvvm.databinding.CustomDialogQuestionBinding;
 import com.example.mvvm.databinding.ItemUsersBinding;
 import com.example.mvvm.datalocal.DataLocalManager;
 import com.example.mvvm.function.DetailUsersActivity;
+import com.example.mvvm.model.TransactionMoney;
 import com.example.mvvm.model.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -44,6 +47,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,7 +85,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
 
                 Picasso.get().load(users.get().avatar).into(holder.binding.avatarUser);
                 holder.binding.nameUser.setText(""+users.get().fullname);
-                holder.binding.phoneUser.setText(""+users.get().phonenumber);
                 holder.binding.emailUser.setText(users.get().email);
             }
 
@@ -130,18 +133,11 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
 
                     // chỉ admin được mở khóa cho các user khác
                     binding.lock.setVisibility(View.GONE);
-                    binding.unlock.setVisibility(View.GONE);
+                    binding.unlock.setVisibility(View.VISIBLE);
 
                     binding.positionUser.setText("Tài khoản bị khóa");
                     binding.positionUser.setTextColor(Color.parseColor("#FF0000"));
                 }
-                binding.changeInf.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(view.getContext(), DetailUsersActivity.class);
-                        view.getContext().startActivity(intent);
-                    }
-                });
                 binding.changePassword.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -181,7 +177,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                                                                 if (task.isSuccessful()){
                                                                     Toast.makeText(view.getContext(), "Mật khẩu đã được thay đổi", Toast.LENGTH_SHORT).show();
                                                                     Log.d(TAG, "Mật khẩu đã được thay đổi");
-                                                                    dialog.dismiss();
+                                                                    Utils.reLoadIntent(view.getContext());
                                                                 }else {
                                                                     Toast.makeText(view.getContext(), "Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                                                                     Log.d(TAG, "Lỗi thay đổi mật khẩu"+ task.getException());
@@ -211,6 +207,140 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                         dialog.show();
                     }
                 });
+                binding.changeInf.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(view.getContext(), DetailUsersActivity.class);
+                        view.getContext().startActivity(intent);
+                    }
+                });
+                binding.depositIntoWallet.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Dialog dialog = new Dialog(view.getContext());
+                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        CustomDialogDepositMoneyBinding binding = CustomDialogDepositMoneyBinding.inflate(LayoutInflater.from(view.getContext()));
+                        dialog.setContentView(binding.getRoot());
+
+                        Window window = dialog.getWindow();
+                        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+                        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                        window.getAttributes().windowAnimations = R.style.DialogAnimationDrop;
+                        window.setGravity(Gravity.CENTER);
+                        dialog.setCancelable(false);
+
+                        binding.wallet.setText(key);
+                        binding.push.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (binding.amountMoney.getText().length()<5)
+                                {
+                                    Toast.makeText(view.getContext(), "Số tiền nạp phải lớn hơn 9.999 VNĐ",Toast.LENGTH_LONG).show();
+                                }else if (binding.description.getText().length() == 0)
+                                {
+                                    Toast.makeText(view.getContext(), "Nội dung giao dịch",Toast.LENGTH_LONG).show();
+                                }else {
+                                    TransactionMoney transaction = new TransactionMoney();
+                                    transaction.transaction_type = "deposit";
+                                    transaction.amount = Integer.parseInt(binding.amountMoney.getText().toString());
+                                    transaction.wallet = key;
+                                    transaction.supporter = DataLocalManager.getUid();
+                                    transaction.description = binding.description.getText().toString();
+                                    transaction.time = new SimpleDateFormat("HH:mm:ss").format(Utils.getRealtime());
+                                    transaction.date = new SimpleDateFormat("dd/MM/yyyy").format(Utils.getRealtime());
+                                    transaction.status = true;
+// Open Dialog Verification Deposit
+                                    Dialog dialog = new Dialog(view.getContext());
+                                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                    CustomDialogQuestionBinding binding = CustomDialogQuestionBinding.inflate(LayoutInflater.from(view.getContext()));
+                                    dialog.setContentView(binding.getRoot());
+
+                                    Window window = dialog.getWindow();
+                                    window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+                                    window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                    window.getAttributes().windowAnimations = R.style.DialogAnimationDrop;
+                                    window.setGravity(Gravity.CENTER);
+                                    dialog.setCancelable(false);
+
+                                    binding.textview.setText("Bạn muốn nạp "+ Utils.convertPriceToVND(transaction.amount)+" vào địa chỉ ví:" + transaction.wallet);
+                                    binding.push.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                                            databaseReference.child("Transaction").push().setValue(transaction, new DatabaseReference.CompletionListener() {
+                                                @Override
+                                                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                                    if (error == null) {
+                                                        Toast.makeText(view.getContext(), "Nạp thành công", Toast.LENGTH_SHORT).show();
+                                                        Utils.reLoadIntent(view.getContext());
+                                                    } else {
+                                                        Toast.makeText(view.getContext(), "Vui lòng thử lại" + error, Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+                                    binding.cancel.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                    dialog.show();
+                                }
+                            }
+                        });
+                        binding.cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        dialog.show();
+                    }
+                });
+                binding.unlock.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Dialog dialogquestion = new Dialog(view.getContext());
+                        dialogquestion.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        CustomDialogQuestionBinding questionBinding = CustomDialogQuestionBinding.inflate(LayoutInflater.from(view.getContext()));
+                        dialogquestion.setContentView(questionBinding.getRoot());
+
+                        Window window = dialogquestion.getWindow();
+                        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+                        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                        window.getAttributes().windowAnimations = R.style.DialogAnimationDrop;
+                        window.setGravity(Gravity.CENTER);
+                        dialogquestion.setCancelable(false);
+
+                        questionBinding.textview.setText("Bạn muốn mở khóa tài khoản");
+                        questionBinding.cancel.setOnClickListener(v1 -> dialogquestion.dismiss());
+                        questionBinding.push.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                                databaseReference.child("Users").child(key).child("status").setValue(true, new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                        if (error == null) {
+                                            Log.d(TAG, "Unlock Account : Complete");
+                                            Utils.reLoadIntent(view.getContext());
+                                        } else {
+                                            Log.d(TAG, "Unlock Account : Error - "+error);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                        dialogquestion.show();
+                    }
+                });
                 binding.lock.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -233,11 +363,12 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                             @Override
                             public void onClick(View v) {
                                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-                                databaseReference.child("Users").child(DataLocalManager.getUid()).child("status").setValue(false, new DatabaseReference.CompletionListener() {
+                                databaseReference.child("Users").child(key).child("status").setValue(false, new DatabaseReference.CompletionListener() {
                                     @Override
                                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                         if (error == null) {
                                             Log.d(TAG, "Lock Account : Complete");
+                                            Utils.reLoadIntent(view.getContext());
                                         } else {
                                             Log.d(TAG, "Lock Account : Error - "+error);
                                         }

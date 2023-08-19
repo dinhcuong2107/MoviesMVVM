@@ -37,6 +37,7 @@
                         android:textSize="21dp"
                         android:textStyle="bold"
                         android:gravity="center"
+                        android:visibility="@{detailFilms.isOnline ? View.VISIBLE : View.GONE}"
                         android:textColor="@color/color_a"
                         android:layout_gravity="bottom"
                         android:text="@{detailFilms.onlinePrice}"/>
@@ -45,12 +46,14 @@
                         android:layout_height="50dp"
                         android:layout_gravity="left"
                         android:layout_marginRight="5dp"
+                        android:visibility="@{detailFilms.isHot ? View.VISIBLE : View.GONE}"
                         android:src="@drawable/ic_hot"/>
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="right"
                         android:layout_marginLeft="5dp"
+                        android:visibility="@{detailFilms.isNew ? View.VISIBLE : View.GONE}"
                         android:src="@drawable/ic_new"/>
                 </androidx.cardview.widget.CardView>
                 <androidx.appcompat.widget.AppCompatButton
@@ -59,6 +62,7 @@
                     android:layout_height="30dp"
                     android:layout_alignParentEnd="true"
                     android:onClick="@{(view) -> detailFilms.onShowPopupMenu(view)}"
+                    android:visibility="@{detailFilms.admin ? View.VISIBLE : View.GONE}"
                     android:background="@drawable/round_more_horiz_24"/>
             </RelativeLayout>
             <TextView
@@ -92,7 +96,7 @@
                 android:text="Ngừng công chiếu"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:orientation="horizontal">
@@ -110,19 +114,22 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
+                    android:visibility="@{detailFilms.admin || detailFilms.isOnline ? View.VISIBLE : View.GONE}"
                     android:text="Xem phim"
                     android:onClick="@{(view) -> detailFilms.onclickvideo(view)}"
                     android:textAllCaps="false"
                     android:background="@drawable/custom_button_yes"/>
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:text="Mua vé"
+                    android:visibility="@{detailFilms.isOnline ? View.GONE : View.VISIBLE}"
+                    android:background="@drawable/custom_button_yes"
                     android:onClick="@{(view) -> detailFilms.onclickbuy(view)}"
-                    android:textAllCaps="false"
-                    android:background="@drawable/custom_button_yes"/>
+                    android:text="Lịch chiếu phim"
+                    android:textAllCaps="false" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -174,20 +181,20 @@
                         android:layout_weight="1"
                         android:text="@={detailFilms.films.country}"/>
                 </LinearLayout>
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Tóm tắt nội dung:"/>
-                    <TextView
+                    app:hintEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
+                        android:clickable="true"
+                        android:focusable="@{detailFilms.admin}"
+                        android:hint="Tóm tắt nội dung:"
                         android:text="@={detailFilms.films.inf_short}"/>
-                </LinearLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

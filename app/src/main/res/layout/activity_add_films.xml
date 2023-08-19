@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View"/>
         <variable
             name="addnewfilm"
             type="com.example.mvvm.function.AddFilmsVM" />
@@ -27,18 +28,14 @@
                     android:layout_margin="5dp"
                     app:cardCornerRadius="5dp">
 
+                    <!-- tỷ lệ 27:40  -->
                     <ImageView
-                        android:id="@+id/poster"
-                        android:layout_width="210dp"
-                        android:layout_height="300dp"
+                        android:layout_width="189dp"
+                        android:layout_height="280dp"
+                        android:onClick="@{(view) -> addnewfilm.launchImagePicker(view)}"
                         android:scaleType="centerCrop"
                         android:src="@{addnewfilm.poster}" />
                 </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    app:cardCornerRadius="5dp"/>
             </LinearLayout>
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -50,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Tên phim"
-                    android:text="@={addnewfilm.films.name}"/>
+                    android:text="@={addnewfilm.films_name}"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -67,7 +64,7 @@
                     android:clickable="true"
                     android:focusable="false"
                     android:inputType="number"
-                    android:text="@={addnewfilm.films.year}" />
+                    android:text="@={addnewfilm.year_of_manufacture}" />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -79,7 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Đạo diễn"
-                    android:text="@={addnewfilm.films.director}"/>
+                    android:text="@={addnewfilm.director}"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -91,21 +88,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Diễn viên chính"
-                    android:text="@={addnewfilm.films.main_actors}"/>
+                    android:text="@={addnewfilm.main_actors}"/>
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.hbb20.CountryCodePicker
                 android:id="@+id/country"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:ccp_showFullName="true"
-                app:ccp_showPhoneCode="false"
-                app:ccp_defaultNameCode="VN"
-                app:ccp_defaultLanguage="VIETNAMESE"
-                app:ccp_contentColor="#FFFF0000"
-                app:ccp_showNameCode="false"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:gravity="center"/>
+                android:gravity="center"
+                app:ccp_contentColor="#FFFF0000"
+                app:ccp_defaultLanguage="VIETNAMESE"
+                app:ccp_defaultNameCode="VN"
+                app:ccp_showFullName="true"
+                app:ccp_showNameCode="false"
+                app:ccp_showPhoneCode="false" />
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -130,7 +129,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
                     android:hint="Tóm tắt"
-                    android:text="@={addnewfilm.films.inf_short}"/>
+                    android:text="@={addnewfilm.inf_short}"/>
             </com.google.android.material.textfield.TextInputLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -146,6 +145,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/custom_button_yes"
+                    android:onClick="@{(view) -> addnewfilm.launchVideoPicker(view)}"
                     android:text="Tải lên"
                     android:textAllCaps="false"/>
                 <LinearLayout
@@ -161,6 +161,8 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:ellipsize="end"
                         android:layout_margin="4dp"
                         android:text="@={addnewfilm.video}"/>
                 </LinearLayout>
@@ -181,6 +183,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/custom_button_yes"
+                    android:onClick="@{(view) -> addnewfilm.launchTrailerPicker(view)}"
                     android:text="Tải lên"
                     android:textAllCaps="false"/>
                 <LinearLayout
@@ -196,6 +199,8 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:ellipsize="end"
                         android:layout_margin="4dp"
                         android:text="@={addnewfilm.trailer}"/>
                 </LinearLayout>
@@ -204,14 +209,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/custom_button_yes"
                     android:text="Lưu"
-                    android:layout_marginBottom="20dp"
+                    android:visibility="@{addnewfilm.update ? View.GONE : View.VISIBLE}"
                     android:onClick="@{(view) -> addnewfilm.onclickAddFilms(view)}"
+                    android:textAllCaps="false"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_button_yes"
+                    android:text="Cập nhật"
+                    android:visibility="@{addnewfilm.update ? View.VISIBLE : View.GONE}"
+                    android:onClick="@{(view) -> addnewfilm.onclickUpdateFilms(view)}"
+                    android:textAllCaps="false"/>
+
+                <Space
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{addnewfilm.update ? View.VISIBLE : View.GONE}"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_button_yes"
+                    android:text="Xóa phim"
+                    android:visibility="@{addnewfilm.update ? View.VISIBLE : View.GONE}"
+                    android:onClick="@{(view) -> addnewfilm.onclickDeleteFilms(view)}"
                     android:textAllCaps="false"/>
             </LinearLayout>
 

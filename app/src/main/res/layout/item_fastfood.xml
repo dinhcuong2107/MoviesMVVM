@@ -20,11 +20,13 @@
         android:id="@+id/textname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="name"
+
         android:singleLine="true"
-        android:ellipsize="end"
-        android:gravity="center"/>
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"/>
     <TextView
         android:id="@+id/textprice"
         android:layout_width="wrap_content"

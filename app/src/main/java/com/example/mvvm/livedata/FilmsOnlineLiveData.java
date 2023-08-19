@@ -1,5 +1,9 @@
 package com.example.mvvm.livedata;
 
+import static android.content.ContentValues.TAG;
+
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -26,23 +30,28 @@ public class FilmsOnlineLiveData extends ViewModel {
     }
 
     private void loadData() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Online Films");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<String> list = new ArrayList<>();
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    Films films = dataSnapshot.getValue(Films.class);
-                    if (films.status){
+                if (snapshot.exists()) {
+                    // Tham chiếu "Online Films" tồn tại, tiếp tục với logic của bạn
+                    List<String> list = new ArrayList<>();
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Log.d(TAG, "Livedata Films On: 1" + dataSnapshot.getKey());
                         list.add(dataSnapshot.getKey());
                     }
+                    // ...
+                    liveData.setValue(list);
+                } else {
+                    // Tham chiếu "Online Films" không tồn tại
+                    // Xử lý tình huống này theo ý muốn của bạn
+                    // ...
                 }
-                liveData.setValue(list);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }

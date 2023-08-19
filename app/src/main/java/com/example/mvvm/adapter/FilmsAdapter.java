@@ -49,6 +49,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHol
 
     @Override
     public void onBindViewHolder(@NonNull FilmsViewHolder holder, int position) {
+
         String string = list.get(position);
 
         if (string == null){return;}
