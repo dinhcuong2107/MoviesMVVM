@@ -202,15 +202,6 @@ public class DetailFilmsVM extends ViewModel {
             }
         });
     }
-
-
-    public void onclicktrailer(View view) {
-        Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
-        intent.putExtra("video", films.get().videoTrailer);
-        intent.putExtra("name", films.get().name);
-        view.getContext().startActivity(intent);
-    }
-
     public void onclickvideo(View view) {
         if (admin.get()){
             Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
@@ -455,8 +446,9 @@ public class DetailFilmsVM extends ViewModel {
                     questionBinding.push.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            String time = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy").format(Utils.getRealtime());
                             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-                            databaseReference.child("Movie Store").child(DataLocalManager.getUid()).child(key_film.get()).setValue(true, new DatabaseReference.CompletionListener() {
+                            databaseReference.child("Movie Store").child(DataLocalManager.getUid()).child(key_film.get()).setValue(time, new DatabaseReference.CompletionListener() {
                                 @Override
                                 public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                     if (error == null) {

@@ -49,14 +49,6 @@ public class AddSeriesFilmsActivity extends AppCompatActivity {
         binding.setSeriesFilms(viewmodel);
         binding.executePendingBindings();
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        },0);
-
         FilmsOnlineLiveData liveData =  ViewModelProviders.of(this).get(FilmsOnlineLiveData.class);
         liveData.getLiveData().observe(this, new Observer<List<String>>() {
             @Override

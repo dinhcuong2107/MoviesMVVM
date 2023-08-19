@@ -3,7 +3,6 @@ package com.example.mvvm.model;
 public class Films {
     public String name;
     public String poster;
-    public String videoTrailer;
     public String video;
     public String director;
     public String main_actors;
@@ -16,10 +15,9 @@ public class Films {
     public Films() {
     }
 
-    public Films(String name, String poster, String videoTrailer, String video, String director, String main_actors, String country, String genre, String year, String inf_short, boolean status) {
+    public Films(String name, String poster, String video, String director, String main_actors, String country, String genre, String year, String inf_short, boolean status) {
         this.name = name;
         this.poster = poster;
-        this.videoTrailer = videoTrailer;
         this.video = video;
         this.director = director;
         this.main_actors = main_actors;
@@ -46,13 +44,6 @@ public class Films {
         this.poster = poster;
     }
 
-    public String getVideoTrailer() {
-        return videoTrailer;
-    }
-
-    public void setVideoTrailer(String videoTrailer) {
-        this.videoTrailer = videoTrailer;
-    }
 
     public String getVideo() {
         return video;

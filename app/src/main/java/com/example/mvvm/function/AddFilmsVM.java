@@ -97,7 +97,7 @@ public class AddFilmsVM extends ViewModel {
     public ObservableField<String > country = new ObservableField<>();
     public ObservableField<String > poster = new ObservableField<>();
     public ObservableField<String > video = new ObservableField<>();
-    public ObservableField<String > trailer = new ObservableField<>();
+
     public ObservableField<String> director = new ObservableField<>();
     public ObservableField<String> main_actors = new ObservableField<>();
     public ObservableField<String> inf_short = new ObservableField<>();
@@ -150,7 +150,6 @@ public class AddFilmsVM extends ViewModel {
                     poster.set(films.poster);
                     year_of_manufacture.set(films.year);
                     genre.set(films.genre);
-                    trailer.set(films.videoTrailer);
                     video.set(films.video);
                     director.set(films.director);
                     main_actors.set(films.main_actors);
@@ -262,7 +261,7 @@ public class AddFilmsVM extends ViewModel {
     public void onclickAddFilms(View view){
         if (onCheck(view))
         {
-            Films films = new Films(films_name.get(), poster.get(), trailer.get(), video.get(), director.get(), main_actors.get(),country.get(), country.get(), year_of_manufacture.get(), inf_short.get(),true);
+            Films films = new Films(films_name.get(), poster.get(), video.get(), director.get(), main_actors.get(),country.get(), country.get(), year_of_manufacture.get(), inf_short.get(),true);
 
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
             databaseReference.child("Films").push().setValue(films, new DatabaseReference.CompletionListener() {
@@ -281,7 +280,7 @@ public class AddFilmsVM extends ViewModel {
     }
     public void onclickUpdateFilms(View view){
         if (onCheck(view) ) {
-            Films films = new Films(films_name.get(), poster.get(), trailer.get(), video.get(), director.get(), main_actors.get(),country.get(), country.get(), year_of_manufacture.get(), inf_short.get(),true);
+            Films films = new Films(films_name.get(), poster.get(), video.get(), director.get(), main_actors.get(),country.get(), country.get(), year_of_manufacture.get(), inf_short.get(),true);
             
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
             databaseReference.child("Films").child(key_film.get()).setValue(films, new DatabaseReference.CompletionListener() {
@@ -343,18 +342,11 @@ public class AddFilmsVM extends ViewModel {
 
     public boolean onCheck(View view){
         String error="";
-        if (trailer.get() == null){error = "Bổ sung trailer phim";}
-        Log.e(TAG, "onCheck: " +error);
         if (video.get() == null){error = "Bổ sung video phim";}
-        Log.e(TAG, "onCheck: " +error);
         if (inf_short.get() == null){error = "Bổ sung tóm tắt phim";}
-        Log.e(TAG, "onCheck: " +error);
         if (genre.get() == null){error = "Bổ sung thể loại phim";}
-        Log.e(TAG, "onCheck: " +error);
         if (country.get() == null){error = "Bổ sung Quốc gia";}
-        Log.e(TAG, "onCheck: " +error);
         if (main_actors.get() == null){error = "Bổ sung diễn viên chính";}
-        Log.e(TAG, "onCheck: " +error);
         if (director.get() == null){error = "Bổ sung đạo diễn phim";}
         if (year_of_manufacture.get() == null){error = "Bổ sung năm sản xuất phim";}
         if (films_name.get() == null){error = "Bổ sung tên phim";}
@@ -378,28 +370,6 @@ public class AddFilmsVM extends ViewModel {
             @Override
             public void onPermissionGranted() {
                 pickImageLauncher.launch("image/*");
-                Log.e(TAG,"DetailUsersVM: Permission Granted");
-            }
-
-            @Override
-            public void onPermissionDenied(List<String> deniedPermissions) {
-                Toast.makeText(view.getContext(), "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
-            }
-        };
-        TedPermission.create()
-                .setPermissionListener(permissionlistener)
-                .setDeniedMessage("Nếu bạn từ chối quyền, bạn không thể sử dụng dịch vụ này\nVui lòng cấp quyền tại [Setting] > [Permission]")
-                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA)
-                .check();
-    }
-    public void launchTrailerPicker(View view) {
-        AppCompatActivity activity = (AppCompatActivity) view.getContext();
-        context.setValue(activity);
-        type.set("trailer");
-        PermissionListener permissionlistener = new PermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-                pickVideoLauncher.launch("video/*");
                 Log.e(TAG,"DetailUsersVM: Permission Granted");
             }
 
@@ -485,9 +455,6 @@ public class AddFilmsVM extends ViewModel {
                             if (type.get().equals("image"))
                             {
                                 poster.set(downloadUrl.toString());
-                            } else if (type.get().equals("trailer"))
-                            {
-                                trailer.set(downloadUrl.toString());
                             } else if (type.get().equals("video"))
                             {
                                 video.set(downloadUrl.toString());

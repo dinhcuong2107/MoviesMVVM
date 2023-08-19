@@ -105,15 +105,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:text="Trailer"
-                    android:onClick="@{(view) -> detailFilms.onclicktrailer(view)}"
-                    android:textAllCaps="false"
-                    android:background="@drawable/custom_button_yes"/>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
                     android:visibility="@{detailFilms.admin || detailFilms.isOnline ? View.VISIBLE : View.GONE}"
                     android:text="Xem phim"
                     android:onClick="@{(view) -> detailFilms.onclickvideo(view)}"
@@ -136,51 +127,6 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="2"
-                        android:text="Đạo diễn:"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@={detailFilms.films.director}"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="2"
-                        android:text="Diễn viên chính:"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@={detailFilms.films.main_actors}"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="2"
-                        android:text="Quốc gia:"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@={detailFilms.films.country}"/>
-                </LinearLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
@@ -191,41 +137,103 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:clickable="true"
-                        android:focusable="@{detailFilms.admin}"
+                        android:focusable="false"
+                        android:hint="Đạo diễn:"
+                        android:text="@={detailFilms.films.director}"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="Diễn viên chính:"
+                        android:text="@={detailFilms.films.main_actors}"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="true">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="false"
                         android:hint="Tóm tắt nội dung:"
                         android:text="@={detailFilms.films.inf_short}"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatButton
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={detailFilms.quantityLike}"
                     android:layout_weight="1"
                     android:visibility="@{detailFilms.feeling ? View.VISIBLE : View.GONE}"
-                    android:onClick="@{(view) -> detailFilms.onclickdislike(view)}"
-                    android:drawableStart="@drawable/round_favorite_24"
-                    android:textAllCaps="false"/>
-                <androidx.appcompat.widget.AppCompatButton
+                    app:startIconDrawable="@drawable/round_favorite_24"
+                    app:startIconTint="#FF0000">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:padding="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:text="@{detailFilms.quantityLike}"
+                        android:onClick="@{(view) -> detailFilms.onclickdislike(view)}"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={detailFilms.quantityLike}"
                     android:layout_weight="1"
                     android:visibility="@{detailFilms.feeling ? View.GONE : View.VISIBLE}"
-                    android:onClick="@{(view) -> detailFilms.onclicklike(view)}"
-                    android:drawableStart="@drawable/round_favorite_border_24"
-                    android:textAllCaps="false"/>
-                <androidx.appcompat.widget.AppCompatButton
+                    app:startIconDrawable="@drawable/round_favorite_border_24">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:padding="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:text="@{detailFilms.quantityLike}"
+                        android:onClick="@{(view) -> detailFilms.onclicklike(view)}"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={detailFilms.quantityComment}"
-                    android:onClick="@{(view) -> detailFilms.onclickfeedback(view)}"
                     android:layout_weight="1"
-                    android:drawableStart="@drawable/round_comment_24"
-                    android:textAllCaps="false"/>
+                    app:startIconDrawable="@drawable/round_comment_24">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:padding="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:text="@{detailFilms.quantityComment}"
+                        android:onClick="@{(view) -> detailFilms.onclickfeedback(view)}"/>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

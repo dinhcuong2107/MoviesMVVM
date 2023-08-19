@@ -57,8 +57,11 @@ public class DetailSeriesFilmsVM extends ViewModel {
     public MutableLiveData<List<String>> list_epsode = new MutableLiveData<>();
 
     public ObservableField<Boolean> admin = new ObservableField<>();
+    public ObservableField<Boolean> bought_epsode = new ObservableField<>();
+    public ObservableField<Boolean> bought_series = new ObservableField<>();
     public ObservableField<String> key_epsode = new ObservableField<>();
     public ObservableField<Integer> max_epsode = new ObservableField<>();
+    public ObservableField<Integer> epsode = new ObservableField<>();
     public ObservableField<String> key_series = new ObservableField<>();
     public ObservableField<String> key_feedback = new ObservableField<>();
     public ObservableField<String> quantityLike = new ObservableField<>();
@@ -66,12 +69,14 @@ public class DetailSeriesFilmsVM extends ViewModel {
     public ObservableField<Boolean> feeling = new ObservableField<>();
     public ObservableField<Boolean> isNew = new ObservableField<>();
     public ObservableField<Boolean> isHot = new ObservableField<>();
+    public ObservableField<Boolean> isOnline = new ObservableField<>();
 
     public ObservableField<Films> films = new ObservableField<>();
     public ObservableField<SeriesFilms> seriesfilms = new ObservableField<>();
 
     // trả về giá dạng xxx.xxx.xxx VNĐ
     public ObservableField<String> price = new ObservableField<>();
+    public ObservableField<Integer> price_epsode = new ObservableField<>();
 
     public DetailSeriesFilmsVM () {
         admin.set(DataLocalManager.getAdmin());
@@ -104,6 +109,7 @@ public class DetailSeriesFilmsVM extends ViewModel {
 
                 // set epsode default
                 load_epsode(0);
+
             }
 
             @Override
@@ -114,6 +120,7 @@ public class DetailSeriesFilmsVM extends ViewModel {
     }
 
     public void load_epsode(int i) {
+        epsode.set(i+1);
         key_epsode.set(list_epsode.getValue().get(i));
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Films").child(list_epsode.getValue().get(i));
         reference.addValueEventListener(new ValueEventListener() {
@@ -130,186 +137,76 @@ public class DetailSeriesFilmsVM extends ViewModel {
 
         checkNew();
         checkHot();
+        checkOnline();
         countComment();
+
+        checkBoughtEpsode();
+        checkBoughtSeries();
     }
     public void click_check_store(View view) {
-        if (checkEpsodeStore()){
-            Utils.showError(view.getContext(), "" + checkEpsodeStore());
-        }else {
-            Utils.showError(view.getContext(), "error");
-        }
-    }
-
-    public boolean checkEpsodeStore (){
         if (!admin.get()){
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Movie Store").child(DataLocalManager.getUid()).child(key_epsode.get());
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        // Tham chiếu "Movie Store" tồn tại
-                        // ...
-
-                    } else {
-                        // Tham chiếu "Movie Store" không tồn tại
-                        // Xử lý tình huống này theo ý muốn của bạn
-                        // ...
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
-        }
-        return false;
-    }
-
-    private void checkNew() {
-        isNew.set(false);
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("New Films");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    // Tham chiếu "Online Films" tồn tại, tiếp tục với logic của bạn
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Log.d(TAG, "Check New: " + dataSnapshot.getKey());
-                        if (dataSnapshot.getKey().equals(key_epsode.get())) {
-                            isNew.set(true);
-                        }
-                    }
-                    // ...
-                } else {
-                    // Tham chiếu "Online Films" không tồn tại
-                    // Xử lý tình huống này theo ý muốn của bạn
-                    // ...
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
-    private void checkHot() {
-        isHot.set(false);
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Hot Films");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    // Tham chiếu "Hot Films" tồn tại, tiếp tục với logic của bạn
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Log.d(TAG, "Check Hot: " + dataSnapshot.getKey());
-                        if (dataSnapshot.getKey().equals(key_epsode.get())) {
-                            isHot.set(true);
-                        }
-                    }
-                    // ...
-                } else {
-                    // Tham chiếu "Hot Films" không tồn tại
-                    // Xử lý tình huống này theo ý muốn của bạn
-                    // ...
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
-    private void countComment() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Feedback");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int like = 0;
-                int comment = 0;
-                feeling.set(false);
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Feedback feedback = dataSnapshot.getValue(Feedback.class);
-                    if (feedback.key_film.equals(key_epsode.get()) && feedback.status) {
-                        if (feedback.comment.equals(":2107")) {
-                            like++;
-                            if (feedback.key_user.equals(DataLocalManager.getUid())) {
-                                key_feedback.set(dataSnapshot.getKey());
-                                feeling.set(true);
-                            }
+            if (bought_series.get()){
+                // show dialog tb bought
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Movie Store").child(DataLocalManager.getUid()).child(key_series.get());
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            // Tham chiếu "Movie Store" tồn tại
+                            // ...
+                            Utils.showError(view.getContext(), "Phim đã được mua vào "+ snapshot.getValue());
                         } else {
-                            comment++;
+                            // Tham chiếu "Movie Store" không tồn tại
+                            // Xử lý tình huống này theo ý muốn của bạn
+                            // ...
                         }
                     }
-                }
-                quantityComment.set("" + comment);
-                quantityLike.set("" + like);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
 
+            } else {
+                // show dialog buy series
+                openDialogMovieStore(view);
             }
-        });
+        }
     }
 
     public void click_play(View view) {
-        ObservableField<Boolean> enable = new ObservableField<>();
-        enable.set(false);
-
         if (admin.get()){
-            enable.set(true);
+            Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
+            intent.putExtra("video", films.get().video);
+            intent.putExtra("name", films.get().name);
+            view.getContext().startActivity(intent);
         }else {
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Movie Store").child(DataLocalManager.getUid());
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        // Tham chiếu "Movie Store" tồn tại
-                        for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                            if (dataSnapshot.getKey().equals(key_epsode.get()) || dataSnapshot.getKey().equals(key_series.get()))
-                            {
-                                enable.set(true);
-                            }
-                        }
-
-
-                        // ...
-                    } else {
-                        // Tham chiếu "Movie Store" không tồn tại
-                        // Xử lý tình huống này theo ý muốn của bạn
-                        // ...
-                        openDialogMovieStore(view);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
-        }
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (enable.get()){
+            if (!isOnline.get()){
+                Utils.showError(view.getContext(), "Tập phim không được công chiếu online ");
+            }else {
+                if ( price_epsode.get()==0){
                     Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
                     intent.putExtra("video", films.get().video);
                     intent.putExtra("name", films.get().name);
                     view.getContext().startActivity(intent);
                 }else {
-                    Utils.showError(view.getContext(), "error");
+                    if (bought_series.get() || bought_epsode.get()){
+                        Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
+                        intent.putExtra("video", films.get().video);
+                        intent.putExtra("name", films.get().name);
+                        view.getContext().startActivity(intent);
+                    }else {
+                        Utils.showError(view.getContext(), "Tập phim yêu cầu trả phí");
+                    }
                 }
             }
-        },100);
-    }
-    public void click_buy(View view) {
-        if (!admin.get()){
+
+
 
         }
     }
-    public void click_fix(View view) {
 
+    public void click_fix(View view) {
         Intent intent = new Intent(view.getContext(), AddSeriesFilmsActivity.class);
         intent.putExtra("key_series", key_series.get());
         view.getContext().startActivity(intent);
@@ -336,16 +233,17 @@ public class DetailSeriesFilmsVM extends ViewModel {
                     window.getAttributes().windowAnimations = R.style.DialogAnimationDrop;
                     window.setGravity(Gravity.CENTER);
                     dialogquestion.setCancelable(false);
-
-                    questionBinding.textview.setText("Bạn muốn thêm phim '"+ films.get().name +"' vào Store với giá " + price.get());
+                    questionBinding.textview.setText("Bạn muốn thêm bộ phim '"+ seriesfilms.get().name +"' vào Store với giá " + price.get());
                     questionBinding.cancel.setOnClickListener(v1 -> dialogquestion.dismiss());
 
                     questionBinding.push.setText("Thanh toán và xem ngay");
                     questionBinding.push.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            String time = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy").format(Utils.getRealtime());
+
                             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-                            databaseReference.child("Movie Store").child(DataLocalManager.getUid()).child(key_epsode.get()).setValue(true, new DatabaseReference.CompletionListener() {
+                            databaseReference.child("Movie Store").child(DataLocalManager.getUid()).child(key_series.get()).setValue(time, new DatabaseReference.CompletionListener() {
                                 @Override
                                 public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                     if (error == null) {
@@ -370,10 +268,13 @@ public class DetailSeriesFilmsVM extends ViewModel {
     private void paymment(View view) {
         TransactionMoney transaction = new TransactionMoney();
         transaction.transaction_type = "payment";
-        transaction.amount = Utils.convertVNDToPrice(price.get());
+
         transaction.wallet = DataLocalManager.getUid();
         transaction.supporter = DataLocalManager.getUid();
+
         transaction.description = "Movie Store:" + key_series.get();
+        transaction.amount = seriesfilms.get().price;
+
         transaction.time = new SimpleDateFormat("HH:mm:ss").format(Utils.getRealtime());
         transaction.date = new SimpleDateFormat("dd/MM/yyyy").format(Utils.getRealtime());
         transaction.status = true;
@@ -493,6 +394,173 @@ public class DetailSeriesFilmsVM extends ViewModel {
             }
         });
         dialog.show();
+    }
+
+    private void checkNew() {
+        isNew.set(false);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("New Films");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // Tham chiếu "Online Films" tồn tại, tiếp tục với logic của bạn
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Log.d(TAG, "Check New: " + dataSnapshot.getKey());
+                        if (dataSnapshot.getKey().equals(key_epsode.get())) {
+                            isNew.set(true);
+                        }
+                    }
+                    // ...
+                } else {
+                    // Tham chiếu "Online Films" không tồn tại
+                    // Xử lý tình huống này theo ý muốn của bạn
+                    // ...
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+    private void checkOnline() {
+        isOnline.set(false);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Online Films");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // Tham chiếu "Hot Films" tồn tại, tiếp tục với logic của bạn
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Log.d(TAG, "Check Online: " + dataSnapshot.getKey());
+                        if (dataSnapshot.getKey().equals(key_epsode.get())) {
+                            isOnline.set(true);
+
+                            price_epsode.set(Integer.parseInt(String.valueOf(dataSnapshot.getValue())));
+                            Log.d(TAG, "Price Online: " + price_epsode.get());
+                        }
+                    }
+                    // ...
+                } else {
+                    // Tham chiếu "Hot Films" không tồn tại
+                    // Xử lý tình huống này theo ý muốn của bạn
+                    // ...
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+    private void checkHot() {
+        isHot.set(false);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Hot Films");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // Tham chiếu "Hot Films" tồn tại, tiếp tục với logic của bạn
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Log.d(TAG, "Check Hot: " + dataSnapshot.getKey());
+                        if (dataSnapshot.getKey().equals(key_epsode.get())) {
+                            isHot.set(true);
+                        }
+                    }
+                    // ...
+                } else {
+                    // Tham chiếu "Hot Films" không tồn tại
+                    // Xử lý tình huống này theo ý muốn của bạn
+                    // ...
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+    private void countComment() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Feedback");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int like = 0;
+                int comment = 0;
+                feeling.set(false);
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Feedback feedback = dataSnapshot.getValue(Feedback.class);
+                    if (feedback.key_film.equals(key_epsode.get()) && feedback.status) {
+                        if (feedback.comment.equals(":2107")) {
+                            like++;
+                            if (feedback.key_user.equals(DataLocalManager.getUid())) {
+                                key_feedback.set(dataSnapshot.getKey());
+                                feeling.set(true);
+                            }
+                        } else {
+                            comment++;
+                        }
+                    }
+                }
+                quantityComment.set("" + comment);
+                quantityLike.set("" + like);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    private void checkBoughtEpsode (){
+        bought_epsode.set(false);
+
+        if (!admin.get()){
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Movie Store").child(DataLocalManager.getUid()).child(key_epsode.get());
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        // Tham chiếu "Movie Store" tồn tại
+                        // ...
+                        bought_epsode.set(true);
+                    } else {
+                        // Tham chiếu "Movie Store" không tồn tại
+                        // Xử lý tình huống này theo ý muốn của bạn
+                        // ...
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }
+    }
+    private void checkBoughtSeries (){
+        bought_series.set(false);
+
+        if (!admin.get()){
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Movie Store").child(DataLocalManager.getUid()).child(key_series.get());
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        // Tham chiếu "Movie Store" tồn tại
+                        // ...
+                        bought_series.set(true);
+                    } else {
+                        // Tham chiếu "Movie Store" không tồn tại
+                        // Xử lý tình huống này theo ý muốn của bạn
+                        // ...
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }
     }
 
     @BindingAdapter({"android:src"})
