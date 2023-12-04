@@ -68,6 +68,14 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ticket = snapshot.getValue(Ticket.class);
                 holder.binding.ticket.setText(key);
+
+                holder.binding.ticket.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Utils.showQRCode(v.getContext(), key);
+                    }
+                });
+
                 DatabaseReference databaseMovies = FirebaseDatabase.getInstance().getReference("Movies").child(ticket.key_movies);
                 databaseMovies.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -127,23 +135,20 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
                         ProductsAdapter adapter = new ProductsAdapter(list);
                         binding.recyclerviewverification.setAdapter(adapter);
 
-                        if (DataLocalManager.getAdmin()){
-                        }else {
-                            binding.keyuser.setText(ticket.key_user);
-                            DatabaseReference databaseUsers = FirebaseDatabase.getInstance().getReference("Users").child(ticket.key_user);
-                            databaseUsers.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    users = snapshot.getValue(Users.class);
-                                    binding.fullname.setText(users.fullname);
-                                }
+                        binding.keyuser.setText(ticket.key_user);
+                        DatabaseReference databaseUsers = FirebaseDatabase.getInstance().getReference("Users").child(ticket.key_user);
+                        databaseUsers.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                users = snapshot.getValue(Users.class);
+                                binding.fullname.setText(users.fullname);
+                            }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-                                }
-                            });
-                        }
+                            }
+                        });
                         if (ticket.status == false){
                             binding.cancel.setText("Đã hủy - "+ ticket.time);
                         }

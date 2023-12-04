@@ -36,6 +36,7 @@ import com.example.mvvm.databinding.CustomDialogSuccessBinding;
 import com.example.mvvm.datalocal.DataLocalManager;
 import com.example.mvvm.model.Feedback;
 import com.example.mvvm.model.Films;
+import com.example.mvvm.model.SeriesFilms;
 import com.example.mvvm.model.TransactionMoney;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,9 +48,11 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class DetailFilmsVM extends ViewModel {
     public ObservableField<String> key_film = new ObservableField<>();
+    public ObservableField<String> key_series = new ObservableField<>();
     public ObservableField<String> key_feedback = new ObservableField<>();
     public ObservableField<String> quantityLike = new ObservableField<>();
     public ObservableField<String> quantityComment = new ObservableField<>();
@@ -59,8 +62,11 @@ public class DetailFilmsVM extends ViewModel {
     public ObservableField<Boolean> isNew = new ObservableField<>();
     public ObservableField<Boolean> isHot = new ObservableField<>();
     public ObservableField<Boolean> isOnline = new ObservableField<>();
+    public ObservableField<Boolean> bought_epsode = new ObservableField<>();
+    public ObservableField<Boolean> bought_series = new ObservableField<>();
 
     public ObservableField<Films> films = new ObservableField<>();
+    public ObservableField<SeriesFilms> seriesfilms = new ObservableField<>();
     public ObservableField<String> onlinePrice = new ObservableField<>();
 
     public DetailFilmsVM(String key) {
@@ -83,8 +89,42 @@ public class DetailFilmsVM extends ViewModel {
         checkOnline();
         checkNew();
         checkHot();
+
+        checkSeries();
+        checkBoughtEpsode();
     }
 
+    private void checkSeries() {
+        seriesfilms.set(new SeriesFilms());
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Series Films");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // Tham chiếu "Series Films" tồn tại, tiếp tục với logic của bạn
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        SeriesFilms series = dataSnapshot.getValue(SeriesFilms.class);
+                        if (Utils.checkForExistence(key_film.get(),Utils.convertStringToList(series.epsodecode))) {
+                            Log.d(TAG, "Series: " + dataSnapshot.getKey());
+                            seriesfilms.set(series);
+                            key_series.set(databaseReference.getKey());
+                            checkBoughtSeries();
+                        }
+                    }
+                    // ...
+
+                } else {
+                    // Tham chiếu "Online Films" không tồn tại
+                    // Xử lý tình huống này theo ý muốn của bạn
+                    // ...
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
     private void checkOnline() {
         isOnline.set(false);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Online Films");
@@ -202,44 +242,60 @@ public class DetailFilmsVM extends ViewModel {
             }
         });
     }
-    public void onclickvideo(View view) {
+    public void click_play_video(View view) {
         if (admin.get()){
             Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
             intent.putExtra("video", films.get().video);
             intent.putExtra("name", films.get().name);
             view.getContext().startActivity(intent);
         }else {
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Movie Store" + "/" + DataLocalManager.getUid() + "/" + key_film.get());
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        // Tham chiếu "Movie Store" tồn tại, tiếp tục với logic của bạn
-                        Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
-                        intent.putExtra("video", films.get().video);
-                        intent.putExtra("name", films.get().name);
-                        view.getContext().startActivity(intent);
-
-                        // ...
-                    } else {
-                        // Tham chiếu "Movie Store" không tồn tại
-                        // Xử lý tình huống này theo ý muốn của bạn
-                        // ...
-                        openDialogMovieStore(view);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
+            if (Utils.convertVNDToPrice(onlinePrice.get()) == 0) {
+                Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
+                intent.putExtra("video", films.get().video);
+                intent.putExtra("name", films.get().name);
+                view.getContext().startActivity(intent);
+            } else if (bought_epsode.get() || bought_series.get()) {
+                Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
+                intent.putExtra("video", films.get().video);
+                intent.putExtra("name", films.get().name);
+                view.getContext().startActivity(intent);
+            } else {
+                openDialogMovieStore(view);
+            }
         }
-
     }
+    public void click_detail_series(View view) {
+        Dialog dialogquestion = new Dialog(view.getContext());
+        dialogquestion.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        CustomDialogQuestionBinding questionBinding = CustomDialogQuestionBinding.inflate(LayoutInflater.from(view.getContext()));
+        dialogquestion.setContentView(questionBinding.getRoot());
 
-    public void onclickbuy(View view) {
+        Window window = dialogquestion.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        window.getAttributes().windowAnimations = R.style.DialogAnimationDrop;
+        window.setGravity(Gravity.CENTER);
+        dialogquestion.setCancelable(false);
+
+        questionBinding.textview.setText("Series: "+ seriesfilms.get().name);
+
+        questionBinding.cancel.setText("Đóng");
+        questionBinding.push.setText("Chi tiết");
+
+        questionBinding.cancel.setOnClickListener(v1 -> dialogquestion.dismiss());
+        questionBinding.push.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(view.getContext(), SeriesFilmsActivity.class);
+                intent.putExtra("key_series", key_series.get());
+                view.getContext().startActivity(intent);
+            }
+        });
+        dialogquestion.show();
+    }
+    public void  click_showtimes(View view) {
         Intent intent = new Intent(view.getContext(), ShowTimesActivity.class);
-        intent.putExtra("key_film", key_film);
         view.getContext().startActivity(intent);
     }
 
@@ -339,7 +395,6 @@ public class DetailFilmsVM extends ViewModel {
         });
         popupMenu.show();
     }
-
     private void openDialogSetStatusTrue(View view) {
         Dialog dialogquestion = new Dialog(view.getContext());
         dialogquestion.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -418,7 +473,6 @@ public class DetailFilmsVM extends ViewModel {
         dialogquestion.show();
     }
     private void openDialogMovieStore(View view) {
-
         Utils.getBalanceFromDatabase(DataLocalManager.getUid(),new Utils.BalanceListener() {
             @Override
             public void onAmountCalculated(int amount) {
@@ -442,7 +496,7 @@ public class DetailFilmsVM extends ViewModel {
                     questionBinding.textview.setText("Bạn muốn thêm phim '"+ films.get().name +"' vào Store với giá " + onlinePrice.get());
                     questionBinding.cancel.setOnClickListener(v1 -> dialogquestion.dismiss());
 
-                    questionBinding.push.setText("Thanh toán và xem ngay");
+                    questionBinding.push.setText("Thanh toán");
                     questionBinding.push.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -465,7 +519,6 @@ public class DetailFilmsVM extends ViewModel {
                 }else {
                     Utils.showError(view.getContext(), "Tài khoản của quý khách không đủ");
                 }
-
             }
         });
     }
@@ -487,7 +540,7 @@ public class DetailFilmsVM extends ViewModel {
             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                 if (error == null) {
                     Toast.makeText(view.getContext(), "thanh toán thành công", Toast.LENGTH_SHORT).show();
-                    Utils.reLoadIntent(view.getContext());
+                    reloadIntent(view);
                 } else {
                     Toast.makeText(view.getContext(), "Vui lòng thử lại" + error, Toast.LENGTH_SHORT).show();
                 }
@@ -754,9 +807,9 @@ public class DetailFilmsVM extends ViewModel {
     }
 
     private void reloadIntent(View v) {
-        Toast.makeText(v.getContext(), "Thành công", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(v.getContext(), DetailFilmsActivity.class);
         intent.putExtra("key_film", key_film.get());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         v.getContext().startActivity(intent);
     }
 
@@ -859,6 +912,58 @@ public class DetailFilmsVM extends ViewModel {
         });
         dialog.show();
     }
+
+    private void checkBoughtEpsode (){
+        bought_epsode.set(false);
+
+        if (!admin.get()){
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Movie Store").child(DataLocalManager.getUid()).child(key_film.get());
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        // Tham chiếu "Movie Store" tồn tại
+                        // ...
+                        bought_epsode.set(true);
+                    } else {
+                        // Tham chiếu "Movie Store" không tồn tại
+                        // Xử lý tình huống này theo ý muốn của bạn
+                        // ...
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }
+    }
+    private void checkBoughtSeries (){
+        bought_series.set(false);
+
+        if (!admin.get()){
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Movie Store").child(DataLocalManager.getUid()).child(key_series.get());
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        // Tham chiếu "Movie Store" tồn tại
+                        // ...
+                        bought_series.set(true);
+                    } else {
+                        // Tham chiếu "Movie Store" không tồn tại
+                        // Xử lý tình huống này theo ý muốn của bạn
+                        // ...
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }
+    }
+
 
     @BindingAdapter({"android:src"})
     public static void setImageView(ImageView imageView, String imgUrl) {

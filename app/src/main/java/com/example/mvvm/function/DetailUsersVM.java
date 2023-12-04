@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
@@ -43,6 +45,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.mvvm.MainActivity;
 import com.example.mvvm.R;
+import com.example.mvvm.Utils;
 import com.example.mvvm.databinding.CustomDialogUploadBinding;
 import com.example.mvvm.datalocal.DataLocalManager;
 import com.example.mvvm.datalocal.MyApplication;
@@ -68,6 +71,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Observable;
@@ -80,16 +84,17 @@ public class DetailUsersVM extends ViewModel {
     private ActivityResultLauncher<String> pickImageLauncher;
     private MutableLiveData<AppCompatActivity> context = new MutableLiveData<>();
 
+    public ObservableField<String> userID = new ObservableField<>();
+
     public ObservableField<String> email = new ObservableField<>();
     public ObservableField<String> fullname = new ObservableField<>();
     public ObservableField<String> avatar = new ObservableField<>();
     public ObservableField<String> birthday = new ObservableField<>();
     public ObservableField<String> phonenumber = new ObservableField<>();
-
     public ObservableField<Boolean> male = new ObservableField<>();
-
-    public ObservableField<Users> users = new ObservableField<>();
+    public ObservableField<Boolean> admin = new ObservableField<>();
     public DetailUsersVM(ActivityResultRegistry registry) {
+        setUserID(DataLocalManager.getUid());
         cropImageLauncher = registry.register("crop_image", new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
                 CropImage.ActivityResult cropResult = CropImage.getActivityResult(result.getData());
@@ -110,24 +115,35 @@ public class DetailUsersVM extends ViewModel {
                         startCropActivity(result);
                     }
                 });
+    }
 
+    private void loadInfUsers() {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null){
             email.set(firebaseUser.getEmail());
         }
-
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(DataLocalManager.getUid());
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userID.get());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.getKey() != null)
-                {
-                    users.set(snapshot.getValue(Users.class));
-                    fullname.set(users.get().fullname);
-                    avatar.set(users.get().avatar);
-                    male.set(users.get().male);
-                    birthday.set(users.get().birthday);
-                    phonenumber.set(users.get().phonenumber);
+                if (snapshot.exists()) {
+                    // Tham chiếu "Uid" tồn tại, tiếp tục với logic của bạn
+                    Users users = snapshot.getValue(Users.class);
+
+                    fullname.set(users.fullname);
+                    avatar.set(users.avatar);
+                    male.set(users.male);
+                    email.set(users.email);
+                    birthday.set(users.birthday);
+                    phonenumber.set(users.phonenumber);
+                    admin.set(users.admin);
+
+                } else {
+                    // Tham chiếu "Uid" không tồn tại
+                    // Xử lý tình huống này theo ý muốn của bạn
+                    // ...
+                    admin.set(false);
+
                 }
             }
 
@@ -135,6 +151,11 @@ public class DetailUsersVM extends ViewModel {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+    }
+
+    public void setUserID(String s){
+        userID.set(s);
+        loadInfUsers();
     }
 
     private void startCropActivity(Uri uri) {
@@ -243,21 +264,7 @@ public class DetailUsersVM extends ViewModel {
     public void onclickFemale() {
         male.set(false);
     }
-    public void updateUserAvatar(String string){
-        avatar.set(string);
 
-//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-//        databaseReference.child("Users").child(DataLocalManager.getUid()).child("avatar").setValue(string, new DatabaseReference.CompletionListener() {
-//            @Override
-//            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-//                if (error == null) {
-//                    Log.d(TAG, "Update Avatar : Complete");
-//                } else {
-//                    Log.d(TAG, "Update Avatar : Error - "+error);
-//                }
-//            }
-//        });
-    }
 
     public void onclickBirthday(View view) {
         Calendar calendar = Calendar.getInstance();
@@ -275,53 +282,68 @@ public class DetailUsersVM extends ViewModel {
         pickerDialog.show();
     }
     public void onclickRegister(View view) {
-        String error = "";
+        final String[] error = {""};
 
-        if (phonenumber == null) {
-            error = "Bổ sung số điện thoại";
+        if (TextUtils.isEmpty(phonenumber.get())) {
+            error[0] = "Bổ sung số điện thoại";
         } else if (phonenumber.get().length() != 10) {
-            error = "Số điện thoại Không hợp lệ (!=10)";
+            error[0] = "Số điện thoại Không hợp lệ (!=10)";
         } else {
             Pattern pattern = Pattern.compile("0\\d{9}");
             Matcher matcher = pattern.matcher(phonenumber.get());
             int index = phonenumber.get().charAt(1);
             // "0" charAt = 48
             if (matcher.matches() && index != 48) {
+
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                            Users users = dataSnapshot.getValue(Users.class);
+                            if (users.phonenumber.equals(phonenumber.get())) {
+                                error[0] = "Số điện thoại đã được sử dụng";
+                                break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             } else {
-                error = "Số điện thoại không đúng định dạng";
+                error[0] = "Số điện thoại không đúng định dạng";
             }
         }
-        if (birthday.get() == null) {
-            error = "Bổ sung ngày sinh";
+        if (TextUtils.isEmpty(birthday.get())) {
+            error[0] = "Bổ sung ngày sinh";
         }
         if (male.get() == null) {
-            error = "Bổ sung giới tính";
+            error[0] = "Bổ sung giới tính";
         }
-        if (fullname.get() == null) {
-            error = "Bổ sung Họ và Tên";
+        if (TextUtils.isEmpty(fullname.get())) {
+            error[0] = "Bổ sung Họ và Tên";
         } else if (fullname.get().length() < 5) {
-            error = "Kiểm tra lại Họ và Tên";
+            error[0] = "Kiểm tra lại Họ và Tên";
         }
-        if (avatar.get() == null) {
-            error = "Bổ sung ảnh đại diện";
+        if (TextUtils.isEmpty(avatar.get())) {
+            error[0] = "Bổ sung ảnh đại diện";
         }
 
-        if (error.length() > 1) {
-            Toast.makeText(view.getContext(), "" + error, Toast.LENGTH_SHORT).show();
+        if (error[0].length() > 1) {
+            Utils.showError(view.getContext(), error[0]);
         } else {
-            completeRegister(view);
+            Utils.showError(view.getContext(), "error[0]");
+//            completeRegister(view);
         }
     }
 
     private void completeRegister(View view) {
-        if (DataLocalManager.getAdmin())
-        {
-            users.set(new Users(avatar.get(),fullname.get(),male.get(),birthday.get(),email.get(),true,phonenumber.get(),true));
-        }else {
-            users.set(new Users(avatar.get(),fullname.get(),male.get(),birthday.get(),email.get(),false,phonenumber.get(),true));
-        }
+        Users users = new Users(avatar.get(),fullname.get(),male.get(),birthday.get(),email.get(),admin.get(),phonenumber.get(),true);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("Users").child(DataLocalManager.getUid()).setValue(users.get(), new DatabaseReference.CompletionListener() {
+        databaseReference.child("Users").child(userID.get()).setValue(users, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                 if (error == null) {

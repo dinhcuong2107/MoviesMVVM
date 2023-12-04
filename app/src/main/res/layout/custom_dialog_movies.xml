@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center|top"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
     android:background="@color/transparent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
@@ -16,7 +18,8 @@
             android:id="@+id/status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30dp"
+            android:textSize="28dp"
+            android:textColor="@color/color_b"
             android:textStyle="bold"
             android:layout_margin="10dp"
             android:text="Tạo lịch"/>
@@ -64,9 +67,10 @@
                 android:id="@+id/updateprice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/custom_button_yes"
                 android:layout_marginLeft="10dp"
                 android:textAllCaps="false"
-                android:text="Cập nhật giá"/>
+                android:text="Cập nhật"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layout"
@@ -236,6 +240,7 @@
                 android:id="@+id/cancel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/custom_button_no"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:layout_marginRight="5dp"
@@ -245,6 +250,7 @@
                 android:id="@+id/push"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/custom_button_yes"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:layout_marginRight="5dp"
@@ -254,6 +260,7 @@
                 android:id="@+id/replace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/custom_button_yes"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:layout_marginRight="5dp"
@@ -264,7 +271,7 @@
             android:layout_width="100dp"
             android:layout_height="10dp"
             android:layout_margin="10dp"
-            android:background="@color/black"
+            app:cardBackgroundColor="@color/black"
             app:cardCornerRadius="100dp"/>
     </LinearLayout>
 </LinearLayout>

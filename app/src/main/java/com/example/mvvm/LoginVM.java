@@ -43,6 +43,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LoginVM extends ViewModel {
@@ -105,9 +106,9 @@ public class LoginVM extends ViewModel {
     }
 
     public void onClickLogin(View view) {
-        if (email != null) {
-            if (!TextUtils.isEmpty(email.get()) && Patterns.EMAIL_ADDRESS.matcher(email.get()).matches()) {
-                if (password != null && password.get().length() > 0) {
+        if (!TextUtils.isEmpty(email.get())) {
+            if (Patterns.EMAIL_ADDRESS.matcher(email.get()).matches()) {
+                if (!TextUtils.isEmpty(password.get())) {
                     Dialog dialog = new Dialog(view.getContext());
                     dialog.setContentView(R.layout.custom_dialog_loading);
                     dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -120,37 +121,33 @@ public class LoginVM extends ViewModel {
                             dialog.dismiss();
                             if (task.isSuccessful()) {
                                 DataLocalManager.setUid(auth.getUid());
-                                checkInfUsers(view);
+                                checkInfUsers(view, auth.getUid());
                             } else {
-                                Dialog dialog = new Dialog(view.getContext());
-                                dialog.setContentView(R.layout.custom_dialog_error);
-                                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                                Window window = dialog.getWindow();
-                                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-                                dialog.show();
+                                Utils.showError(view.getContext(), "Tài khoản hoặc mật khẩu không chính xác");
 
                             }
                         }
                     });
                 } else {
-                    Toast.makeText(view.getContext(), "Vui lòng bổ sung mật khẩu\nMật khẩu chứa ít nhất 8 ký tự", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext(), "Mật khẩu chứa ít nhất 8 ký tự", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Toast.makeText(view.getContext(), "Email không hợp lệ", Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(view.getContext(), "Nhập email và mật khẩu", Toast.LENGTH_LONG).show();
+            Toast.makeText(view.getContext(), "Nhập email", Toast.LENGTH_LONG).show();
         }
 
     }
 
-    private void checkInfUsers(View view) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(DataLocalManager.getUid());
+    private void checkInfUsers(View view, String uID) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(uID);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Users users = snapshot.getValue(Users.class);
-                if (users != null) {
+                if (snapshot.exists()) {
+                    // Tham chiếu "Uid" tồn tại, tiếp tục với logic của bạn
+                    Users users = snapshot.getValue(Users.class);
                     if (users.status) {
                         DataLocalManager.setAdmin(users.admin);
                         Intent intent = new Intent(view.getContext(), MainActivity.class);
@@ -158,8 +155,10 @@ public class LoginVM extends ViewModel {
                     } else {
                         Toast.makeText(view.getContext(), "Tài khoản đã bị khóa", Toast.LENGTH_SHORT).show();
                     }
-
                 } else {
+                    // Tham chiếu "uID" không tồn tại
+                    // Xử lý tình huống này theo ý muốn của bạn
+                    // ...
                     Intent intent = new Intent(view.getContext(), DetailUsersActivity.class);
                     view.getContext().startActivity(intent);
                 }

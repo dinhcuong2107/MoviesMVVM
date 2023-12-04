@@ -29,6 +29,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mvvm.MainActivity;
 import com.example.mvvm.R;
 import com.example.mvvm.Utils;
 import com.example.mvvm.adapter.FeedbackAdapter;
@@ -143,10 +144,10 @@ public class DetailSeriesFilmsVM extends ViewModel {
         checkBoughtEpsode();
         checkBoughtSeries();
     }
-    public void click_check_store(View view) {
+    public void click_buy_series(View view) {
         if (!admin.get()){
             if (bought_series.get()){
-                // show dialog tb bought
+                // show dialog
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Movie Store").child(DataLocalManager.getUid()).child(key_series.get());
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -182,22 +183,27 @@ public class DetailSeriesFilmsVM extends ViewModel {
             view.getContext().startActivity(intent);
         }else {
             if (!isOnline.get()){
-                Utils.showError(view.getContext(), "Tập phim không được công chiếu online ");
+                Utils.showError(view.getContext(), "Tập phim chưa được công chiếu online");
             }else {
-                if ( price_epsode.get()==0){
-                    Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
-                    intent.putExtra("video", films.get().video);
-                    intent.putExtra("name", films.get().name);
-                    view.getContext().startActivity(intent);
-                }else {
-                    if (bought_series.get() || bought_epsode.get()){
+
+                if (films.get().status) {
+                    if ( price_epsode.get()==0){
                         Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
                         intent.putExtra("video", films.get().video);
                         intent.putExtra("name", films.get().name);
                         view.getContext().startActivity(intent);
                     }else {
-                        Utils.showError(view.getContext(), "Tập phim yêu cầu trả phí");
+                        if (bought_series.get() || bought_epsode.get()){
+                            Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
+                            intent.putExtra("video", films.get().video);
+                            intent.putExtra("name", films.get().name);
+                            view.getContext().startActivity(intent);
+                        }else {
+                            Utils.showError(view.getContext(), "Tập phim yêu cầu trả phí");
+                        }
                     }
+                } else {
+                    Utils.showError(view.getContext(), "Tập phim đã ngừng công chiếu");
                 }
             }
 
@@ -212,7 +218,6 @@ public class DetailSeriesFilmsVM extends ViewModel {
         view.getContext().startActivity(intent);
     }
     private void openDialogMovieStore(View view) {
-
         Utils.getBalanceFromDatabase(DataLocalManager.getUid(),new Utils.BalanceListener() {
             @Override
             public void onAmountCalculated(int amount) {
@@ -260,7 +265,6 @@ public class DetailSeriesFilmsVM extends ViewModel {
                 }else {
                     Utils.showError(view.getContext(), "Tài khoản của quý khách không đủ");
                 }
-
             }
         });
     }
@@ -268,24 +272,23 @@ public class DetailSeriesFilmsVM extends ViewModel {
     private void paymment(View view) {
         TransactionMoney transaction = new TransactionMoney();
         transaction.transaction_type = "payment";
-
         transaction.wallet = DataLocalManager.getUid();
         transaction.supporter = DataLocalManager.getUid();
-
         transaction.description = "Movie Store:" + key_series.get();
         transaction.amount = seriesfilms.get().price;
-
         transaction.time = new SimpleDateFormat("HH:mm:ss").format(Utils.getRealtime());
         transaction.date = new SimpleDateFormat("dd/MM/yyyy").format(Utils.getRealtime());
         transaction.status = true;
-
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.child("Transaction").push().setValue(transaction, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                 if (error == null) {
                     Toast.makeText(view.getContext(), "thanh toán thành công", Toast.LENGTH_SHORT).show();
-                    Utils.reLoadIntent(view.getContext());
+
+                    Intent intent = new Intent(view.getContext(), DetailSeriesFilmsVM.class);
+                    intent.putExtra("key_series", key_series.get());
+                    view.getContext().startActivity(intent);
                 } else {
                     Toast.makeText(view.getContext(), "Vui lòng thử lại" + error, Toast.LENGTH_SHORT).show();
                 }
@@ -294,7 +297,6 @@ public class DetailSeriesFilmsVM extends ViewModel {
     }
 
     public void onclicklike(View view) {
-
         String time = new SimpleDateFormat("HH:mm dd/MM/yyyy").format(Calendar.getInstance().getTime());
         Feedback feedback = new Feedback();
         feedback.key_user = DataLocalManager.getUid();
@@ -320,7 +322,6 @@ public class DetailSeriesFilmsVM extends ViewModel {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Feedback").child(key_feedback.get());
         databaseReference.removeValue();
         countComment();
-
     }
 
     public void onclickfeedback(@NonNull View view) {
@@ -549,6 +550,7 @@ public class DetailSeriesFilmsVM extends ViewModel {
                         // Tham chiếu "Movie Store" tồn tại
                         // ...
                         bought_series.set(true);
+
                     } else {
                         // Tham chiếu "Movie Store" không tồn tại
                         // Xử lý tình huống này theo ý muốn của bạn

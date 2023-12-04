@@ -10,21 +10,24 @@
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:padding="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/custom_background_backandwhite"
         android:gravity="center"
-        android:background="@drawable/custom_background_opacity40"
         android:orientation="vertical"
+        android:padding="10dp"
         tools:layout_editor_absoluteX="20dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textColor="#FFF200"
+            android:text="QR Code"
+            android:textColor="@color/color_b"
             android:textSize="30dp"
-            android:textStyle="bold"
-            android:text="QR Code"/>
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/imageview"

@@ -16,7 +16,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="Vé đã mua"
-            android:textSize="30dp"
+            android:textSize="28dp"
+            android:textColor="@color/color_b"
             android:textStyle="bold"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"

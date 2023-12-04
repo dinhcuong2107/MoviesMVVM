@@ -65,35 +65,62 @@
                     android:visibility="@{detailFilms.admin ? View.VISIBLE : View.GONE}"
                     android:background="@drawable/round_more_horiz_24"/>
             </RelativeLayout>
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:text="@={detailFilms.films.name}"
-                android:textSize="21dp"
-                android:textColor="@color/color_x"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@={detailFilms.films.year}"
-                android:textSize="21dp"
-                android:textColor="@color/color_x"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@={detailFilms.films.genre}"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="@{detailFilms.films.status ? View.GONE : View.VISIBLE}"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textColor="#E91E63"
-                android:text="Ngừng công chiếu"/>
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:text="@={detailFilms.films.name}"
+                    android:textSize="21dp"
+                    android:textColor="@color/color_x"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="@{detailFilms.seriesfilms.name != null ? View.VISIBLE : View.GONE}"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Series:"/>
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="@={detailFilms.seriesfilms.name}"
+                        android:onClick="@{(view) -> detailFilms.click_detail_series(view)}"/>
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@={detailFilms.films.year}"
+                    android:textSize="21dp"
+                    android:textColor="@color/color_x"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@={detailFilms.films.genre}"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{detailFilms.films.status ? View.GONE : View.VISIBLE}"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="#E91E63"
+                    android:text="Ngừng công chiếu"/>
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,23 +129,23 @@
                 android:orientation="horizontal">
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:visibility="@{detailFilms.admin || detailFilms.isOnline ? View.VISIBLE : View.GONE}"
                     android:text="Xem phim"
-                    android:onClick="@{(view) -> detailFilms.onclickvideo(view)}"
+                    android:onClick="@{(view) -> detailFilms.click_play_video(view)}"
                     android:textAllCaps="false"
                     android:background="@drawable/custom_button_yes"/>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:visibility="@{detailFilms.isOnline ? View.GONE : View.VISIBLE}"
                     android:background="@drawable/custom_button_yes"
-                    android:onClick="@{(view) -> detailFilms.onclickbuy(view)}"
+                    android:onClick="@{(view) -> detailFilms.click_showtimes(view)}"
                     android:text="Lịch chiếu phim"
                     android:textAllCaps="false" />
             </LinearLayout>
@@ -127,6 +154,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:orientation="vertical">
+
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"

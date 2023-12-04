@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.mvvm.R;
+import com.example.mvvm.Utils;
 import com.example.mvvm.adapter.FilmsTopAdapter;
 import com.example.mvvm.adapter.PosterAdapter;
 import com.example.mvvm.adapter.SeriesFilmsAdapter;
@@ -54,11 +55,6 @@ public class HomeFragment extends Fragment {
         binding.setLifecycleOwner(this);
         binding.executePendingBindings();
 
-        if (!DataLocalManager.getNightMode()){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
 // setup Viewpager
         setViewpager();
 // setup ImageSlider

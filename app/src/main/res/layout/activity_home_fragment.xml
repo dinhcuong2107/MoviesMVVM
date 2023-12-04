@@ -25,7 +25,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Top 10"
-                    android:textColor="@color/color_x"
+                    android:textColor="@color/color_b"
                     android:textSize="28dp"
                     android:textStyle="bold"
                     android:gravity="center" />
@@ -55,8 +55,8 @@
                         android:layout_weight="1"
                         android:text="Phim mới"
                         android:layout_marginLeft="5dp"
-                        android:textSize="21dp"
-                        android:textColor="@color/color_y"
+                        android:textSize="18dp"
+                        android:textColor="@color/color_c"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -80,8 +80,8 @@
                         android:layout_weight="1"
                         android:text="Phim hot"
                         android:layout_marginLeft="5dp"
-                        android:textSize="21dp"
-                        android:textColor="@color/color_y"
+                        android:textSize="18dp"
+                        android:textColor="@color/color_c"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -105,8 +105,8 @@
                         android:layout_weight="1"
                         android:text="Phim bộ (Series)"
                         android:layout_marginLeft="5dp"
-                        android:textSize="21dp"
-                        android:textColor="@color/color_y"
+                        android:textSize="18dp"
+                        android:textColor="@color/color_c"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -130,8 +130,8 @@
                         android:layout_weight="1"
                         android:text="Khuyến mãi"
                         android:layout_marginLeft="5dp"
-                        android:textSize="21dp"
-                        android:textColor="@color/color_y"
+                        android:textSize="18dp"
+                        android:textColor="@color/color_c"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -154,8 +154,8 @@
                         android:layout_weight="1"
                         android:text="Trò chơi"
                         android:layout_marginLeft="5dp"
-                        android:textSize="21dp"
-                        android:textColor="@color/color_y"
+                        android:textSize="18dp"
+                        android:textColor="@color/color_c"
                         android:textStyle="bold"/>
                 </LinearLayout>
 

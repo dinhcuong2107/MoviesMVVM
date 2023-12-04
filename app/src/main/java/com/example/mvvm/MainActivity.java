@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.view.animation.LinearInterpolator;
+import android.widget.Toast;
 
 import com.example.mvvm.adapter.ViewPagerAdapter;
 import com.example.mvvm.databinding.ActivityMainBinding;
@@ -26,6 +27,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
+
+    private boolean doubleBackToExitPressedOnce = false;
+    private Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,5 +71,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Nhấn Back lần nữa để thoát ứng dụng", Toast.LENGTH_SHORT).show();
+
+        handler.postDelayed(() -> doubleBackToExitPressedOnce = false, 2000); // Thiết lập thời gian cho phép nhấn lần thứ hai
     }
 }

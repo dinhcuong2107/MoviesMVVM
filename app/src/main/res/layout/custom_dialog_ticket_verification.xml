@@ -14,13 +14,14 @@
             android:layout_width="100dp"
             android:layout_height="10dp"
             android:layout_margin="10dp"
-            android:background="@color/black"
+            app:cardBackgroundColor="@color/black"
             app:cardCornerRadius="100dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Vé xem phim"
-            android:textSize="30dp"
+            android:textColor="@color/color_b"
+            android:textSize="28dp"
             android:textStyle="bold"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,6 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:textStyle="bold"
+                    android:textColor="@color/black"
                     android:text="Khách hàng:"/>
                 <TextView
                     android:id="@+id/fullname"
@@ -43,6 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textStyle="bold"
+                    android:textColor="@color/black"
                     android:textSize="21dp"
                     android:text="Khách hàng"/>
             </LinearLayout>
@@ -56,11 +59,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:textStyle="bold"
+                    android:textColor="@color/black"
                     android:text="ID:"/>
                 <TextView
                     android:id="@+id/keyuser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="...................."/>
             </LinearLayout>
@@ -72,12 +77,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
+                    android:textColor="@color/black"
                     android:textStyle="bold"
                     android:text="MST:"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textColor="@color/black"
                     android:text="Đang phát triển"/>
             </LinearLayout>
         </LinearLayout>
@@ -91,11 +98,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="21dp"
                 android:textStyle="bold"
+                android:textColor="@color/color_c"
                 android:text="CGV HaUi"/>
             <TextView
                 android:id="@+id/time_now"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="time ord"/>
         </LinearLayout>
         <LinearLayout
@@ -109,16 +118,19 @@
                 android:layout_height="wrap_content"
                 android:textSize="21dp"
                 android:textStyle="bold"
+                android:textColor="@color/color_c"
                 android:text="Tên phim"/>
             <TextView
                 android:id="@+id/time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="thời gian chiếu"/>
             <TextView
                 android:id="@+id/seat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="Cinema + seat"/>
         </LinearLayout>
         <LinearLayout
@@ -130,6 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Đơn giá"
+                android:textColor="@color/color_b"
                 android:gravity="center"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -140,6 +153,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Số lượng"
+                android:textColor="@color/color_b"
                 android:gravity="center"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -149,6 +163,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/color_b"
                 android:text="Thành tiền"
                 android:gravity="center"/>
         </LinearLayout>
@@ -161,46 +176,63 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/black"
                 android:gravity="center"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="x"/>
             <TextView
                 android:id="@+id/quantity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/black"
                 android:gravity="center"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="="/>
             <TextView
                 android:id="@+id/money"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/black"
                 android:gravity="center"/>
         </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerviewverification"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_margin="5dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:orientation="horizontal"
             android:gravity="center">
             <ProgressBar
                 android:id="@+id/progressbar"
                 android:layout_width="40dp"
                 android:layout_height="40dp"/>
-            <TextView
-                android:id="@+id/total"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxBackgroundColor="@color/color_c"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="21dp"/>
+                android:layout_height="match_parent">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/total"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:clickable="true"
+                    android:focusable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -210,14 +242,19 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/cancel"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_button_no"
                 android:layout_weight="1"
                 android:text="Hủy"
                 android:textAllCaps="false"/>
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"/>
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/pay"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_button_yes"
                 android:layout_weight="1"
                 android:text="Thanh toán"
                 android:textAllCaps="false"/>

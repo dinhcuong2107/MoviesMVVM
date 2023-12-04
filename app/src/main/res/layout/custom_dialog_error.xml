@@ -14,7 +14,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="40dp"
-        android:background="@drawable/custom_background_opacity40"
+        android:background="@drawable/custom_background_backandwhite"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="10dp"
@@ -24,11 +24,11 @@
             android:id="@+id/textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
             android:gravity="center"
-            android:textColor="#FFF200"
-            android:textSize="21dp"
+            android:textColor="#FF0000"
+            android:textSize="18dp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -38,7 +38,7 @@
         android:layout_alignBottom="@+id/layout"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:layout_marginBottom="-15dp"
+        android:layout_marginBottom="-20dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -63,6 +63,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             app:cardCornerRadius="10dp"
+            app:cardBackgroundColor="@color/color_c"
             tools:ignore="MissingConstraints">
             <ImageView
                 android:layout_width="80dp"

@@ -40,6 +40,7 @@ import com.example.mvvm.function.DetailUsersActivity;
 import com.example.mvvm.function.FastfoodActivity;
 import com.example.mvvm.function.FilmsActivity;
 import com.example.mvvm.function.LiveTVActivity;
+import com.example.mvvm.function.ScanQRCodeActivity;
 import com.example.mvvm.function.SeriesFilmsActivity;
 import com.example.mvvm.function.ShowTimesActivity;
 import com.example.mvvm.function.UsersStatusActivity;
@@ -63,7 +64,6 @@ import com.squareup.picasso.Picasso;
 
 public class SettingVM extends ViewModel {
     public ObservableField<Users> users = new ObservableField<>();
-
     public ObservableField<String> balance = new ObservableField<>();
 
     public SettingVM() {
@@ -111,6 +111,9 @@ public class SettingVM extends ViewModel {
 
             }
         });
+    }
+    public void onclickQR (View view){
+        Utils.showQRCode(view.getContext(), DataLocalManager.getUid());
     }
 
     public void showDialogDetailUsers(View view){
@@ -296,6 +299,11 @@ public class SettingVM extends ViewModel {
     }
     public void onNextIntentShowTimes(View view){
         Intent intent = new Intent(view.getContext(), ShowTimesActivity.class);
+        view.getContext().startActivity(intent);
+    }
+
+    public void onNextIntentQRCode(View view){
+        Intent intent = new Intent(view.getContext(), ScanQRCodeActivity.class);
         view.getContext().startActivity(intent);
     }
     public void onNextIntentUsersStatus(View view){

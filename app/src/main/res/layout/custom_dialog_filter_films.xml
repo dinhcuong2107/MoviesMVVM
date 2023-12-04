@@ -28,14 +28,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:background="@drawable/custom_background_opacity40"
             android:text="Tất cả"
             android:textAllCaps="false"/>
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/categoryoff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_background_opacity40"
             android:layout_margin="5dp"
             android:text="Phim chiếu rạp"
             android:textAllCaps="false"/>
@@ -43,7 +41,6 @@
             android:id="@+id/categoryon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_background_opacity40"
             android:layout_margin="5dp"
             android:text="Phim online"
             android:textAllCaps="false"/>
@@ -51,7 +48,6 @@
             android:id="@+id/categoryhot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_background_opacity40"
             android:layout_margin="5dp"
             android:text="Phim nổi bật"
             android:textAllCaps="false"/>
@@ -59,7 +55,6 @@
             android:id="@+id/categorynew"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_background_opacity40"
             android:layout_margin="5dp"
             android:text="Phim mới"
             android:textAllCaps="false"/>

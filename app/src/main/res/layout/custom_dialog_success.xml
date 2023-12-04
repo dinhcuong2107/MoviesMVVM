@@ -14,7 +14,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="40dp"
-        android:background="@drawable/custom_background_opacity40"
+        android:background="@drawable/custom_background_backandwhite"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="10dp"

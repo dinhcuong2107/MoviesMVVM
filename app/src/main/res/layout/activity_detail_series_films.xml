@@ -162,7 +162,7 @@
                         android:gravity="center"
                         android:clickable="true"
                         android:focusable="false"
-                        android:onClick="@{(view) -> detailSeriesFilms.click_check_store(view)}"
+                        android:onClick="@{(view) -> detailSeriesFilms.click_buy_series(view)}"
                         android:text="@{detailSeriesFilms.price}"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>

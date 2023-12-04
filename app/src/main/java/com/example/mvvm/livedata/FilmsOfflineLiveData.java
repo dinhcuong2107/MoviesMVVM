@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.mvvm.datalocal.DataLocalManager;
+import com.example.mvvm.model.Films;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,8 +31,34 @@ public class FilmsOfflineLiveData extends ViewModel {
     }
 
     private void loadData() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Online Films");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Films");
         databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<String> list = new ArrayList<>();
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    Films films = dataSnapshot.getValue(Films.class);
+                    if (DataLocalManager.getAdmin())
+                    {
+                        list.add(dataSnapshot.getKey());
+                    }
+                    else {
+                        if (films.status){
+                            list.add(dataSnapshot.getKey());
+                        }
+                    }
+                }
+                liveData.setValue(list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Online Films");
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -41,7 +69,15 @@ public class FilmsOfflineLiveData extends ViewModel {
                         list.add(dataSnapshot.getKey());
                     }
                     // ...
-                    liveData.setValue(list);
+                    List<String> list_remove = liveData.getValue();
+                    for (int i = 0; i < liveData.getValue().size(); i++){
+                        for (int j = 0; j < list.size(); j++){
+                            if (liveData.getValue().get(i).equals(list.get(j))){
+                                list_remove.remove(i);
+                            }
+                        }
+                    }
+                    liveData.setValue(list_remove);
                 } else {
                     // Tham chiếu "Online Films" không tồn tại
                     // Xử lý tình huống này theo ý muốn của bạn

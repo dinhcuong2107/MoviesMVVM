@@ -2,13 +2,13 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Set màu nền-->
     <solid
-        android:color="@color/color_x" >
+        android:color="#FFCB77" >
     </solid>
 
     <!-- đặt thuộc tính màu và độ rộng của đường viền -->
     <stroke
         android:width="2dp"
-        android:color="@color/black" >
+        android:color="@color/color_b" >
     </stroke>
 
     <!-- các thuộc tính căn chỉnh-->

@@ -10,14 +10,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:background="#33535353">
+        android:background="@drawable/custom_background_backandwhite">
         <TextView
             android:id="@+id/textPercentage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:textColor="@color/color_y"
+            android:textColor="@color/color_b"
             android:textSize="50dp"
             android:textStyle="bold"
             android:text="100%"/>
@@ -30,13 +30,13 @@
             android:progress="1"
             android:indeterminate="false"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:indeterminateTint="@color/color_y"/>
+            android:indeterminateTint="@color/color_b"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:gravity="center"
-            android:textColor="@color/color_y"
+            android:textColor="@color/color_b"
             android:textSize="21dp"
             android:text="Uploading..."/>
     </LinearLayout>

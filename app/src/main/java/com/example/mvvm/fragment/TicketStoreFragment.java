@@ -35,7 +35,7 @@ public class TicketStoreFragment extends Fragment {
         binding.setOrdfragment(viewmodel);
         binding.executePendingBindings();
 
-        // setup RecycleView Fastfood
+        // setup RecycleView
         LinearLayoutManager layoutManager = new LinearLayoutManager(binding.recyclerview.getContext(), RecyclerView.VERTICAL,false);
         binding.recyclerview.setLayoutManager(layoutManager);
         binding.recyclerview.setHasFixedSize(false);

@@ -14,9 +14,11 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.mvvm.databinding.CustomDialogCodeBinding;
 import com.example.mvvm.databinding.CustomDialogErrorBinding;
+import com.example.mvvm.datalocal.DataLocalManager;
 import com.example.mvvm.model.TransactionMoney;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,14 +34,36 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Utils {
-    public static void reLoadIntent(Context context){
-        Intent intent = new Intent(context, context.getClass());
-        context.startActivity(intent);
+
+    public static int calculateDaysBetween(String startDateStr, String endDateStr) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date startDate = dateFormat.parse(startDateStr);
+            Date endDate = dateFormat.parse(endDateStr);
+
+            long diffInMillies = Math.abs(endDate.getTime() - startDate.getTime());
+            long daysBetween = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+            return (int) daysBetween;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return -1; // Trả về -1 nếu có lỗi xảy ra
+        }
+    }
+    public static void setDarkMode () {
+        if (DataLocalManager.getNightMode()){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
 
     public static boolean checkForExistence(String s, List<String> list) {
@@ -103,6 +127,7 @@ public class Utils {
     }
 
     public static void showQRCode(Context context, String string){
+
         Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         CustomDialogCodeBinding binding = CustomDialogCodeBinding.inflate(LayoutInflater.from(context));

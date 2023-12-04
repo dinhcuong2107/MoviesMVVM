@@ -3,8 +3,9 @@
     android:shape="rectangle">
     <!-- Set màu nền-->
     <gradient
-        android:startColor="@color/color_a"
-        android:endColor="@color/color_b"
+        android:startColor="@color/color_x"
+        android:centerColor="#FFFFFF"
+        android:endColor="#D898FF"
         android:angle="0"/>
 
     <!-- đặt thuộc tính màu và độ rộng của đường viền -->

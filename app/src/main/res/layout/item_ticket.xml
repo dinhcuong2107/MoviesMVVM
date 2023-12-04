@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="5dp"
     android:orientation="vertical"
     android:padding="10dp"
-    android:background="@drawable/custom_background_gradient"
+    android:background="@drawable/custom_background_backandwhite"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
         android:id="@+id/ticket"
@@ -13,7 +14,8 @@
         android:singleLine="true"
         android:ellipsize="end"
         android:text="mã vé"
-        android:textSize="21dp"
+        android:textColor="@color/color_b"
+        android:textSize="18dp"
         android:textStyle="bold"/>
     <TextView
         android:id="@+id/films"
@@ -22,6 +24,7 @@
         android:layout_weight="1"
         android:singleLine="true"
         android:ellipsize="end"
+        android:textColor="@color/black"
         android:text="tên phim"
         android:textSize="18dp"/>
     <LinearLayout
@@ -34,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:textColor="@color/black"
             android:singleLine="true"
             android:ellipsize="end"
             android:text="time"/>
@@ -42,6 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/black"
             android:singleLine="true"
             android:ellipsize="end"
             android:text="date"/>
@@ -50,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="chi tiết"
             android:textSize="18dp"/>

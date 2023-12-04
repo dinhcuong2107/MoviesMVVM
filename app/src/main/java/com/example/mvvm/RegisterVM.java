@@ -18,10 +18,19 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.mvvm.datalocal.DataLocalManager;
 import com.example.mvvm.function.DetailUsersActivity;
+import com.example.mvvm.model.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RegisterVM extends ViewModel {
     public ObservableField<String> email = new ObservableField<>();
@@ -30,17 +39,26 @@ public class RegisterVM extends ViewModel {
 
     public void onclickRegister(View view){
         String error ="";
-        if (email == null)        {error = "Vui lòng bổ sung địa chỉ email";}
-        else  if (!TextUtils.isEmpty(email.get()) && Patterns.EMAIL_ADDRESS.matcher(email.get()).matches()){}
-        else {error = "Email không hợp lệ!";}
+        if (TextUtils.isEmpty(email.get()))
+        {
+            error = "Vui lòng bổ sung địa chỉ email";
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email.get()).matches())
+        {error = "Email không hợp lệ!";}
 
-        if (password.get() == null)        {            error = "Bạn chưa thiết lập mật khẩu";
-        }else if (password.get().length() <8){            error = "Mật khẩu chưa đủ tính bảo mật";
-        }else if (password.get().equals(passwordagain.get())){}else {            error = "Mật khẩu không trùng khớp";}
+        if (TextUtils.isEmpty(email.get()))
+        {
+            error = "Bạn chưa thiết lập mật khẩu";
+        }else if (password.get().length() <8)
+        {
+            error = "Mật khẩu chưa đủ tính bảo mật";
+        }else if (!password.get().equals(passwordagain.get()))
+        {
+            error = "Mật khẩu không trùng khớp";
+        }
 
         if (error.length()<1){
             regiter(view);
-        }else Toast.makeText(view.getContext(), ""+error, Toast.LENGTH_SHORT).show();
+        }else Utils.showError(view.getContext(), error);
     }
 
     private void regiter(View view) {
@@ -59,7 +77,7 @@ public class RegisterVM extends ViewModel {
                     DataLocalManager.setUid(firebaseAuth.getUid());
                     Toast.makeText(view.getContext(), "Thành công", Toast.LENGTH_SHORT).show();
                 }else {
-                    Toast.makeText(view.getContext(), "Thử lại", Toast.LENGTH_SHORT).show();
+                    Utils.showError(view.getContext(), "Email đã được xử dụng");
                 }
                 dialog.dismiss();
             }

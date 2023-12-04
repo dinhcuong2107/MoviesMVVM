@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View"/>
         <variable
             name="moviestore"
             type="com.example.mvvm.fragment.MovieStoreVM" />
@@ -17,30 +18,67 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="Kho phim của tôi"
-            android:textSize="30dp"
+            android:textColor="@color/color_b"
+            android:textSize="28dp"
             android:textStyle="bold"/>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:orientation="horizontal">
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Phim bộ"
+                android:background="@{moviestore.showSeries ? @drawable/custom_button_yes : @drawable/custom_background_transparent}"
+                android:onClick="@{(view) -> moviestore.clickSetShowSeries(view,true)}"
                 android:textAllCaps="false"/>
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent"/>
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Phim lẻ"
+                android:background="@{moviestore.showSeries ? @drawable/custom_background_transparent : @drawable/custom_button_yes}"
+                android:onClick="@{(view) -> moviestore.clickSetShowSeries(view,false)}"
                 android:textAllCaps="false"/>
         </LinearLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="10dp"/>
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerviewA"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="@{moviestore.showSeries ? View.VISIBLE : View.GONE}"
+                    android:layout_margin="5dp"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerviewB"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="@{moviestore.showSeries ? View.GONE : View.VISIBLE}"
+                    android:layout_margin="5dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:visibility="@{moviestore.showText ? View.VISIBLE : View.GONE}"
+                android:text="Danh sách rỗng"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
     </LinearLayout>
 </layout>

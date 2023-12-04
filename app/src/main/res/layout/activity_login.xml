@@ -9,16 +9,17 @@
     </data>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center">
             <ImageView
-                android:layout_width="220dp"
-                android:layout_height="220dp"
-                android:layout_margin="50dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginBottom="30dp"
                 android:src="@drawable/logo"/>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -31,7 +32,8 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:errorEnabled="true"
+                    app:helperText="Eg: abc@gmail.com"
+                    app:helperTextEnabled="true"
                     app:hintEnabled="true"
                     app:startIconDrawable="@drawable/ic_email_24">
                     <com.google.android.material.textfield.TextInputEditText
@@ -42,12 +44,14 @@
                         android:inputType="textEmailAddress"
                         android:text="@={login.email}"/>
                 </com.google.android.material.textfield.TextInputLayout>
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"/>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:passwordToggleEnabled="true"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:errorEnabled="true"
                     app:startIconDrawable="@drawable/ic_lock_24"
                     app:hintEnabled="true">
                     <com.google.android.material.textfield.TextInputEditText
@@ -61,9 +65,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Quên mật khẩu "
-                    android:textSize="18dp"
+                    android:textStyle="bold"
                     android:onClick="@{(view) -> login.onClickResetPassword(view)}"
-                    android:textColor="@color/color_y"
                     android:gravity="right"/>
 
             </LinearLayout>
@@ -71,49 +74,57 @@
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:text="Đăng nhập"
+                android:textStyle="bold"
                 android:layout_margin="20dp"
                 android:textAllCaps="false"
                 android:background="@drawable/custom_button_yes"
                 android:onClick="@{(view) -> login.onClickLogin(view)}"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hoặc"
+                android:textStyle="bold"
+                android:gravity="center"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_margin="10dp"
                     android:background="@drawable/ic_twitter"/>
                 <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_margin="10dp"
                     android:background="@drawable/ic_google"/>
                 <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_margin="10dp"
                     android:background="@drawable/ic_facebook"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_height="match_parent"
+                android:gravity="center|bottom"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chưa có tài khoản? "
-                    android:textSize="18dp" />
+                    android:text="Chưa có tài khoản?" />
+                <Space
+                    android:layout_width="12dp"
+                    android:layout_height="wrap_content"/>
                 <TextView
                     android:id="@+id/register"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Đăng ký"
-                    android:textColor="@color/color_y"
-                    android:textSize="21dp"
+                    android:textColor="@color/color_b"
                     android:textStyle="bold"
                     android:onClick="@{(view) -> login.onNextIntentRegister(view)}"/>
             </LinearLayout>

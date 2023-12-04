@@ -46,7 +46,6 @@
                         android:orientation="vertical"
                         android:layout_margin="10dp">
                         <TextView
-                            android:id="@+id/tfullname"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
@@ -73,14 +72,14 @@
                     android:orientation="horizontal"
                     android:layout_margin="10dp"
                     android:gravity="center">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="5dp"
-                        android:textSize="18dp"
-                        android:textStyle="bold"
-                        android:text="Tài Khoản"/>
+                    <ImageButton
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:onClick="@{(view) -> settingfragment.onclickQR(view)}"
+                        android:background="@drawable/round_qr_code_scanner_24"/>
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"/>
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
@@ -143,6 +142,13 @@
                     android:drawableStart="@drawable/ic_calendar_month_24"
                     android:text="Lịch chiếu phim"
                     android:onClick="@{(view) -> settingfragment.onNextIntentShowTimes(view)}"
+                    android:textAllCaps="false"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:drawableStart="@drawable/round_qr_code_scanner_24"
+                    android:text="Kiểm tra mã QR"
+                    android:onClick="@{(view) -> settingfragment.onNextIntentQRCode(view)}"
                     android:textAllCaps="false"/>
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"

@@ -11,7 +11,7 @@
         android:layout_width="100dp"
         android:layout_height="10dp"
         android:layout_margin="10dp"
-        android:background="@color/black"
+        app:cardBackgroundColor="@color/black"
         app:cardCornerRadius="100dp"/>
     <TextView
         android:layout_width="wrap_content"
@@ -26,25 +26,29 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_alignParentBottom="true">
-        <EditText
-            android:id="@+id/edittextsend"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Bình luận"
-            android:paddingStart="20dp"
-            android:paddingEnd="10dp"
-            android:textColorHint="#505050"
-            android:background="@drawable/custom_background_opacity40"
-            android:layout_weight="1"/>
-        <androidx.appcompat.widget.AppCompatButton
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:layout_weight="1"
+            app:hintEnabled="true"
+            app:startIconDrawable="@drawable/ic_email_24">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittextsend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
             android:id="@+id/buttonsend"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/round_send_24"
             android:layout_margin="10dp"/>
     </LinearLayout>

@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.ObservableField;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mvvm.LoginActivity;
 import com.example.mvvm.MainActivity;
 import com.example.mvvm.R;
 import com.example.mvvm.Utils;
@@ -31,7 +32,9 @@ import com.example.mvvm.databinding.CustomDialogDetailUsersBinding;
 import com.example.mvvm.databinding.CustomDialogQuestionBinding;
 import com.example.mvvm.databinding.ItemUsersBinding;
 import com.example.mvvm.datalocal.DataLocalManager;
+import com.example.mvvm.function.DetailFilmsActivity;
 import com.example.mvvm.function.DetailUsersActivity;
+import com.example.mvvm.function.UsersStatusActivity;
 import com.example.mvvm.model.TransactionMoney;
 import com.example.mvvm.model.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -75,8 +78,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
 
     @Override
     public void onBindViewHolder(@NonNull UsersViewHolder holder, int position) {
-        String  key = list.get(position);
+        String key = list.get(position);
         ObservableField<Users> users = new ObservableField<>();
+
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(key);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -177,7 +181,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                                                                 if (task.isSuccessful()){
                                                                     Toast.makeText(view.getContext(), "Mật khẩu đã được thay đổi", Toast.LENGTH_SHORT).show();
                                                                     Log.d(TAG, "Mật khẩu đã được thay đổi");
-                                                                    Utils.reLoadIntent(view.getContext());
+
+                                                                    Intent intent = new Intent(v.getContext(), LoginActivity.class);
+                                                                    v.getContext().startActivity(intent);
+
                                                                 }else {
                                                                     Toast.makeText(view.getContext(), "Vui lòng thử lại", Toast.LENGTH_SHORT).show();
                                                                     Log.d(TAG, "Lỗi thay đổi mật khẩu"+ task.getException());
@@ -211,6 +218,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(view.getContext(), DetailUsersActivity.class);
+                        intent.putExtra("key", key);
                         view.getContext().startActivity(intent);
                     }
                 });
@@ -250,7 +258,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                                     transaction.time = new SimpleDateFormat("HH:mm:ss").format(Utils.getRealtime());
                                     transaction.date = new SimpleDateFormat("dd/MM/yyyy").format(Utils.getRealtime());
                                     transaction.status = true;
-// Open Dialog Verification Deposit
+
+                                    // Open Dialog Verification Deposit
                                     Dialog dialog = new Dialog(view.getContext());
                                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                                     CustomDialogQuestionBinding binding = CustomDialogQuestionBinding.inflate(LayoutInflater.from(view.getContext()));
@@ -274,7 +283,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                                                 public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                                     if (error == null) {
                                                         Toast.makeText(view.getContext(), "Nạp thành công", Toast.LENGTH_SHORT).show();
-                                                        Utils.reLoadIntent(view.getContext());
+
+                                                        Intent intent = new Intent(v.getContext(), UsersStatusActivity.class);
+                                                        v.getContext().startActivity(intent);
                                                     } else {
                                                         Toast.makeText(view.getContext(), "Vui lòng thử lại" + error, Toast.LENGTH_SHORT).show();
                                                     }
@@ -330,7 +341,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                         if (error == null) {
                                             Log.d(TAG, "Unlock Account : Complete");
-                                            Utils.reLoadIntent(view.getContext());
+
+                                            Intent intent = new Intent(v.getContext(), UsersStatusActivity.class);
+                                            v.getContext().startActivity(intent);
                                         } else {
                                             Log.d(TAG, "Unlock Account : Error - "+error);
                                         }
@@ -368,7 +381,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                         if (error == null) {
                                             Log.d(TAG, "Lock Account : Complete");
-                                            Utils.reLoadIntent(view.getContext());
+
+                                            Intent intent = new Intent(v.getContext(), UsersStatusActivity.class);
+                                            v.getContext().startActivity(intent);
                                         } else {
                                             Log.d(TAG, "Lock Account : Error - "+error);
                                         }

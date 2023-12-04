@@ -1,6 +1,7 @@
 package com.example.mvvm;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.Patterns;
 
 import com.example.mvvm.databinding.ActivityLoginBinding;
+import com.example.mvvm.datalocal.DataLocalManager;
 
 public class LoginActivity extends AppCompatActivity {
 

@@ -19,6 +19,7 @@ import com.example.mvvm.function.AddSeriesFilmsActivity;
 import com.example.mvvm.function.DetailTicketActivity;
 import com.example.mvvm.function.FastfoodActivity;
 import com.example.mvvm.function.FilmsActivity;
+import com.example.mvvm.function.ScanQRCodeActivity;
 import com.example.mvvm.function.ShowTimesActivity;
 import com.example.mvvm.function.UsersStatusActivity;
 import com.example.mvvm.function.WalletActivity;
@@ -29,10 +30,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivitySplashScreenBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_splash_screen);
-
-        if (!DataLocalManager.getNightMode()){
-            DataLocalManager.setNightMode(false);
-        }
 
         if (!DataLocalManager.getFirstInstalled()){
             // xoay 360^ trong 2.107s
